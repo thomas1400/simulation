@@ -1,4 +1,4 @@
-# DESIGN_EXERCISE.md
+# RPS_DESIGN.md
 
 ### High-Level Design of RPS:
 - Player Class
