@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+    <rule-class>fireRules</rule-class>
+    <simulation-title>My Simulation Title</simulation-title>
+    <num-global-vars>3</num-global-vars>
+    <global-vars>
+        <var>3</var>
+        <var>6</var>
+        <var>0.6</var>
+    </global-vars>
+    <grid-width>8</grid-width>
+    <grid-height>8</grid-height>
+    <grid-rows>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0</row>
+    </grid-rows>
+</simulation>

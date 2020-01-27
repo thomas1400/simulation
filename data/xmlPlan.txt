@@ -1,0 +1,22 @@
+Simulation Rules Type Selector
+Simulation Title
+---
+Global Var 1
+Global Var 2
+.
+.
+.
+Global Var n
+---
+gridHeight
+gridWidth
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 g r i d 0 0 0 0 0
+0 0 0 0 0 v a l s 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+---
