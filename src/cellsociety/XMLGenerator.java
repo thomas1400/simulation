@@ -236,7 +236,13 @@ public class XMLGenerator {
             System.out.println("That's not a valid number. Try Again.\n");
             setMyNumGlobalVars();
         } else {
-            myNumGlobalVars = input.nextInt();
+            int inputHolder = input.nextInt();
+            if (inputHolder >= 0 && inputHolder < 25) {
+                myNumGlobalVars = inputHolder;
+            } else {
+                System.out.println("That's not a valid number of variables. Try Again.\n");
+                setMyNumGlobalVars();
+            }
         }
     }
 

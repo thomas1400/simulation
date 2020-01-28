@@ -11,5 +11,6 @@ public class SimTester {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
         mySim = new Simulation(mySimulationFile);
+        //mySim.play();
     }
 }
