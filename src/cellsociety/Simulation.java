@@ -26,6 +26,7 @@ public class Simulation {
   private int myGridWidth;
   private int myGridHeight;
   private int[][] myCurrentStateGrid;
+  private char[][] myColorGrid;
   private Cell[][] myCellGrid;
 
   public Simulation(String xmlFileName)
@@ -83,10 +84,11 @@ public class Simulation {
   /**
    * return 2x2 grid of cellStates
    */
-  public int[][] getCellStates() {
-    for (int i = 0; i < myCurrentStateGrid.length; i++) {
-      for (int j = 0; j < myCurrentStateGrid[i].length; j++) {
-        myCurrentStateGrid[i][j] = myCellGrid[i][j].myState;
+  public int[][] getColorGrid() {
+    myColorGrid = new char[myCellGrid.length][myCellGrid.length];
+    for (int i = 0; i < myCellGrid.length; i++) {
+      for (int j = 0; j < myCellGrid[i].length; j++) {
+        myColorGrid[i][j] = myCellGrid[i][j].getColor();
       }
     }
     return myCurrentStateGrid;

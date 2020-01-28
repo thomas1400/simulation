@@ -21,5 +21,9 @@ public class Cell {
     public void updateState(){
         //update myState
     }
+
+    public char getColor(){
+        //use Rules to return color based on state
+    }
 }
 
