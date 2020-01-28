@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <rule>predatorPreyRules</rule>
+    <simulationTitle>Testing Title</simulationTitle>
+    <numGlobalVars>3</numGlobalVars>
+    <globalVars>
+        <var0>2.0</var0>
+        <var1>1.0</var1>
+        <var2>6.4</var2>
+    </globalVars>
+    <gridWidth>4</gridWidth>
+    <gridHeight>4</gridHeight>
+    <gridRows>
+        <row0>0 0 0 0 </row0>
+        <row1>1 2 1 1 </row1>
+        <row2>0 9 6 3 </row2>
+        <row3>7 6 4 3 </row3>
+    </gridRows>
+</simulation>

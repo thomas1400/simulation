@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class SimTester {
     static Simulation mySim;
-    static String mySimulationFile = "data/testXML.xml";
+    static String mySimulationFile = "data/generatedXML.xml";
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
         mySim = new Simulation(mySimulationFile);
