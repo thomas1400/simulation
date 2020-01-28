@@ -24,6 +24,7 @@ public class Cell {
 
     public char getColor(){
         //use Rules to return color based on state
+        return 'f';
     }
 }
 
