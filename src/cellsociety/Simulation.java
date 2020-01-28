@@ -186,19 +186,19 @@ public class Simulation {
   private void setNewRulesClass(String rulesType) {
     switch (rulesType) {
       case "fireRules":
-        myRuleClass = new fireRules();
+        myRuleClass = new FireRules();
         break;
       case "gameOfLifeRules":
-        myRuleClass = new gameOfLifeRules();
+        myRuleClass = new GameOfLifeRules();
         break;
       case "percolationRules":
-        myRuleClass = new percolationRules();
+        myRuleClass = new PercolationRules();
         break;
       case "predatorPreyRules":
-        myRuleClass = new predatorPreyRules();
+        myRuleClass = new PredatorPreyRules();
         break;
       case "segregationRules":
-        myRuleClass = new segregationRules();
+        myRuleClass = new SegregationRules();
         break;
       default:
         System.out.println("Invalid Rules Class");
