@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 public class SimTester {
+
   static Simulation mySim;
   static String mySimulationFile = "data/generatedXML.xml";
 
