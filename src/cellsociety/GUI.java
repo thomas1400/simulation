@@ -2,11 +2,14 @@ package cellsociety;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
@@ -25,7 +28,7 @@ public class GUI extends Application {
     private Group root;
     private Scene scene;
     private Canvas canvas;
-    private Simulation simulation;
+    //private Simulation simulation;
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -33,7 +36,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setUpWindow(primaryStage);
-        loadSimulation();
+        //loadSimulation();
         GridAnimation ga = new GridAnimation();
     }
     private void makeButton(){
@@ -51,12 +54,22 @@ public class GUI extends Application {
         root.getChildren().add(canvas);
     }
     private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-        simulation = new Simulation("dummy.xml");
+        //simulation = new Simulation("dummy.xml");
     }
     private class GridAnimation extends AnimationTimer{
 
         @Override
         public void handle(long now) {
+            TilePane tp = new TilePane();
+            Rectangle rec = new Rectangle();
+            Rectangle rec2 = new Rectangle();
+            Rectangle rec3 = new Rectangle();
+            Rectangle rec4 = new Rectangle();
+            tp.getChildren().add(rec);
+            tp.getChildren().add(rec2);
+            tp.getChildren().add(rec3);
+            tp.getChildren().add(rec4);
+
             //get grid
             //draw grid
         }
