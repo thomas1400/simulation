@@ -12,6 +12,12 @@ import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
+import rules.FireRules;
+import rules.GameOfLifeRules;
+import rules.PercolationRules;
+import rules.PredatorPreyRules;
+import rules.Rules;
+import rules.SegregationRules;
 
 public class Simulation {
 

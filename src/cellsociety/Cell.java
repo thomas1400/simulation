@@ -1,6 +1,7 @@
 package cellsociety;
 
 import javafx.scene.paint.Color;
+import rules.Rules;
 
 public class Cell {
     private Cell[] myNeighbors; // Indexed starting with 'top' neighbor and moving clockwise.
