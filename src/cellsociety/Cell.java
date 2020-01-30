@@ -43,10 +43,5 @@ public class Cell {
     public Color getColor() {
         return myColor;
     }
-
-    public char getColor(){
-        //use Rules to return color based on state
-        return 'f';
-    }
 }
 
