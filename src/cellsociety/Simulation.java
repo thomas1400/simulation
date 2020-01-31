@@ -39,7 +39,7 @@ public class Simulation {
   public Simulation(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
     loadConfigFile(xmlFileName);
-    setNewRulesClass(myRuleSelector);
+    setNewRulesClass(myRuleSelector, myGlobalVars);
     fillCellGrid(myRuleClass);
     initializeCellPointers();
   }
@@ -190,10 +190,11 @@ public class Simulation {
         null, true);
   }
 
-  private void setNewRulesClass(String rulesType) {
+  private void setNewRulesClass(String rulesType, double[] myGlobalVars) {
     switch (rulesType) {
       case "fireRules":
-        myRuleClass = new FireRules();
+        //first global variable should be fire spread probability
+        myRuleClass = new FireRules(myGlobalVars[0]);
         break;
       case "gameOfLifeRules":
         myRuleClass = new GameOfLifeRules();
