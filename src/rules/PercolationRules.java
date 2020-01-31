@@ -9,7 +9,7 @@ public class PercolationRules extends Rules {
    *
    * @param currentState is the cell's current state
    * @param neighborStates is the cell's neighbor's states as an array
-   * @return
+   * @return returns new state of cell
    */
   @Override
   public int calculateNewState(int currentState, int[] neighborStates) {

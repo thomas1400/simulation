@@ -1,4 +1,4 @@
-package xmlHandling;
+package xmlGeneration;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
