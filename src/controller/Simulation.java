@@ -1,5 +1,7 @@
-package cellsociety;
+package controller;
 
+import model.Cell;
+import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -11,28 +13,33 @@ import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
+import rules.FireRules;
+import rules.GameOfLifeRules;
+import rules.PercolationRules;
+import rules.PredatorPreyRules;
+import rules.Rules;
+import rules.SegregationRules;
 
 public class Simulation {
 
   public ArrayList<Cell> myCells = new ArrayList<>();
   public Rules myRuleClass;
 
-  private int simulationSpeed = 1000;
-  private boolean simulationRunning;
+  public int simulationSpeed = 1000;
+  public boolean simulationRunning;
 
   private String myRuleSelector;
   private String mySimulationTitle;
   private double[] myGlobalVars;
   private int myGridWidth;
   private int myGridHeight;
-  private int[][] myCurrentStateGrid;
-  private char[][] myColorGrid;
+  private int[][] myInitialStateGrid;
   private Cell[][] myCellGrid;
 
   public Simulation(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
     loadConfigFile(xmlFileName);
-    setNewRulesClass(myRuleSelector);
+    setNewRulesClass(myRuleSelector, myGlobalVars);
     fillCellGrid(myRuleClass);
     initializeCellPointers();
   }
@@ -84,14 +91,18 @@ public class Simulation {
   /**
    * return 2x2 grid of cellStates
    */
-  public int[][] getColorGrid() {
-    myColorGrid = new char[myCellGrid.length][myCellGrid.length];
+  public Color[][] getColorGrid() {
+    Color[][] myColorGrid = new Color[myCellGrid.length][myCellGrid.length];
     for (int i = 0; i < myCellGrid.length; i++) {
       for (int j = 0; j < myCellGrid[i].length; j++) {
         myColorGrid[i][j] = myCellGrid[i][j].getColor();
       }
     }
-    return myCurrentStateGrid;
+    return myColorGrid;
+  }
+
+  public String getTitle() {
+    return mySimulationTitle;
   }
 
   private void wait(int ms) {
@@ -114,7 +125,7 @@ public class Simulation {
     myGridWidth = getGridWidth(iterator);
     myGridHeight = getGridHeight(iterator);
 
-    myCurrentStateGrid = getInitialStateGrid(iterator);
+    myInitialStateGrid = getInitialStateGrid(iterator);
   }
 
   private int[][] getInitialStateGrid(NodeIterator iterator) {
@@ -183,10 +194,11 @@ public class Simulation {
         null, true);
   }
 
-  private void setNewRulesClass(String rulesType) {
+  private void setNewRulesClass(String rulesType, double[] myGlobalVars) {
     switch (rulesType) {
       case "fireRules":
-        myRuleClass = new FireRules();
+        //first global variable should be fire spread probability
+        myRuleClass = new FireRules(myGlobalVars[0]);
         break;
       case "gameOfLifeRules":
         myRuleClass = new GameOfLifeRules();
@@ -210,7 +222,7 @@ public class Simulation {
     myCellGrid = new Cell[myGridHeight][myGridWidth];
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
-        int initialCellState = myCurrentStateGrid[i][j];
+        int initialCellState = myInitialStateGrid[i][j];
         Cell newCell = new Cell(ruleType, initialCellState);
         myCellGrid[i][j] = newCell;
         myCells.add(newCell);
@@ -224,19 +236,19 @@ public class Simulation {
         Cell myCell = myCellGrid[i][j];
         //check that cell isn't in top row
         if (i != 0) {
-          myCell.up = myCellGrid[i - 1][j];
+          myCell.setNeighbor(0, myCellGrid[i - 1][j]);
         }
         //check that cell isn't in bottom row
         if (i < myGridHeight - 1) {
-          myCell.down = myCellGrid[i + 1][j];
+          myCell.setNeighbor(4, myCellGrid[i + 1][j]);
         }
         //check that cell isn't in far right column
         if (j < myGridWidth - 1) {
-          myCell.right = myCellGrid[i][j + 1];
+          myCell.setNeighbor(2, myCellGrid[i][j + 1]);
         }
         //check that cell isn't in far left column
         if (j != 0) {
-          myCell.left = myCellGrid[i][j - 1];
+          myCell.setNeighbor(6, myCellGrid[i][j - 1]);
         }
       }
     }

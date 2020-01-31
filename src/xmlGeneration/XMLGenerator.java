@@ -1,4 +1,4 @@
-package cellsociety;
+package xmlGeneration;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;

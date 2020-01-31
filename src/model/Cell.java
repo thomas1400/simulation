@@ -1,6 +1,7 @@
-package cellsociety;
+package model;
 
 import javafx.scene.paint.Color;
+import rules.Rules;
 
 public class Cell {
     private Cell[] myNeighbors; // Indexed starting with 'up' neighbor and moving clockwise.
@@ -25,7 +26,9 @@ public class Cell {
     public void getNextState(){
         int[] neighborStates = new int[myNeighbors.length];
         for (int i = 0; i < myNeighbors.length; i++) {
-            neighborStates[i] = myNeighbors[i].myState;
+            if (myNeighbors[i] != null) {
+                neighborStates[i] = myNeighbors[i].myState;
+            }
         }
 
         myNextState = myRules.calculateNewState(myState, neighborStates);
