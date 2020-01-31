@@ -28,6 +28,7 @@ public class GUI extends Application {
     private Group root;
     private Scene scene;
     private Canvas canvas;
+    private Simulation simulation;
     //private Simulation simulation;
     public static void main(String[] args) {
         Application.launch(args);
@@ -36,7 +37,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setUpWindow(primaryStage);
-        //loadSimulation();
+        loadSimulation();
         GridAnimation ga = new GridAnimation();
     }
     private void makeButton(){
@@ -54,7 +55,7 @@ public class GUI extends Application {
         root.getChildren().add(canvas);
     }
     private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-        //simulation = new Simulation("dummy.xml");
+        simulation = new Simulation("data/generatedXML.xml");
     }
     private class GridAnimation extends AnimationTimer{
 

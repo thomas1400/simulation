@@ -1,10 +1,12 @@
-package cellsociety;
+package rules;
 
 import javafx.scene.paint.Color;
 
 public class GameOfLifeRules extends Rules {
 
-    public GameOfLifeRules() {};
+    public GameOfLifeRules() {
+        super();
+    };
 
     @Override
     public int calculateNewState(int currentState, int[] neighborStates) {
