@@ -1,8 +1,7 @@
-package cellsociety;
+package view;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,9 +12,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import controller.Simulation;
 
 public class GUI extends Application {
     /**
@@ -29,6 +28,7 @@ public class GUI extends Application {
     private Scene scene;
     private Canvas canvas;
     private Simulation simulation;
+    private String simulationTitle;
     //private Simulation simulation;
     public static void main(String[] args) {
         Application.launch(args);
@@ -56,6 +56,8 @@ public class GUI extends Application {
     }
     private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
         simulation = new Simulation("data/generatedXML.xml");
+        simulationTitle = simulation.getTitle();
+        //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
     }
     private class GridAnimation extends AnimationTimer{
 

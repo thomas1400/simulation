@@ -1,5 +1,6 @@
-package cellsociety;
+package controller;
 
+import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,16 +25,15 @@ public class Simulation {
   public ArrayList<Cell> myCells = new ArrayList<>();
   public Rules myRuleClass;
 
-  private int simulationSpeed = 1000;
-  private boolean simulationRunning;
+  public int simulationSpeed = 1000;
+  public boolean simulationRunning;
 
   private String myRuleSelector;
   private String mySimulationTitle;
   private double[] myGlobalVars;
   private int myGridWidth;
   private int myGridHeight;
-  private int[][] myCurrentStateGrid;
-  private Color[][] myColorGrid;
+  private int[][] myInitialStateGrid;
   private Cell[][] myCellGrid;
 
   public Simulation(String xmlFileName)
@@ -91,14 +91,18 @@ public class Simulation {
   /**
    * return 2x2 grid of cellStates
    */
-  public int[][] getColorGrid() {
-    myColorGrid = new Color[myCellGrid.length][myCellGrid.length];
+  public Color[][] getColorGrid() {
+    Color[][] myColorGrid = new Color[myCellGrid.length][myCellGrid.length];
     for (int i = 0; i < myCellGrid.length; i++) {
       for (int j = 0; j < myCellGrid[i].length; j++) {
         myColorGrid[i][j] = myCellGrid[i][j].getColor();
       }
     }
-    return myCurrentStateGrid;
+    return myColorGrid;
+  }
+
+  public String getTitle() {
+    return mySimulationTitle;
   }
 
   private void wait(int ms) {
@@ -121,7 +125,7 @@ public class Simulation {
     myGridWidth = getGridWidth(iterator);
     myGridHeight = getGridHeight(iterator);
 
-    myCurrentStateGrid = getInitialStateGrid(iterator);
+    myInitialStateGrid = getInitialStateGrid(iterator);
   }
 
   private int[][] getInitialStateGrid(NodeIterator iterator) {
@@ -218,7 +222,7 @@ public class Simulation {
     myCellGrid = new Cell[myGridHeight][myGridWidth];
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
-        int initialCellState = myCurrentStateGrid[i][j];
+        int initialCellState = myInitialStateGrid[i][j];
         Cell newCell = new Cell(ruleType, initialCellState);
         myCellGrid[i][j] = newCell;
         myCells.add(newCell);

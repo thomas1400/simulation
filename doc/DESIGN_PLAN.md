@@ -3,7 +3,7 @@
 ### Grant LoPresti, Thomas Owens, Sebastian Williams
 
 ## Introduction
-This program is being written to simulate an arbitrary cellular automata, which is a grid-based simulation where cells change state based on their current state and the states of their neighbors. The primary design goal of this project is to create a generic simulator that can be used to simulate any of a variety of cellular automata, defined by a provided set of rules.
+This program is being written to simulate an arbitrary cellular automata, which is a grid-based simulation where cells change state based on their current state and the states of their neighbors. The primary design goal of this project is to create a generic controller that can be used to simulate any of a variety of cellular automata, defined by a provided set of rules.
 
 The program is open to extension with new rulesets, which allows it to simulate new cellular automata. However, the simulation's code to load, update and display the automata is closed to modification, meaning every automata will be simulated using the same code and GUI, just with different rules.
 
