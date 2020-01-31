@@ -45,4 +45,9 @@ public class PercolationRules extends Rules {
       return Color.BLACK;
     }
   }
+
+  @Override
+  public void setGlobalVariables(double[] variables) {
+
+  }
 }

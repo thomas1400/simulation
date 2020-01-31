@@ -13,4 +13,9 @@ public class PredatorPreyRules extends Rules {
   public Color getStateColor(int state) {
     return null;
   }
+
+  @Override
+  public void setGlobalVariables(double[] variables) {
+
+  }
 }

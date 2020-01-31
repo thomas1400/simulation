@@ -39,4 +39,9 @@ public class FireRules extends Rules {
       return Color.RED;
     }
   }
+
+  @Override
+  public void setGlobalVariables(double[] variables) {
+
+  }
 }
