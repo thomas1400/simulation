@@ -37,4 +37,7 @@ public class GameOfLifeRules extends Rules {
             return Color.WHITE;
         }
     }
+
+    @Override
+    public void setGlobalVariables(double[] variables) { }
 }

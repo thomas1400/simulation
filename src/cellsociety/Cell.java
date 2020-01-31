@@ -3,10 +3,10 @@ package cellsociety;
 import javafx.scene.paint.Color;
 
 public class Cell {
-    private Cell[] myNeighbors; // Indexed starting with 'top' neighbor and moving clockwise.
+    private Cell[] myNeighbors; // Indexed starting with 'up' neighbor and moving clockwise.
     private Rules myRules;
 
-    private int myState;
+    private int myState; // convert to enum
     private int myNextState;
     private Color myColor;
 
@@ -25,7 +25,7 @@ public class Cell {
     public void getNextState(){
         int[] neighborStates = new int[myNeighbors.length];
         for (int i = 0; i < myNeighbors.length; i++) {
-            neighborStates[i] = myNeighbors[i].getState();
+            neighborStates[i] = myNeighbors[i].myState;
         }
 
         myNextState = myRules.calculateNewState(myState, neighborStates);
@@ -36,16 +36,8 @@ public class Cell {
         myColor = myRules.getStateColor(myState);
     }
 
-    public int getState() {
-        return myState;
-    }
-
     public Color getColor() {
         return myColor;
-    }
-
-    public char getColor(){
-        //use Rules to return color based on state
     }
 }
 
