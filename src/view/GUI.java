@@ -1,15 +1,10 @@
 package view;
 
-import javafx.animation.AnimationTimer;
+import events.IUpdate;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -19,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import controller.Simulation;
 
-public class GUI extends Application {
+public class GUI extends Application implements IUpdate {
     /**
      * TODO: Change final text variables to be read from file
      */
@@ -48,16 +43,10 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         setUpWindow(primaryStage);
         loadSimulation();
+        simulation.setListener(this);
         mainWindow.show();
-        new AnimationTimer(){
-
-            @Override
-            public void handle(long now) {
-                step();
-            }
-        }.start();
     }
-    private void step(){
+    private void update(){
         makeMasterGrid();
     }
     private void setUpWindow(Stage primaryStage){
@@ -102,8 +91,8 @@ public class GUI extends Application {
         return gp;
     }
     private GridPane makeGrid(){
-        // Color[][] colorGrid = simulation.getColorGrid();
-        Color[][] colorGrid = {{Color.BLACK, Color.GREEN, Color.RED},{Color.RED, Color.GREEN, Color.RED}, {Color.RED, Color.RED, Color.RED}};
+        Color[][] colorGrid = simulation.getColorGrid();
+        //Color[][] colorGrid = {{Color.BLACK, Color.GREEN, Color.RED},{Color.RED, Color.GREEN, Color.RED}, {Color.RED, Color.RED, Color.RED}};
         int width = colorGrid.length;
         int height = colorGrid[0].length;
         for(int i = 0; i < width; i++){
@@ -124,4 +113,12 @@ public class GUI extends Application {
         //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
     }
 
+    /**
+     * From IUpdate: method called when the simulation alerts the GUI when the
+     * simulation steps
+     */
+    @Override
+    public void simulationUpdate() {
+        update();
+    }
 }

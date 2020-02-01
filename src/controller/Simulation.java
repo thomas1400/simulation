@@ -1,5 +1,6 @@
 package controller;
 
+import events.IUpdate;
 import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
@@ -36,6 +37,8 @@ public class Simulation {
   private int[][] myInitialStateGrid;
   private Cell[][] myCellGrid;
 
+  private IUpdate listener;
+
   public Simulation(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
     loadConfigFile(xmlFileName);
@@ -65,6 +68,7 @@ public class Simulation {
     for (Cell cell : myCells) {
       cell.updateState();
     }
+    alertGUI();
   }
 
   /**
@@ -252,5 +256,11 @@ public class Simulation {
         }
       }
     }
+  }
+  public void setListener(IUpdate listener){
+    this.listener = listener;
+  }
+  private void alertGUI(){
+    listener.simulationUpdate();
   }
 }

@@ -27,7 +27,7 @@
             <configuration>
                 <encoding>iso-8859-1</encoding>
                 <includes>
-                    <include>src/**/*.java</include>
+                    <include>events/**/*.java</include>
                 </includes>
                 <source>1.11</source>
                 <target>1.11</target>
