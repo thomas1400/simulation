@@ -260,6 +260,7 @@ public class Simulation {
   public void setListener(IUpdate listener){
     this.listener = listener;
   }
+
   private void alertGUI(){
     listener.simulationUpdate();
   }
