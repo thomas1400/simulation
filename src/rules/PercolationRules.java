@@ -16,7 +16,7 @@ public class PercolationRules extends Rules {
     boolean doesPercolate = shouldPercolate(neighborStates);
     if (currentState == 0) {
       return 0;
-    } else if (doesPercolate) {
+    } else if (currentState == 2 || doesPercolate) {
       return 2;
     } else {
       return 1;
@@ -40,7 +40,7 @@ public class PercolationRules extends Rules {
     if (state == 2) {
       return Color.BLUE;
     } else if (state == 1) {
-      return Color.WHITE;
+      return Color.LIGHTGRAY;
     } else {
       return Color.BLACK;
     }

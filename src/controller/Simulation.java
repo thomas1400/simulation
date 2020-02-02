@@ -4,7 +4,6 @@ import events.IUpdate;
 import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,7 +22,6 @@ import rules.SegregationRules;
 
 public class Simulation {
 
-  public ArrayList<Cell> myCells = new ArrayList<>();
   public Rules myRuleClass;
 
   public int simulationSpeed = 1000;
@@ -45,6 +43,7 @@ public class Simulation {
     setNewRulesClass(myRuleSelector, myGlobalVars);
     fillCellGrid(myRuleClass);
     initializeCellPointers();
+    printGridStates();
   }
 
   /**
@@ -52,9 +51,14 @@ public class Simulation {
    */
   public void play() {
     simulationRunning = true;
-    while (simulationRunning) {
-      step();
-      wait(simulationSpeed);
+    autoStep();
+  }
+
+  private void autoStep() {
+    step();
+    wait(simulationSpeed);
+    if (simulationRunning) {
+      autoStep();
     }
   }
 
@@ -62,13 +66,18 @@ public class Simulation {
    * Step the simulation one generation
    */
   public void step() {
-    for (Cell cell : myCells) {
-      cell.getNextState();
+    for (Cell[] cells : myCellGrid) {
+      for (Cell cell : cells) {
+        cell.getNextState();
+      }
     }
-    for (Cell cell : myCells) {
-      cell.updateState();
+    for (Cell[] cells : myCellGrid) {
+      for (Cell cell : cells) {
+        cell.updateState();
+      }
     }
     alertGUI();
+    printGridStates();
   }
 
   /**
@@ -103,6 +112,16 @@ public class Simulation {
       }
     }
     return myColorGrid;
+  }
+
+  public void printGridStates() {
+    for (int i = 0; i < myCellGrid.length; i++) {
+      System.out.println();
+      for (int j = 0; j < myCellGrid[i].length; j++) {
+        System.out.print(myCellGrid[i][j].getState() + " ");
+      }
+    }
+    System.out.println();
   }
 
   public String getTitle() {
@@ -229,7 +248,6 @@ public class Simulation {
         int initialCellState = myInitialStateGrid[i][j];
         Cell newCell = new Cell(ruleType, initialCellState);
         myCellGrid[i][j] = newCell;
-        myCells.add(newCell);
       }
     }
   }

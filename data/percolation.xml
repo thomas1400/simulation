@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <simulation>
     <rule>percolationRules</rule>
-    <simulationTitle>Percolateee!</simulationTitle>
-    <numGlobalVars>1</numGlobalVars>
+    <simulationTitle>Percolateeee!</simulationTitle>
+    <numGlobalVars>0</numGlobalVars>
     <globalVars>
-        <var0>0.0</var0>
+        <var>0</var>
     </globalVars>
     <gridWidth>10</gridWidth>
     <gridHeight>10</gridHeight>
