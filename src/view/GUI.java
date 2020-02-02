@@ -88,6 +88,10 @@ public class GUI extends Application implements IUpdate {
         myStepButton.setOnAction(e -> simulation.step());
         gp.add(myStepButton, 5, 0);
 
+//        myStepButton = new Button("Play");
+//        myStepButton.setOnAction(e -> simulation.play());
+//        gp.add(myStepButton, 6, 0);
+
     }
     private void makeGrid(){
         Color[][] colorGrid = simulation.getColorGrid();

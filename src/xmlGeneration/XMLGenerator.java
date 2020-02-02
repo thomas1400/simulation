@@ -60,10 +60,16 @@ public class XMLGenerator {
       root.appendChild(globalVars);
 
       //each global var
-      for (int i = 0; i < myNumGlobalVars; i++) {
-        Element var = document.createElement("var" + i);
-        var.appendChild(document.createTextNode("" + myGlobalVars[i]));
+      if (myNumGlobalVars == 0) {
+        Element var = document.createElement("var");
+        var.appendChild(document.createTextNode("" + 0));
         globalVars.appendChild(var);
+      } else {
+        for (int i = 0; i < myNumGlobalVars; i++) {
+          Element var = document.createElement("var" + i);
+          var.appendChild(document.createTextNode("" + myGlobalVars[i]));
+          globalVars.appendChild(var);
+        }
       }
 
       //grid width
