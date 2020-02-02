@@ -27,6 +27,7 @@ public class GUI extends Application implements IUpdate {
     private Simulation simulation;
     private String simulationTitle;
     private GridPane group;
+    private String xmlFileName;
     //private Simulation simulation;
 
     // Buttons members
@@ -113,7 +114,9 @@ public class GUI extends Application implements IUpdate {
     }
 
     private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-        simulation = new Simulation("data/generatedXML.xml");
+        xmlFileName = "data/generatedXML.xml";
+        //this line above should be a prompt for the user
+        simulation = new Simulation(xmlFileName);
         simulationTitle = simulation.getTitle();
         //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
     }

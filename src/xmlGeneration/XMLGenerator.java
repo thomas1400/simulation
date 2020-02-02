@@ -26,7 +26,7 @@ public class XMLGenerator {
   private static int myGridHeight;
   private static int[][] myInitialStateGrid;
 
-  public static final String xmlFilePath = "data/generatedXML.xml";
+  public static String xmlFilePath;
 
   public static void main(String[] argv) throws FileNotFoundException {
     getUserInput();
@@ -121,6 +121,7 @@ public class XMLGenerator {
   }
 
   private static void getUserInput() throws FileNotFoundException {
+    setMyFilePath();
     setMyRuleSelector();
     setSimulationTitle();
     setMyNumGlobalVars();
@@ -132,6 +133,12 @@ public class XMLGenerator {
     } else {
       setInitialGridFromUser();
     }
+  }
+
+  private static void setMyFilePath() {
+    System.out.print("Please enter the name of the file to be created (ending with .xml): ");
+    Scanner input = new Scanner(System.in);
+    xmlFilePath =  "data/" + input.next();
   }
 
   private static void setInitialGridFromUser() {
