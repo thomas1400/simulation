@@ -8,10 +8,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import controller.Simulation;
 
@@ -38,6 +41,7 @@ public class GUI extends Application implements IUpdate {
     private Button mySpeedUpButton;
     private Button myStepButton;
     private Button myPlayButton;
+    private Button myLoadConfigButton;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -97,6 +101,16 @@ public class GUI extends Application implements IUpdate {
         myPlayButton = new Button("Play");
         myPlayButton.setOnAction(e -> simulation.play());
         group.add(myPlayButton, 6,0);
+
+        myLoadConfigButton = new Button("Config");
+        myLoadConfigButton.setOnAction(e -> loadConfig());
+        group.add(myLoadConfigButton, 7, 0);
+    }
+    private void loadConfig(){
+        FileChooser fc = new FileChooser();
+        File file = fc.showOpenDialog(mainWindow);
+        xmlFileName = file.toString();
+        System.out.println(xmlFileName);
     }
     private void makeGrid(){
         Color[][] colorGrid = simulation.getColorGrid();
