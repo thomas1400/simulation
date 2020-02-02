@@ -39,6 +39,10 @@ public class Cell {
         myColor = myRules.getStateColor(myState);
     }
 
+    public int getState() {
+        return myState;
+    }
+
     public Color getColor() {
         return myColor;
     }
