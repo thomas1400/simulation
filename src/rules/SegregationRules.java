@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 public class SegregationRules extends Rules {
 
   private double segregation_threshold;
+  private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.ORANGE};
 
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
@@ -30,7 +31,11 @@ public class SegregationRules extends Rules {
 
   @Override
   public Color getStateColor(int state) {
-    return null;
+    if (state == 0) {
+      return Color.WHITE;
+    } else {
+      return groupColors[state];
+    }
   }
 
   @Override
