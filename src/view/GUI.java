@@ -108,7 +108,7 @@ public class GUI extends Application implements IUpdate {
                 rec.setFill(colorGrid[i][j]);
                 rec.setWidth(25);
                 rec.setHeight(25);
-                gp.add(rec, i, j+1);
+                gp.add(rec, j, i+1);
             }
         }
     }
