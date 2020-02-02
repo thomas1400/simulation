@@ -40,6 +40,7 @@ public class Simulation {
   private int myGridHeight;
   private int[][] myInitialStateGrid;
   private Cell[][] myCellGrid;
+  private Timeline timeline;
 
   private IUpdate listener;
 
@@ -61,7 +62,7 @@ public class Simulation {
   }
 
   private void autoStep() {
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
       step();
     }));
     timeline.setCycleCount(Animation.INDEFINITE);
@@ -91,6 +92,7 @@ public class Simulation {
    */
   public void pause() {
     simulationRunning = false;
+    timeline.pause();
   }
 
   /**
