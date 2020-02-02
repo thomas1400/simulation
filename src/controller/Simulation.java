@@ -30,7 +30,7 @@ public class Simulation {
 
   public Rules myRuleClass;
 
-  public int simulationSpeed = 1000;
+  public int simulationSpeed = 1;
   public boolean simulationRunning;
 
   private String myRuleSelector;
@@ -62,7 +62,7 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed), ev -> {
       step();
     }));
     timeline.setCycleCount(Animation.INDEFINITE);
@@ -134,14 +134,6 @@ public class Simulation {
 
   public String getTitle() {
     return mySimulationTitle;
-  }
-
-  private void wait(int ms) {
-    try {
-      Thread.sleep(ms);
-    } catch (InterruptedException ex) {
-      Thread.currentThread().interrupt();
-    }
   }
 
   private void loadConfigFile(String file)
