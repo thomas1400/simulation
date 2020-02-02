@@ -1,7 +1,9 @@
 package view;
 
 import events.IUpdate;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +18,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import controller.Simulation;
 
 public class GUI extends Application implements IUpdate {
@@ -23,6 +28,8 @@ public class GUI extends Application implements IUpdate {
      * TODO: Change final text variables to be read from file
      */
     final private String WINDOW_TITLE = "SIMULATION";
+    final private int DEFAULT_SQUARE_SIZE = 40;
+    final private int SQUARE_SIZE_RATIO = 10;
 
     // Instance variables for the GUI
     private Stage mainWindow;
@@ -31,6 +38,7 @@ public class GUI extends Application implements IUpdate {
     private String simulationTitle;
     private GridPane group;
     private String xmlFileName;
+    private Timeline timeline;
     //private Simulation simulation;
 
     // Buttons members
@@ -49,6 +57,7 @@ public class GUI extends Application implements IUpdate {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        timeline = new Timeline();
         loadSimulation();
         setUpWindow(primaryStage);
         simulation.setListener(this);
@@ -116,12 +125,13 @@ public class GUI extends Application implements IUpdate {
         Color[][] colorGrid = simulation.getColorGrid();
         int width = colorGrid.length;
         int height = colorGrid[0].length;
+        int squareSize = (SQUARE_SIZE_RATIO/width) * DEFAULT_SQUARE_SIZE;
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
                 Rectangle rec = new Rectangle();
                 rec.setFill(colorGrid[i][j]);
-                rec.setWidth(25);
-                rec.setHeight(25);
+                rec.setWidth(squareSize);
+                rec.setHeight(squareSize);
                 gp.add(rec, j, i+1);
             }
         }
