@@ -2,6 +2,7 @@ package view;
 
 import events.IUpdate;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -25,6 +26,7 @@ public class GUI extends Application implements IUpdate {
     private GridPane gp;
     private Simulation simulation;
     private String simulationTitle;
+    private GridPane group;
     //private Simulation simulation;
 
     // Buttons members
@@ -34,6 +36,7 @@ public class GUI extends Application implements IUpdate {
     private Button myPauseButton;
     private Button mySpeedUpButton;
     private Button myStepButton;
+    private Button myPlayButton;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -47,63 +50,63 @@ public class GUI extends Application implements IUpdate {
         mainWindow.show();
     }
     private void update(){
-        makeMasterGrid();
+        setUpWindow(mainWindow);
     }
     private void setUpWindow(Stage primaryStage){
         mainWindow = primaryStage;
         mainWindow.setTitle(WINDOW_TITLE);
-
         Scene gridScene = new Scene(makeMasterGrid(), 512, 512);
         mainWindow.setScene(gridScene);
-
     }
     private GridPane makeMasterGrid(){
+        GridPane mainGrid = new GridPane();
+        group = new GridPane();
         gp = new GridPane();
         makeButtons();
         makeGrid();
-        return gp;
+        mainGrid.add(group, 0,0);
+        mainGrid.add(gp, 0, 1);
+        return mainGrid;
     }
     private void makeButtons(){
         myHomeButton = new Button("Home");
-        gp.add(myHomeButton, 0,0);
+        group.add(myHomeButton, 0, 0);
         // command for going home
 
         myResetButton = new Button("Reset");
-        gp.add(myResetButton, 1, 0);
+        group.add(myResetButton, 1, 0);
         // command for reset
 
         mySlowDownButton = new Button("Slow Down");
         mySlowDownButton.setOnAction(e -> simulation.slowDown());
-        gp.add(mySlowDownButton, 2, 0);
+        group.add(mySlowDownButton, 2, 0);
 
         myPauseButton = new Button("Pause");
         myPauseButton.setOnAction(e -> simulation.pause());
-        gp.add(myPauseButton, 3, 0);
+        group.add(myPauseButton, 3, 0);
 
         mySpeedUpButton = new Button("Speed Up");
         mySpeedUpButton.setOnAction(e -> simulation.speedUp());
-        gp.add(mySpeedUpButton, 4, 0);
+        group.add(mySpeedUpButton, 4,0);
 
         myStepButton = new Button("Step");
         myStepButton.setOnAction(e -> simulation.step());
-        gp.add(myStepButton, 5, 0);
+        group.add(myStepButton, 5, 0);
 
-//        myStepButton = new Button("Play");
-//        myStepButton.setOnAction(e -> simulation.play());
-//        gp.add(myStepButton, 6, 0);
-
+        myPlayButton = new Button("Play");
+        myPlayButton.setOnAction(e -> simulation.play());
+        group.add(myPlayButton, 6,0);
     }
     private void makeGrid(){
         Color[][] colorGrid = simulation.getColorGrid();
-        //Color[][] colorGrid = {{Color.BLACK, Color.GREEN, Color.RED},{Color.RED, Color.GREEN, Color.RED}, {Color.RED, Color.RED, Color.RED}};
         int width = colorGrid.length;
         int height = colorGrid[0].length;
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
                 Rectangle rec = new Rectangle();
                 rec.setFill(colorGrid[i][j]);
-                rec.setWidth(50);
-                rec.setHeight(50);
+                rec.setWidth(25);
+                rec.setHeight(25);
                 gp.add(rec, i, j+1);
             }
         }
@@ -121,6 +124,7 @@ public class GUI extends Application implements IUpdate {
      */
     @Override
     public void simulationUpdate() {
+        System.out.println("Updated");
         update();
     }
 }
