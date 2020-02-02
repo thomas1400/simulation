@@ -1,9 +1,15 @@
 package controller;
 
 import events.IUpdate;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,11 +61,11 @@ public class Simulation {
   }
 
   private void autoStep() {
-    step();
-    wait(simulationSpeed);
-    if (simulationRunning) {
-      autoStep();
-    }
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+      step();
+    }));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
   }
 
   /**

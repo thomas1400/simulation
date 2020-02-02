@@ -35,8 +35,16 @@ public class Cell {
     }
 
     public void updateState(){
-        myState = myNextState;
-        myColor = myRules.getStateColor(myState);
+        if (myNextState < 0) {
+            if (myNeighbors[-1*myNextState].myState == 0) {
+                myNeighbors[-1*myNextState].myState = myNextState;
+                myNeighbors[-1*myNextState].myColor = myRules.getStateColor(myState);
+                myState = 0;
+            }
+        } else {
+            myState = myNextState;
+            myColor = myRules.getStateColor(myState);
+        }
     }
 
     public int getState() {
