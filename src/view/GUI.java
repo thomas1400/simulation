@@ -99,13 +99,13 @@ public class GUI extends Application implements IUpdate {
         //Color[][] colorGrid = {{Color.BLACK, Color.GREEN, Color.RED},{Color.RED, Color.GREEN, Color.RED}, {Color.RED, Color.RED, Color.RED}};
         int width = colorGrid.length;
         int height = colorGrid[0].length;
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
                 Rectangle rec = new Rectangle();
                 rec.setFill(colorGrid[i][j]);
                 rec.setWidth(50);
                 rec.setHeight(50);
-                gp.add(rec, i, j+1);
+                gp.add(rec, j, i+1);
             }
         }
     }
