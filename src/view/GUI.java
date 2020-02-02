@@ -41,8 +41,8 @@ public class GUI extends Application implements IUpdate {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        setUpWindow(primaryStage);
         loadSimulation();
+        setUpWindow(primaryStage);
         simulation.setListener(this);
         mainWindow.show();
     }
@@ -63,7 +63,7 @@ public class GUI extends Application implements IUpdate {
         makeGrid();
         return gp;
     }
-    private GridPane makeButtons(){
+    private void makeButtons(){
         myHomeButton = new Button("Home");
         gp.add(myHomeButton, 0,0);
         // command for going home
@@ -88,9 +88,8 @@ public class GUI extends Application implements IUpdate {
         myStepButton.setOnAction(e -> simulation.step());
         gp.add(myStepButton, 5, 0);
 
-        return gp;
     }
-    private GridPane makeGrid(){
+    private void makeGrid(){
         Color[][] colorGrid = simulation.getColorGrid();
         //Color[][] colorGrid = {{Color.BLACK, Color.GREEN, Color.RED},{Color.RED, Color.GREEN, Color.RED}, {Color.RED, Color.RED, Color.RED}};
         int width = colorGrid.length;
@@ -104,7 +103,6 @@ public class GUI extends Application implements IUpdate {
                 gp.add(rec, i, j+1);
             }
         }
-        return gp;
     }
 
     private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
