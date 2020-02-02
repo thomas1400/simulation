@@ -51,9 +51,14 @@ public class Simulation {
    */
   public void play() {
     simulationRunning = true;
-    while (simulationRunning) {
-      step();
-      wait(simulationSpeed);
+    autoStep();
+  }
+
+  private void autoStep() {
+    step();
+    wait(simulationSpeed);
+    if (simulationRunning) {
+      autoStep();
     }
   }
 
