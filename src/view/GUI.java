@@ -29,8 +29,8 @@ import controller.Simulation;
 public class GUI extends Application implements IUpdate {
 
   final private String WINDOW_TITLE = "SIMULATION";
-  final private int DEFAULT_SQUARE_SIZE = 40;
-  final private int SQUARE_SIZE_RATIO = 10;
+  final private double DEFAULT_SQUARE_SIZE = 40;
+  final private double SQUARE_SIZE_RATIO = 10;
   final private int WINDOW_HEIGHT = 512;
   final private int WINDOW_WIDTH = 512;
 
@@ -139,22 +139,26 @@ public class GUI extends Application implements IUpdate {
 
   private void makeGrid() {
     Color[][] colorGrid = simulation.getColorGrid();
-    int width = colorGrid.length;
-    int height = colorGrid[0].length;
-    int squareSize = (SQUARE_SIZE_RATIO / width) * DEFAULT_SQUARE_SIZE;
+    double width = colorGrid.length;
+    double height = colorGrid[0].length;
+    System.out.println(width);
+    double squareSize = (SQUARE_SIZE_RATIO / width) * DEFAULT_SQUARE_SIZE;
+    System.out.println(squareSize);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rec = new Rectangle();
         rec.setFill(colorGrid[i][j]);
         rec.setWidth(squareSize);
         rec.setHeight(squareSize);
-        gp.add(rec, j, i + 1);
+        gp.add(rec, j, i);
       }
     }
   }
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-    xmlFileName = "data/generatedXMLv2.xml";
+    FileChooser fc = new FileChooser();
+    File file = fc.showOpenDialog(mainWindow);
+    xmlFileName = file.toString();
     //this line above should be a prompt for the user
     simulation = new Simulation(xmlFileName);
     simulationTitle = simulation.getTitle();
