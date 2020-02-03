@@ -30,7 +30,7 @@ public class Simulation {
 
   public Rules myRuleClass;
 
-  public int simulationSpeed = 1;
+  public double simulationSpeed = 1;
   public boolean simulationRunning;
 
   private String myRuleSelector;
@@ -62,7 +62,7 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed / 1000.0), ev -> {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed), ev -> {
       step();
     }));
     timeline.setCycleCount(Animation.INDEFINITE);
