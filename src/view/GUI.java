@@ -14,9 +14,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import controller.Simulation;
 
@@ -28,16 +25,13 @@ import controller.Simulation;
  */
 public class GUI extends Application implements IUpdate {
 
-  final private String WINDOW_TITLE = "SIMULATION";
-  //final private int DEFAULT_SQUARE_SIZE = 40;
-  //final private int SQUARE_SIZE_RATIO = 10;
   final private int WINDOW_HEIGHT = 512+30;
   final private int WINDOW_WIDTH = 512;
 
+  private String windowTitle;
   private Stage mainWindow;
   private GridPane gp;
   private Simulation simulation;
-  private String simulationTitle;
   private GridPane group;
   private String xmlFileName;
   private Stage myStage;
@@ -82,6 +76,9 @@ public class GUI extends Application implements IUpdate {
   private String getSimulationFile() {
     FileChooser fc = new FileChooser();
     File file = fc.showOpenDialog(mainWindow);
+    if (file == null){
+      return xmlFileName;
+    }
     return file.toString();
   }
 
@@ -91,7 +88,7 @@ public class GUI extends Application implements IUpdate {
 
   private void setUpWindow(Stage primaryStage) {
     mainWindow = primaryStage;
-    mainWindow.setTitle(WINDOW_TITLE);
+    mainWindow.setTitle(windowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
     //gridScene.getStylesheets().add(getClass().getResource("/resources/stylesheet.css").toExternalForm());
     mainWindow.setScene(gridScene);
@@ -158,12 +155,16 @@ public class GUI extends Application implements IUpdate {
 
   private void reset() throws ParserConfigurationException, SAXException, IOException {
     simulation.pause();
+    simulation = null;
+    System.gc();
     simulation = new Simulation(xmlFileName);
     newSimulation();
   }
 
   private void loadConfig() throws ParserConfigurationException, SAXException, IOException {
     simulation.pause();
+    simulation = null;
+    System.gc();
     xmlFileName = getSimulationFile();
     simulation = new Simulation(xmlFileName);
     newSimulation();
@@ -188,7 +189,7 @@ public class GUI extends Application implements IUpdate {
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
     simulation = new Simulation(xmlFileName);
-    simulationTitle = simulation.getTitle();
+    windowTitle = simulation.getTitle();
     //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
   }
 
