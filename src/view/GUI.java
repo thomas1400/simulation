@@ -29,9 +29,9 @@ import controller.Simulation;
 public class GUI extends Application implements IUpdate {
 
   final private String WINDOW_TITLE = "SIMULATION";
-  final private int DEFAULT_SQUARE_SIZE = 40;
-  final private int SQUARE_SIZE_RATIO = 10;
-  final private int WINDOW_HEIGHT = 512;
+  //final private int DEFAULT_SQUARE_SIZE = 40;
+  //final private int SQUARE_SIZE_RATIO = 10;
+  final private int WINDOW_HEIGHT = 512+40;
   final private int WINDOW_WIDTH = 512;
 
   private Stage mainWindow;
@@ -90,6 +90,8 @@ public class GUI extends Application implements IUpdate {
     GridPane mainGrid = new GridPane();
     group = new GridPane();
     gp = new GridPane();
+    gp.setHgap(1.0);
+    gp.setVgap(1.0);
     makeButtons();
     makeGrid();
     mainGrid.add(group, 0, 0);
@@ -144,6 +146,7 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void reset() throws ParserConfigurationException, SAXException, IOException {
+    simulation.pause();
     simulation = new Simulation(xmlFileName);
     loadSimulation();
     setUpWindow(myStage);
@@ -167,7 +170,8 @@ public class GUI extends Application implements IUpdate {
     Color[][] colorGrid = simulation.getColorGrid();
     int width = colorGrid.length;
     int height = colorGrid[0].length;
-    int squareSize = (SQUARE_SIZE_RATIO / width) * DEFAULT_SQUARE_SIZE;
+    int largestDimension = Math.max(width, height);
+    int squareSize = WINDOW_WIDTH/largestDimension;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rec = new Rectangle();
@@ -180,7 +184,7 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-    xmlFileName = "data/generatedXML.xml";
+    xmlFileName = "data/percolation.xml";
     //this line above should be a prompt for the user
     simulation = new Simulation(xmlFileName);
     simulationTitle = simulation.getTitle();
