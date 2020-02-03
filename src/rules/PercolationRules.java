@@ -24,8 +24,9 @@ public class PercolationRules extends Rules {
   }
 
   private boolean shouldPercolate(int[] neighborStates) {
-    for (int neighborState : neighborStates){
-      if (neighborState == 2) {
+    // Only check directly adjacent squares, not diagonals (indices 0, 2, 4, 8)
+    for (int i = 0; i < neighborStates.length; i += 2) {
+      if (neighborStates[i] == 2) {
         return true;
       }
     }
