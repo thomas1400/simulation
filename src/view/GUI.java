@@ -171,8 +171,8 @@ public class GUI extends Application implements IUpdate {
 
   private void makeGrid() {
     Color[][] colorGrid = simulation.getColorGrid();
-    int width = colorGrid.length;
-    int height = colorGrid[0].length;
+    int width = colorGrid[0].length;
+    int height = colorGrid.length;
     int largestDimension = Math.max(width, height);
     int squareSize = WINDOW_WIDTH/largestDimension - 1;
     for (int i = 0; i < height; i++) {
