@@ -40,7 +40,7 @@ public class GUI extends Application implements IUpdate {
   private String simulationTitle;
   private GridPane group;
   private String xmlFileName;
-  private ResourceBundle myResources;
+  private Stage myStage;
 
   //  members
   private Button myHomeButton;
@@ -68,7 +68,8 @@ public class GUI extends Application implements IUpdate {
   @Override
   public void start(Stage primaryStage) throws Exception {
     loadSimulation();
-    setUpWindow(primaryStage);
+    myStage = primaryStage;
+    setUpWindow(myStage);
     simulation.setListener(this);
     mainWindow.show();
   }
@@ -102,8 +103,14 @@ public class GUI extends Application implements IUpdate {
     // command for going home
 
     myResetButton = new Button("Reset");
+    myResetButton.setOnAction(e -> {
+      try {
+        reset();
+      } catch (ParserConfigurationException | SAXException | IOException ex) {
+        ex.printStackTrace();
+      }
+    });
     group.add(myResetButton, 1, 0);
-    // command for reset
 
     mySlowDownButton = new Button("Slow Down");
     mySlowDownButton.setOnAction(e -> simulation.slowDown());
@@ -126,15 +133,34 @@ public class GUI extends Application implements IUpdate {
     group.add(myPlayButton, 6, 0);
 
     myLoadConfigButton = new Button("Config");
-    myLoadConfigButton.setOnAction(e -> loadConfig());
+    myLoadConfigButton.setOnAction(e -> {
+      try {
+        loadConfig();
+      } catch (ParserConfigurationException | SAXException | IOException ex) {
+        ex.printStackTrace();
+      }
+    });
     group.add(myLoadConfigButton, 7, 0);
   }
 
-  private void loadConfig() {
+  private void reset() throws ParserConfigurationException, SAXException, IOException {
+    simulation = new Simulation(xmlFileName);
+    loadSimulation();
+    setUpWindow(myStage);
+    simulation.setListener(this);
+    mainWindow.show();
+  }
+
+  private void loadConfig() throws ParserConfigurationException, SAXException, IOException {
     FileChooser fc = new FileChooser();
     File file = fc.showOpenDialog(mainWindow);
     xmlFileName = file.toString();
     System.out.println(xmlFileName);
+    simulation = new Simulation(xmlFileName);
+    loadSimulation();
+    setUpWindow(myStage);
+    simulation.setListener(this);
+    mainWindow.show();
   }
 
   private void makeGrid() {
@@ -154,7 +180,7 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-    xmlFileName = "data/generatedXMLv2.xml";
+    xmlFileName = "data/generatedXML.xml";
     //this line above should be a prompt for the user
     simulation = new Simulation(xmlFileName);
     simulationTitle = simulation.getTitle();
