@@ -8,8 +8,6 @@ import javafx.util.Duration;
 import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +28,7 @@ public class Simulation {
 
   public Rules myRuleClass;
 
-  public double simulationSpeed = 1;
+  public int simulationSpeed = 1000;
   public boolean simulationRunning;
 
   private String myRuleSelector;
@@ -62,9 +60,7 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed), ev -> {
-      step();
-    }));
+    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed / 1000.0), ev -> step()));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -127,10 +123,10 @@ public class Simulation {
   }
 
   public void printGridStates() {
-    for (int i = 0; i < myCellGrid.length; i++) {
+    for (Cell[] cells : myCellGrid) {
       System.out.println();
-      for (int j = 0; j < myCellGrid[i].length; j++) {
-        System.out.print(myCellGrid[i][j].getState() + " ");
+      for (Cell cell : cells) {
+        System.out.print(cell.getState() + " ");
       }
     }
     System.out.println();
