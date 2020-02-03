@@ -271,10 +271,13 @@ public class Simulation {
         Cell myCell = myCellGrid[i][j];
 
         int index = 0;
+        int[] indices = new int[]{7, 0, 1, 6, 2, 5, 4, 3};
         for (int io = -1; io <= 1; io++) {
           for (int jo = -1; jo <= 1; jo++) {
             if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {
-              myCell.setNeighbor(index, myCellGrid[i+io][j+jo]);
+              myCell.setNeighbor(indices[index], myCellGrid[i+io][j+jo]);
+            }
+            if (jo != 0 || io != 0) {
               index += 1;
             }
           }
