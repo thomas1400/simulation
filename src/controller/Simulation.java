@@ -87,8 +87,10 @@ public class Simulation {
    * Pause the simulation
    */
   public void pause() {
+    if (simulationRunning) {
+      timeline.pause();
+    }
     simulationRunning = false;
-    timeline.pause();
   }
 
   /**

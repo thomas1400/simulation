@@ -31,7 +31,7 @@ public class GUI extends Application implements IUpdate {
   final private String WINDOW_TITLE = "SIMULATION";
   //final private int DEFAULT_SQUARE_SIZE = 40;
   //final private int SQUARE_SIZE_RATIO = 10;
-  final private int WINDOW_HEIGHT = 512+40;
+  final private int WINDOW_HEIGHT = 512+30;
   final private int WINDOW_WIDTH = 512;
 
   private Stage mainWindow;
@@ -67,11 +67,22 @@ public class GUI extends Application implements IUpdate {
      */
   @Override
   public void start(Stage primaryStage) throws Exception {
-    loadSimulation();
+    xmlFileName = getSimulationFile();
     myStage = primaryStage;
+    newSimulation();
+  }
+
+  private void newSimulation() throws ParserConfigurationException, SAXException, IOException {
+    loadSimulation();
     setUpWindow(myStage);
     simulation.setListener(this);
     mainWindow.show();
+  }
+
+  private String getSimulationFile() {
+    FileChooser fc = new FileChooser();
+    File file = fc.showOpenDialog(mainWindow);
+    return file.toString();
   }
 
   private void update() {
@@ -148,22 +159,14 @@ public class GUI extends Application implements IUpdate {
   private void reset() throws ParserConfigurationException, SAXException, IOException {
     simulation.pause();
     simulation = new Simulation(xmlFileName);
-    loadSimulation();
-    setUpWindow(myStage);
-    simulation.setListener(this);
-    mainWindow.show();
+    newSimulation();
   }
 
   private void loadConfig() throws ParserConfigurationException, SAXException, IOException {
-    FileChooser fc = new FileChooser();
-    File file = fc.showOpenDialog(mainWindow);
-    xmlFileName = file.toString();
-    System.out.println(xmlFileName);
+    simulation.pause();
+    xmlFileName = getSimulationFile();
     simulation = new Simulation(xmlFileName);
-    loadSimulation();
-    setUpWindow(myStage);
-    simulation.setListener(this);
-    mainWindow.show();
+    newSimulation();
   }
 
   private void makeGrid() {
@@ -171,7 +174,7 @@ public class GUI extends Application implements IUpdate {
     int width = colorGrid.length;
     int height = colorGrid[0].length;
     int largestDimension = Math.max(width, height);
-    int squareSize = WINDOW_WIDTH/largestDimension;
+    int squareSize = WINDOW_WIDTH/largestDimension - 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rec = new Rectangle();
@@ -184,8 +187,6 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-    xmlFileName = "data/percolation.xml";
-    //this line above should be a prompt for the user
     simulation = new Simulation(xmlFileName);
     simulationTitle = simulation.getTitle();
     //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
