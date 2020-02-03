@@ -8,8 +8,6 @@ import javafx.util.Duration;
 import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +28,7 @@ public class Simulation {
 
   public Rules myRuleClass;
 
-  public int simulationSpeed = 1;
+  public int simulationSpeed = 1000;
   public boolean simulationRunning;
 
   private String myRuleSelector;
@@ -62,9 +60,7 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed), ev -> {
-      step();
-    }));
+    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed / 1000.0), ev -> step()));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -99,14 +95,18 @@ public class Simulation {
    * Speed up the simulation by 2x
    */
   public void speedUp() {
-    simulationSpeed *= 2;
+    simulationSpeed /= 2;
+    timeline.stop();
+    autoStep();
   }
 
   /**
    * Slow down the simulation by 0.5x
    */
   public void slowDown() {
-    simulationSpeed /= 2;
+    simulationSpeed *= 2;
+    timeline.stop();
+    autoStep();
   }
 
   /**
@@ -123,10 +123,10 @@ public class Simulation {
   }
 
   public void printGridStates() {
-    for (int i = 0; i < myCellGrid.length; i++) {
+    for (Cell[] cells : myCellGrid) {
       System.out.println();
-      for (int j = 0; j < myCellGrid[i].length; j++) {
-        System.out.print(myCellGrid[i][j].getState() + " ");
+      for (Cell cell : cells) {
+        System.out.print(cell.getState() + " ");
       }
     }
     System.out.println();
@@ -221,7 +221,7 @@ public class Simulation {
     switch (rulesType) {
       case "fireRules":
         //first global variable should be fire spread probability
-        myRuleClass = new FireRules(myGlobalVars[0]);
+        myRuleClass = new FireRules();
         break;
       case "gameOfLifeRules":
         myRuleClass = new GameOfLifeRules();
@@ -239,6 +239,7 @@ public class Simulation {
         System.out.println("Invalid Rules Class");
         System.exit(0);
     }
+    myRuleClass.setGlobalVariables(myGlobalVars);
   }
 
   private void fillCellGrid(Rules ruleType) {
@@ -256,25 +257,24 @@ public class Simulation {
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
         Cell myCell = myCellGrid[i][j];
-        //check that cell isn't in top row
-        if (i != 0) {
-          myCell.setNeighbor(0, myCellGrid[i - 1][j]);
-        }
-        //check that cell isn't in bottom row
-        if (i < myGridHeight - 1) {
-          myCell.setNeighbor(4, myCellGrid[i + 1][j]);
-        }
-        //check that cell isn't in far right column
-        if (j < myGridWidth - 1) {
-          myCell.setNeighbor(2, myCellGrid[i][j + 1]);
-        }
-        //check that cell isn't in far left column
-        if (j != 0) {
-          myCell.setNeighbor(6, myCellGrid[i][j - 1]);
+
+        int index = 0;
+        for (int io = -1; io <= 1; io++) {
+          for (int jo = -1; jo <= 1; jo++) {
+            if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {
+              myCell.setNeighbor(index, myCellGrid[i+io][j+jo]);
+              index += 1;
+            }
+          }
         }
       }
     }
   }
+
+  private boolean gridCoordinatesInBounds(int y, int x) {
+    return (0 <= y && y < myGridHeight && 0 <= x && x < myGridWidth);
+  }
+
   public void setListener(IUpdate listener){
     this.listener = listener;
   }

@@ -5,23 +5,26 @@ import javafx.scene.paint.Color;
 public class FireRules extends Rules {
   private double fireSpreadProbability;
 
-  public FireRules(double spreadProb) {
-    super();
-    fireSpreadProbability = spreadProb;
+  public FireRules() { }
 
-  }
   /**
-   * 0 corresponds to Burnt, 1 Corresponds to Alive, 2 Corresponds to Burning
+   * 0 corresponds to Empty, 1 Corresponds to Alive, 2 Corresponds to Burning
    * @param currentState
    * @param neighbors
    * @return
    */
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
-    //TODO
-    // - add code to calculate new state of cell
+    if (currentState == 1 && adjacentNeighborIsOnFire(neighbors) && Math.random() > fireSpreadProbability) {
+      return 2;
+    } else if (currentState == 2){
+      return 0;
+    }
+    return currentState;
+  }
 
-    return 0;
+  private boolean adjacentNeighborIsOnFire(int[] neighbors) {
+    return (neighbors[0] == 2 || neighbors[2] == 2 || neighbors[4] == 2 || neighbors[6] == 2);
   }
 
   /**
@@ -42,6 +45,6 @@ public class FireRules extends Rules {
 
   @Override
   public void setGlobalVariables(double[] variables) {
-
+    fireSpreadProbability = variables[0];
   }
 }

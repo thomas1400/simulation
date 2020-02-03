@@ -26,8 +26,11 @@ public class GameOfLifeRules extends Rules {
     private int sum(int[] intArray) {
         int sum = 0;
         for (int i : intArray) {
-            sum += i;
+            if (i != -1) {
+                sum += i;
+            }
         }
+        System.out.println(sum);
         return sum;
     }
 
