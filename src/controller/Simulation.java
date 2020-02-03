@@ -87,8 +87,10 @@ public class Simulation {
    * Pause the simulation
    */
   public void pause() {
+    if (simulationRunning) {
+      timeline.pause();
+    }
     simulationRunning = false;
-    timeline.pause();
   }
 
   /**
@@ -113,9 +115,9 @@ public class Simulation {
    * return 2x2 grid of cellStates
    */
   public Color[][] getColorGrid() {
-    Color[][] myColorGrid = new Color[myCellGrid.length][myCellGrid.length];
-    for (int i = 0; i < myCellGrid.length; i++) {
-      for (int j = 0; j < myCellGrid[i].length; j++) {
+    Color[][] myColorGrid = new Color[myGridHeight][myGridWidth];
+    for (int i = 0; i < myGridHeight; i++) {
+      for (int j = 0; j < myGridWidth; j++) {
         myColorGrid[i][j] = myCellGrid[i][j].getColor();
       }
     }

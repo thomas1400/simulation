@@ -14,9 +14,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import controller.Simulation;
 
@@ -28,16 +25,13 @@ import controller.Simulation;
  */
 public class GUI extends Application implements IUpdate {
 
-  final private String WINDOW_TITLE = "SIMULATION";
-  //final private int DEFAULT_SQUARE_SIZE = 40;
-  //final private int SQUARE_SIZE_RATIO = 10;
-  final private int WINDOW_HEIGHT = 512+40;
+  final private int WINDOW_HEIGHT = 512+30;
   final private int WINDOW_WIDTH = 512;
 
+  private String windowTitle;
   private Stage mainWindow;
   private GridPane gp;
   private Simulation simulation;
-  private String simulationTitle;
   private GridPane group;
   private String xmlFileName;
   private Stage myStage;
@@ -67,11 +61,25 @@ public class GUI extends Application implements IUpdate {
      */
   @Override
   public void start(Stage primaryStage) throws Exception {
-    loadSimulation();
+    xmlFileName = getSimulationFile();
     myStage = primaryStage;
+    newSimulation();
+  }
+
+  private void newSimulation() throws ParserConfigurationException, SAXException, IOException {
+    loadSimulation();
     setUpWindow(myStage);
     simulation.setListener(this);
     mainWindow.show();
+  }
+
+  private String getSimulationFile() {
+    FileChooser fc = new FileChooser();
+    File file = fc.showOpenDialog(mainWindow);
+    if (file == null){
+      return xmlFileName;
+    }
+    return file.toString();
   }
 
   private void update() {
@@ -80,7 +88,7 @@ public class GUI extends Application implements IUpdate {
 
   private void setUpWindow(Stage primaryStage) {
     mainWindow = primaryStage;
-    mainWindow.setTitle(WINDOW_TITLE);
+    mainWindow.setTitle(windowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
     //gridScene.getStylesheets().add(getClass().getResource("/resources/stylesheet.css").toExternalForm());
     mainWindow.setScene(gridScene);
@@ -147,31 +155,27 @@ public class GUI extends Application implements IUpdate {
 
   private void reset() throws ParserConfigurationException, SAXException, IOException {
     simulation.pause();
+    simulation = null;
+    System.gc();
     simulation = new Simulation(xmlFileName);
-    loadSimulation();
-    setUpWindow(myStage);
-    simulation.setListener(this);
-    mainWindow.show();
+    newSimulation();
   }
 
   private void loadConfig() throws ParserConfigurationException, SAXException, IOException {
-    FileChooser fc = new FileChooser();
-    File file = fc.showOpenDialog(mainWindow);
-    xmlFileName = file.toString();
-    System.out.println(xmlFileName);
+    simulation.pause();
+    simulation = null;
+    System.gc();
+    xmlFileName = getSimulationFile();
     simulation = new Simulation(xmlFileName);
-    loadSimulation();
-    setUpWindow(myStage);
-    simulation.setListener(this);
-    mainWindow.show();
+    newSimulation();
   }
 
   private void makeGrid() {
     Color[][] colorGrid = simulation.getColorGrid();
-    int width = colorGrid.length;
-    int height = colorGrid[0].length;
+    int width = colorGrid[0].length;
+    int height = colorGrid.length;
     int largestDimension = Math.max(width, height);
-    int squareSize = WINDOW_WIDTH/largestDimension;
+    int squareSize = WINDOW_WIDTH/largestDimension - 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rec = new Rectangle();
@@ -184,10 +188,8 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-    xmlFileName = "data/percolation.xml";
-    //this line above should be a prompt for the user
     simulation = new Simulation(xmlFileName);
-    simulationTitle = simulation.getTitle();
+    windowTitle = simulation.getTitle();
     //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
   }
 

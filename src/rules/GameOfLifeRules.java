@@ -8,6 +8,12 @@ public class GameOfLifeRules extends Rules {
         super();
     };
 
+    /**
+     * 0 is Dead, 1 is Alive
+     * @param currentState
+     * @param neighborStates
+     * @return
+     */
     @Override
     public int calculateNewState(int currentState, int[] neighborStates) {
         int numNeighbors = sum(neighborStates);

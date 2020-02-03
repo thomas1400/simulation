@@ -15,7 +15,7 @@ public class FireRules extends Rules {
    */
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
-    if (currentState == 1 && adjacentNeighborIsOnFire(neighbors) && Math.random() > fireSpreadProbability) {
+    if (currentState == 1 && adjacentNeighborIsOnFire(neighbors) && Math.random() < fireSpreadProbability) {
       return 2;
     } else if (currentState == 2){
       return 0;

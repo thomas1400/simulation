@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <rule>gameOfLifeRules</rule>
+    <simulationTitle>Be ALIVEE!!</simulationTitle>
+    <numGlobalVars>1</numGlobalVars>
+    <globalVars>
+        <var0>0.0</var0>
+    </globalVars>
+    <gridWidth>15</gridWidth>
+    <gridHeight>11</gridHeight>
+    <gridRows>
+        <row0>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row0>
+        <row1>0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 </row1>
+        <row2>0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 </row2>
+        <row3>0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 </row3>
+        <row4>0 0 1 0 0 1 0 0 0 1 0 0 1 0 0 </row4>
+        <row5>0 1 0 1 0 1 0 0 0 1 0 1 0 1 0 </row5>
+        <row6>0 0 1 0 0 1 0 0 0 1 0 0 1 0 0 </row6>
+        <row7>0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 </row7>
+        <row8>0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 </row8>
+        <row9>0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 </row9>
+        <row10>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row10>
+    </gridRows>
+</simulation>
