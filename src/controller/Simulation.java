@@ -49,7 +49,7 @@ public class Simulation {
     setNewRulesClass(myRuleSelector, myGlobalVars);
     fillCellGrid(myRuleClass);
     initializeCellPointers();
-    printGridStates();
+    //printGridStates();
   }
 
   /**

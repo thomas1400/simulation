@@ -75,6 +75,8 @@ public class GUI extends Application implements IUpdate {
 
   private String getSimulationFile() {
     FileChooser fc = new FileChooser();
+    File workingDirectory = new File(System.getProperty("user.dir"));
+    fc.setInitialDirectory(workingDirectory);
     File file = fc.showOpenDialog(mainWindow);
     if (file == null){
       return xmlFileName;

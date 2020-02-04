@@ -10,7 +10,6 @@ public class SegregationRules extends Rules {
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
     if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold || currentState == 0) {
-      System.out.println(percentLikeNeighbors(currentState, neighbors));
       return -1;
     } else {
       return currentState;
