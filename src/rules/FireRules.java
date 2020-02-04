@@ -3,21 +3,25 @@ package rules;
 import javafx.scene.paint.Color;
 
 public class FireRules extends Rules {
+
   private double fireSpreadProbability;
 
-  public FireRules() { }
+  public FireRules() {
+  }
 
   /**
    * 0 corresponds to Empty, 1 Corresponds to Alive, 2 Corresponds to Burning
+   *
    * @param currentState
    * @param neighbors
    * @return
    */
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
-    if (currentState == 1 && adjacentNeighborIsOnFire(neighbors) && Math.random() < fireSpreadProbability) {
+    if (currentState == 1 && adjacentNeighborIsOnFire(neighbors)
+        && Math.random() < fireSpreadProbability) {
       return 2;
-    } else if (currentState == 2){
+    } else if (currentState == 2) {
       return 0;
     }
     return currentState;
@@ -29,6 +33,7 @@ public class FireRules extends Rules {
 
   /**
    * Burnt is Black, Alive is Green, Burning is Red
+   *
    * @param state
    * @return
    */
