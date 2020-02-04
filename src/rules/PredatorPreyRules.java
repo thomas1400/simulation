@@ -10,8 +10,9 @@ public class PredatorPreyRules extends Rules {
 
   /**
    * State: 0 for empty, 1 for prey, 2 for predator
+   *
    * @param currentState the current state of the cell
-   * @param neighbors the states of the neighbors
+   * @param neighbors    the states of the neighbors
    * @return the next state
    */
   @Override
@@ -29,7 +30,7 @@ public class PredatorPreyRules extends Rules {
         } else {
           return 0;
         }
-      } else if (Math.random() < prey_death_probability){
+      } else if (Math.random() < prey_death_probability) {
         return 0;
       } else {
         return 1;
@@ -64,7 +65,8 @@ public class PredatorPreyRules extends Rules {
   public void setGlobalVariables(double[] variables) {
     if (variables.length != 3) {
       throw new IllegalArgumentException(
-              "Unexpected number of variables for PredatorPreyRules. Expected 3 but got " + variables.length
+          "Unexpected number of variables for PredatorPreyRules. Expected 3 but got "
+              + variables.length
       );
     }
     prey_death_probability = variables[0];
