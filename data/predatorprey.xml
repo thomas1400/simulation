@@ -10,7 +10,7 @@
     </globalVars>
     <gridWidth>40</gridWidth>
     <gridHeight>40</gridHeight>
-    <isToroidal>true</isToroidal>
+    <toroidalGrid>true</toroidalGrid>
     <gridRows>
         <row0>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row0>
         <row1>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row1>
