@@ -36,17 +36,7 @@ public class GUI extends Application implements IUpdate {
   private String xmlFileName;
   private Stage myStage;
 
-  //  members
-  private Button myHomeButton;
-  private Button myResetButton;
-  private Button mySlowDownButton;
-  private Button myPauseButton;
-  private Button mySpeedUpButton;
-  private Button myStepButton;
-  private Button myPlayButton;
-  private Button myLoadConfigButton;
-
-    /**
+  /**
      * Main method for the application - entry point
      * @param args
      */
@@ -110,11 +100,12 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void makeButtons() {
-    myHomeButton = new Button("Home");
+    //  members
+    Button myHomeButton = new Button("Home");
     group.add(myHomeButton, 0, 0);
     // command for going home
 
-    myResetButton = new Button("Reset");
+    Button myResetButton = new Button("Reset");
     myResetButton.setOnAction(e -> {
       try {
         reset();
@@ -124,27 +115,27 @@ public class GUI extends Application implements IUpdate {
     });
     group.add(myResetButton, 1, 0);
 
-    mySlowDownButton = new Button("Slow Down");
+    Button mySlowDownButton = new Button("Slow Down");
     mySlowDownButton.setOnAction(e -> simulation.slowDown());
     group.add(mySlowDownButton, 2, 0);
 
-    myPauseButton = new Button("Pause");
+    Button myPauseButton = new Button("Pause");
     myPauseButton.setOnAction(e -> simulation.pause());
     group.add(myPauseButton, 3, 0);
 
-    mySpeedUpButton = new Button("Speed Up");
+    Button mySpeedUpButton = new Button("Speed Up");
     mySpeedUpButton.setOnAction(e -> simulation.speedUp());
     group.add(mySpeedUpButton, 4, 0);
 
-    myStepButton = new Button("Step");
+    Button myStepButton = new Button("Step");
     myStepButton.setOnAction(e -> simulation.step());
     group.add(myStepButton, 5, 0);
 
-    myPlayButton = new Button("Play");
+    Button myPlayButton = new Button("Play");
     myPlayButton.setOnAction(e -> simulation.play());
     group.add(myPlayButton, 6, 0);
 
-    myLoadConfigButton = new Button("Config");
+    Button myLoadConfigButton = new Button("Config");
     myLoadConfigButton.setOnAction(e -> {
       try {
         loadConfig();

@@ -279,7 +279,7 @@ public class XMLGenerator {
     mySimulationTitle = input.nextLine();
   }
 
-  private static void setMyRuleSelector() throws FileNotFoundException {
+  private static void setMyRuleSelector() {
     Scanner input = new Scanner(System.in);
 
     System.out.println("Please choose your simulation rules:");
