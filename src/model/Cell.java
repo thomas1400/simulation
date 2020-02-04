@@ -3,6 +3,10 @@ package model;
 import javafx.scene.paint.Color;
 import rules.Rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 public class Cell {
     private Cell[] myNeighbors; // Indexed starting with 'up' neighbor and moving clockwise.
     private Rules myRules;
@@ -36,7 +40,10 @@ public class Cell {
 
     public void updateState(){
         if (myNextState < 0) {
-            for (Cell n : myNeighbors) {
+            ArrayList<Cell> shuffled = new ArrayList<>(Arrays.asList(myNeighbors));
+            Collections.shuffle(shuffled);
+
+            for (Cell n : shuffled) {
                 if (n != null && n.myNextState < 0) {
                     int temp = myState;
                     myState = n.myState;
@@ -44,6 +51,7 @@ public class Cell {
                     n.myNextState = temp;
                     n.myColor = myRules.getStateColor(n.myState);
                     myColor = myRules.getStateColor(myState);
+                    break;
                 }
             }
         } else {
