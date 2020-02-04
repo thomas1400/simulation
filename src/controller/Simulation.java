@@ -36,6 +36,7 @@ public class Simulation {
   private double[] myGlobalVars;
   private int myGridWidth;
   private int myGridHeight;
+  private boolean myGridIsToroidal;
   private int[][] myInitialStateGrid;
   private Cell[][] myCellGrid;
   private Timeline timeline;
@@ -80,7 +81,7 @@ public class Simulation {
       }
     }
     alertGUI();
-    printGridStates();
+    //printGridStates();
   }
 
   /**
@@ -149,8 +150,16 @@ public class Simulation {
 
     myGridWidth = getGridWidth(iterator);
     myGridHeight = getGridHeight(iterator);
+    myGridIsToroidal = getToroidal(iterator);
 
     myInitialStateGrid = getInitialStateGrid(iterator);
+  }
+
+  private boolean getToroidal(NodeIterator iterator) {
+    boolean toroidal = Boolean.parseBoolean(iterator.nextNode().getTextContent().trim());
+    skipBlankLine(iterator);
+    skipBlankLine(iterator);
+    return toroidal;
   }
 
   private int[][] getInitialStateGrid(NodeIterator iterator) {
@@ -168,7 +177,6 @@ public class Simulation {
 
   private int getGridHeight(NodeIterator iterator) {
     int gridHeight = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
     skipBlankLine(iterator);
     return gridHeight;
   }
@@ -266,6 +274,9 @@ public class Simulation {
           for (int jo = -1; jo <= 1; jo++) {
             if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {
               myCell.setNeighbor(indices[index], myCellGrid[i+io][j+jo]);
+            } else if (myGridIsToroidal) {
+              int[] newCoords = normalizeOverflowingCoordinates(i+io, j+jo);
+              myCell.setNeighbor(indices[index], myCellGrid[newCoords[0]][newCoords[1]]);
             }
             if (jo != 0 || io != 0) {
               index += 1;
@@ -274,6 +285,23 @@ public class Simulation {
         }
       }
     }
+  }
+
+  private int[] normalizeOverflowingCoordinates(int i, int j) {
+    if (i < 0) {
+      i += myGridHeight;
+    }
+    if (j < 0) {
+      j += myGridWidth;
+    }
+    if (i >= myGridHeight) {
+      i -= myGridHeight;
+    }
+    if (j >= myGridWidth) {
+      j -= myGridWidth;
+    }
+
+    return new int[]{i, j};
   }
 
   private boolean gridCoordinatesInBounds(int y, int x) {

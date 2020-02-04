@@ -24,6 +24,7 @@ public class XMLGenerator {
   private static double[] myGlobalVars;
   private static int myGridWidth;
   private static int myGridHeight;
+  private static boolean myGridIsToroidal;
   private static int[][] myInitialStateGrid;
 
   public static String xmlFilePath;
@@ -82,6 +83,11 @@ public class XMLGenerator {
       gridHeight.appendChild(document.createTextNode("" + myGridHeight));
       root.appendChild(gridHeight);
 
+      //grid is toroidal
+      Element gridIsToroidal = document.createElement("isToroidal");
+      gridIsToroidal.appendChild(document.createTextNode("" + myGridIsToroidal));
+      root.appendChild(gridIsToroidal);
+
       //grid rows
       Element gridRows = document.createElement("gridRows");
       root.appendChild(gridRows);
@@ -133,6 +139,13 @@ public class XMLGenerator {
     } else {
       setInitialGridFromUser();
     }
+    setMyGridIsToroidal();
+  }
+
+  private static void setMyGridIsToroidal() {
+    System.out.print("Is this simulation toroidal? Enter true or false: ");
+    Scanner input = new Scanner(System.in);
+    myGridIsToroidal = Boolean.parseBoolean(input.next());
   }
 
   private static void setMyFilePath() {
