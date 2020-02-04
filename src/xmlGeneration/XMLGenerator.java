@@ -151,7 +151,7 @@ public class XMLGenerator {
   private static void setMyFilePath() {
     System.out.print("Please enter the name of the file to be created (ending with .xml): ");
     Scanner input = new Scanner(System.in);
-    xmlFilePath =  "data/" + input.next();
+    xmlFilePath = "data/" + input.next();
   }
 
   private static void setInitialGridFromUser() {

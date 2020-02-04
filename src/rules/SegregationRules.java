@@ -5,11 +5,13 @@ import javafx.scene.paint.Color;
 public class SegregationRules extends Rules {
 
   private double segregation_threshold;
-  private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.ORANGE};
+  private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
+      Color.PURPLE, Color.ORANGE};
 
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
-    if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold || currentState == 0) {
+    if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold
+        || currentState == 0) {
       return -1;
     } else {
       return currentState;
@@ -46,7 +48,8 @@ public class SegregationRules extends Rules {
   public void setGlobalVariables(double[] variables) {
     if (variables.length != 1) {
       throw new IllegalArgumentException(
-              "Unexpected number of variables for PredatorPreyRules. Expected 1 but got " + variables.length
+          "Unexpected number of variables for PredatorPreyRules. Expected 1 but got "
+              + variables.length
       );
     }
     segregation_threshold = variables[0];

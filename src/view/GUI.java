@@ -18,14 +18,12 @@ import java.io.IOException;
 import controller.Simulation;
 
 /**
- * The 'view' for the Simulation project. Handles
- * all visual aspects of the project, including
- * updating the main window and listening to the
- * simulation controller
+ * The 'view' for the Simulation project. Handles all visual aspects of the project, including
+ * updating the main window and listening to the simulation controller
  */
 public class GUI extends Application implements IUpdate {
 
-  final private int WINDOW_HEIGHT = 512+30;
+  final private int WINDOW_HEIGHT = 512 + 30;
   final private int WINDOW_WIDTH = 512;
 
   private String windowTitle;
@@ -46,19 +44,21 @@ public class GUI extends Application implements IUpdate {
   private Button myPlayButton;
   private Button myLoadConfigButton;
 
-    /**
-     * Main method for the application - entry point
-     * @param args
-     */
+  /**
+   * Main method for the application - entry point
+   *
+   * @param args
+   */
   public static void main(String[] args) {
     Application.launch(args);
   }
 
-    /**
-     * Starts the JavaFX application and handles initial setup method calls
-     * @param primaryStage the main stage which the program draws on
-     * @throws Exception
-     */
+  /**
+   * Starts the JavaFX application and handles initial setup method calls
+   *
+   * @param primaryStage the main stage which the program draws on
+   * @throws Exception
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     xmlFileName = getSimulationFile();
@@ -78,7 +78,7 @@ public class GUI extends Application implements IUpdate {
     File workingDirectory = new File(System.getProperty("user.dir"));
     fc.setInitialDirectory(workingDirectory);
     File file = fc.showOpenDialog(mainWindow);
-    if (file == null){
+    if (file == null) {
       return xmlFileName;
     }
     return file.toString();
@@ -177,7 +177,7 @@ public class GUI extends Application implements IUpdate {
     int width = colorGrid[0].length;
     int height = colorGrid.length;
     int largestDimension = Math.max(width, height);
-    int squareSize = WINDOW_WIDTH/largestDimension - 1;
+    int squareSize = WINDOW_WIDTH / largestDimension - 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rec = new Rectangle();

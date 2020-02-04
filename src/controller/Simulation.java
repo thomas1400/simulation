@@ -273,9 +273,9 @@ public class Simulation {
         for (int io = -1; io <= 1; io++) {
           for (int jo = -1; jo <= 1; jo++) {
             if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {
-              myCell.setNeighbor(indices[index], myCellGrid[i+io][j+jo]);
+              myCell.setNeighbor(indices[index], myCellGrid[i + io][j + jo]);
             } else if (myGridIsToroidal) {
-              int[] newCoords = normalizeOverflowingCoordinates(i+io, j+jo);
+              int[] newCoords = normalizeOverflowingCoordinates(i + io, j + jo);
               myCell.setNeighbor(indices[index], myCellGrid[newCoords[0]][newCoords[1]]);
             }
             if (jo != 0 || io != 0) {
@@ -308,11 +308,11 @@ public class Simulation {
     return (0 <= y && y < myGridHeight && 0 <= x && x < myGridWidth);
   }
 
-  public void setListener(IUpdate listener){
+  public void setListener(IUpdate listener) {
     this.listener = listener;
   }
 
-  private void alertGUI(){
+  private void alertGUI() {
     listener.simulationUpdate();
   }
 }
