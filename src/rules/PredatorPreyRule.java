@@ -2,7 +2,7 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public class PredatorPreyRules extends Rules {
+public class PredatorPreyRule extends Rule {
 
   private double prey_death_probability;
   private double predator_death_probability;

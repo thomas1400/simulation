@@ -17,16 +17,16 @@ import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
-import rules.FireRules;
-import rules.GameOfLifeRules;
-import rules.PercolationRules;
-import rules.PredatorPreyRules;
-import rules.Rules;
-import rules.SegregationRules;
+import rules.FireRule;
+import rules.GameOfLifeRule;
+import rules.PercolationRule;
+import rules.PredatorPreyRule;
+import rules.Rule;
+import rules.SegregationRule;
 
 public class Simulation {
 
-  public Rules myRuleClass;
+  public Rule myRuleClass;
 
   public int simulationSpeed = 1000;
   public boolean simulationRunning;
@@ -231,19 +231,19 @@ public class Simulation {
     switch (rulesType) {
       case "fireRules":
         //first global variable should be fire spread probability
-        myRuleClass = new FireRules();
+        myRuleClass = new FireRule();
         break;
       case "gameOfLifeRules":
-        myRuleClass = new GameOfLifeRules();
+        myRuleClass = new GameOfLifeRule();
         break;
       case "percolationRules":
-        myRuleClass = new PercolationRules();
+        myRuleClass = new PercolationRule();
         break;
       case "predatorPreyRules":
-        myRuleClass = new PredatorPreyRules();
+        myRuleClass = new PredatorPreyRule();
         break;
       case "segregationRules":
-        myRuleClass = new SegregationRules();
+        myRuleClass = new SegregationRule();
         break;
       default:
         System.out.println("Invalid Rules Class");
@@ -252,7 +252,7 @@ public class Simulation {
     myRuleClass.setGlobalVariables(myGlobalVars);
   }
 
-  private void fillCellGrid(Rules ruleType) {
+  private void fillCellGrid(Rule ruleType) {
     myCellGrid = new Cell[myGridHeight][myGridWidth];
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
