@@ -184,7 +184,7 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void loadSimulation() throws ParserConfigurationException, SAXException, IOException {
-    xmlFileName = "data/percolation.xml";
+    xmlFileName = "data/predatorprey.xml";
     //this line above should be a prompt for the user
     simulation = new Simulation(xmlFileName);
     simulationTitle = simulation.getTitle();

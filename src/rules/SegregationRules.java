@@ -9,24 +9,29 @@ public class SegregationRules extends Rules {
 
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
-    if (percentUnlikeNeighbors(currentState, neighbors) > segregation_threshold) {
-      return -1*(int)(Math.random() * 8);
+    if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold || currentState == 0) {
+      System.out.println(percentLikeNeighbors(currentState, neighbors));
+      return -1;
     } else {
       return currentState;
     }
   }
 
-  private double percentUnlikeNeighbors(int currentState, int[] neighbors) {
+  private double percentLikeNeighbors(int currentState, int[] neighbors) {
     if (currentState == 0) {
       return 0;
     }
     int likeNeighbors = 0;
+    float numNeighbors = 0;
     for (int n : neighbors) {
-      if ( n == currentState) {
+      if (n == currentState) {
         likeNeighbors += 1;
       }
+      if (n > 0) {
+        numNeighbors += 1;
+      }
     }
-    return likeNeighbors / 8.0;
+    return likeNeighbors / numNeighbors;
   }
 
   @Override
@@ -40,6 +45,11 @@ public class SegregationRules extends Rules {
 
   @Override
   public void setGlobalVariables(double[] variables) {
+    if (variables.length != 1) {
+      throw new IllegalArgumentException(
+              "Unexpected number of variables for PredatorPreyRules. Expected 1 but got " + variables.length
+      );
+    }
     segregation_threshold = variables[0];
   }
 }
