@@ -2,6 +2,7 @@
 <simulation>
     <rule>segregationRules</rule>
     <simulationTitle>Segregate Mee!</simulationTitle>
+    <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
     <numGlobalVars>1</numGlobalVars>
     <globalVars>
         <var0>0.7</var0>

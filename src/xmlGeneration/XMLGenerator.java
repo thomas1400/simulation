@@ -20,6 +20,7 @@ public class XMLGenerator {
 
   private static String myRuleSelector;
   private static String mySimulationTitle;
+  private static String mySimulationAuthor;
   private static int myNumGlobalVars;
   private static double[] myGlobalVars;
   private static int myGridWidth;
@@ -50,6 +51,11 @@ public class XMLGenerator {
       Element simulationTitle = document.createElement("simulationTitle");
       simulationTitle.appendChild(document.createTextNode(mySimulationTitle));
       root.appendChild(simulationTitle);
+
+      //simulation title
+      Element simulationAuthor = document.createElement("simulationAuthor");
+      simulationAuthor.appendChild(document.createTextNode(mySimulationAuthor));
+      root.appendChild(simulationAuthor);
 
       //number of global variables
       Element numGlobalVars = document.createElement("numGlobalVars");

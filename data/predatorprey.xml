@@ -2,6 +2,7 @@
 <simulation>
     <rule>predatorPreyRules</rule>
     <simulationTitle>Predator Prey Test</simulationTitle>
+    <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
     <numGlobalVars>3</numGlobalVars>
     <globalVars>
         <var0>0.1</var0>
