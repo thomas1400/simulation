@@ -125,15 +125,15 @@ public class Simulation {
     return myColorGrid;
   }
 
-  public void printGridStates() {
-    for (Cell[] cells : myCellGrid) {
-      System.out.println();
-      for (Cell cell : cells) {
-        System.out.print(cell.getState() + " ");
-      }
-    }
-    System.out.println();
-  }
+//  public void printGridStates() {
+//    for (Cell[] cells : myCellGrid) {
+//      System.out.println();
+//      for (Cell cell : cells) {
+//        System.out.print(cell.getState() + " ");
+//      }
+//    }
+//    System.out.println();
+//  }
 
   public String getTitle() {
     return mySimulationTitle;
