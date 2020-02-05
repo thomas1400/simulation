@@ -14,6 +14,7 @@ import rules.Rule;
 import rules.SegregationRule;
 
 public class Initializer {
+
   private String myRulesType;
   private double[] myGlobalVars;
   private int myGridWidth;
@@ -91,20 +92,25 @@ public class Initializer {
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
         Cell myCell = myCellGrid[i][j];
-        int index = 0;
-        int[] indices = new int[]{7, 0, 1, 6, 2, 5, 4, 3};
-        for (int io = -1; io <= 1; io++) {
-          for (int jo = -1; jo <= 1; jo++) {
-            if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {
-              myCell.setNeighbor(indices[index], myCellGrid[i + io][j + jo]);
-            } else if (myGridIsToroidal) {
-              int[] newCoords = normalizeOverflowingCoordinates(i + io, j + jo);
-              myCell.setNeighbor(indices[index], myCellGrid[newCoords[0]][newCoords[1]]);
-            }
-            if (jo != 0 || io != 0) {
-              index += 1;
-            }
-          }
+        assignNeighbors(i, j, myCell);
+      }
+    }
+  }
+
+  private void assignNeighbors(int i, int j, Cell myCell) {
+    int index = 0;
+    //position indexes, 1-8 from the top middle rotating clockwise, ordered in parsing order
+    int[] indices = new int[]{7, 0, 1, 6, 2, 5, 4, 3};
+    for (int io = -1; io <= 1; io++) {
+      for (int jo = -1; jo <= 1; jo++) {
+        if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {
+          myCell.setNeighbor(indices[index], myCellGrid[i + io][j + jo]);
+        } else if (myGridIsToroidal) {
+          int[] newCoords = normalizeOverflowingCoordinates(i + io, j + jo);
+          myCell.setNeighbor(indices[index], myCellGrid[newCoords[0]][newCoords[1]]);
+        }
+        if (jo != 0 || io != 0) {
+          index += 1;
         }
       }
     }

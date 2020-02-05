@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -32,105 +33,18 @@ public class XMLGenerator {
 
   public static void main(String[] argv) throws FileNotFoundException {
     getUserInput();
-
     try {
-      DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
-      Document document = documentBuilder.newDocument();
-
-      // root element
-      Element root = document.createElement("simulation");
-      document.appendChild(root);
-
-      // rule class
-      Element ruleClass = document.createElement("rule");
-      ruleClass.appendChild(document.createTextNode(myRuleSelector));
-      root.appendChild(ruleClass);
-
-      //simulation title
-      Element simulationTitle = document.createElement("simulationTitle");
-      simulationTitle.appendChild(document.createTextNode(mySimulationTitle));
-      root.appendChild(simulationTitle);
-
-      //simulation title
-      Element simulationAuthor = document.createElement("simulationAuthor");
-      simulationAuthor.appendChild(document.createTextNode(mySimulationAuthor));
-      root.appendChild(simulationAuthor);
-
-      //number of global variables
-      Element numGlobalVars = document.createElement("numGlobalVars");
-      numGlobalVars.appendChild(document.createTextNode("" + myNumGlobalVars));
-      root.appendChild(numGlobalVars);
-
-      //global vars
-      Element globalVars = document.createElement("globalVars");
-      root.appendChild(globalVars);
-
-      //each global var
-      if (myNumGlobalVars == 0) {
-        Element var = document.createElement("var");
-        var.appendChild(document.createTextNode("" + 0));
-        globalVars.appendChild(var);
-      } else {
-        for (int i = 0; i < myNumGlobalVars; i++) {
-          Element var = document.createElement("var" + i);
-          var.appendChild(document.createTextNode("" + myGlobalVars[i]));
-          globalVars.appendChild(var);
-        }
-      }
-
-      //grid width
-      Element gridWidth = document.createElement("gridWidth");
-      gridWidth.appendChild(document.createTextNode("" + myGridWidth));
-      root.appendChild(gridWidth);
-
-      //grid height
-      Element gridHeight = document.createElement("gridHeight");
-      gridHeight.appendChild(document.createTextNode("" + myGridHeight));
-      root.appendChild(gridHeight);
-
-      //grid is toroidal
-      Element gridIsToroidal = document.createElement("isToroidal");
-      gridIsToroidal.appendChild(document.createTextNode("" + myGridIsToroidal));
-      root.appendChild(gridIsToroidal);
-
-      //grid rows
-      Element gridRows = document.createElement("gridRows");
-      root.appendChild(gridRows);
-
-      //each global var
-      for (int i = 0; i < myGridHeight; i++) {
-        Element row = document.createElement("row" + i);
-        StringBuilder rowString = new StringBuilder();
-        for (int j = 0; j < myGridWidth; j++) {
-          rowString.append(myInitialStateGrid[i][j]).append(" ");
-        }
-        row.appendChild(document.createTextNode(rowString.toString()));
-        gridRows.appendChild(row);
-      }
-
-      //create the xml file
-      //transform the DOM Object to an XML File
-      TransformerFactory transformerFactory = TransformerFactory.newInstance();
-      Transformer transformer = transformerFactory.newTransformer();
-      transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      DOMSource domSource = new DOMSource(document);
-      StreamResult streamResult = new StreamResult(new File(xmlFilePath));
-
-      // If you use
-      // StreamResult result = new StreamResult(System.out);
-      // the output will be pushed to the standard output ...
-      // You can use that for debugging
-
-      transformer.transform(domSource, streamResult);
-
+      Document document = getDocument();
+      Element root = createSimulationRoot(document);
+      addElementsToRoot(document, root);
+      createXMLDocument(document);
       System.out.println("Done creating XML File");
-
     } catch (ParserConfigurationException | TransformerException pce) {
       pce.printStackTrace();
     }
   }
+
+
 
   private static void getUserInput() throws FileNotFoundException {
     setMyFilePath();
@@ -248,20 +162,6 @@ public class XMLGenerator {
     }
   }
 
-  private static void setMyGlobalVars() {
-    myGlobalVars = new double[myNumGlobalVars];
-    for (int i = 0; i < myNumGlobalVars; i++) {
-      System.out.print("Please enter global variable " + (i + 1) + ": ");
-      Scanner input = new Scanner(System.in);
-      if (!input.hasNextDouble()) {
-        System.out.println("That's not a valid number. Try Again.\n");
-        i--;
-      } else {
-        myGlobalVars[i] = input.nextDouble();
-      }
-    }
-  }
-
   private static void setMyNumGlobalVars() {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter a valid number of global variables: ");
@@ -275,6 +175,20 @@ public class XMLGenerator {
       } else {
         System.out.println("That's not a valid number of variables. Try Again.\n");
         setMyNumGlobalVars();
+      }
+    }
+  }
+
+  private static void setMyGlobalVars() {
+    myGlobalVars = new double[myNumGlobalVars];
+    for (int i = 0; i < myNumGlobalVars; i++) {
+      System.out.print("Please enter global variable " + (i + 1) + ": ");
+      Scanner input = new Scanner(System.in);
+      if (!input.hasNextDouble()) {
+        System.out.println("That's not a valid number. Try Again.\n");
+        i--;
+      } else {
+        myGlobalVars[i] = input.nextDouble();
       }
     }
   }
@@ -317,5 +231,98 @@ public class XMLGenerator {
         setMyRuleSelector();
       }
     }
+  }
+
+
+
+
+
+
+  private static Document getDocument() throws ParserConfigurationException {
+    DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+    return documentBuilder.newDocument();
+  }
+
+  private static Element createSimulationRoot(Document document) {
+    Element root = document.createElement("simulation");
+    document.appendChild(root);
+    return root;
+  }
+
+  private static void addElementsToRoot(Document document, Element root) {
+
+    addElement(document, root, "rule", myRuleSelector);
+    addElement(document, root, "simulationTitle", mySimulationTitle);
+    addElement(document, root, "simulationAuthor", mySimulationAuthor);
+    addElement(document, root, "numGlobalVars", "" + myNumGlobalVars);
+
+    addGlobalVarElements(document, root);
+
+    addElement(document, root, "gridWidth", "" + myGridWidth);
+    addElement(document, root, "gridHeight", "" + myGridHeight);
+    addElement(document, root, "isToroidal", "" + myGridIsToroidal);
+
+    addGridElements(document, root);
+
+  }
+
+  private static void addElement(Document document, Element root, String rule,
+      String myRuleSelector) {
+    Element ruleClass = document.createElement(rule);
+    ruleClass.appendChild(document.createTextNode(myRuleSelector));
+    root.appendChild(ruleClass);
+  }
+
+  private static void addGlobalVarElements(Document document, Element root) {
+    //global vars
+    Element globalVars = document.createElement("globalVars");
+    root.appendChild(globalVars);
+
+    //each global var
+    if (myNumGlobalVars == 0) {
+      addElement(document, globalVars, "var", "" + 0);
+    } else {
+      for (int i = 0; i < myNumGlobalVars; i++) {
+        addElement(document, globalVars, "var" + i, "" + myGlobalVars[i]);
+      }
+    }
+  }
+
+  private static void addGridElements(Document document, Element root) {
+    //grid rows
+    Element gridRows = document.createElement("gridRows");
+    root.appendChild(gridRows);
+
+    //build grid
+    for (int i = 0; i < myGridHeight; i++) {
+      Element row = document.createElement("row" + i);
+      StringBuilder rowString = new StringBuilder();
+      for (int j = 0; j < myGridWidth; j++) {
+        rowString.append(myInitialStateGrid[i][j]).append(" ");
+      }
+      row.appendChild(document.createTextNode(rowString.toString()));
+      gridRows.appendChild(row);
+    }
+  }
+
+  private static void createXMLDocument(Document document) throws TransformerException {
+    Transformer transformer = setDocumentProperties();
+    translateDOMtoXML(document, transformer);
+  }
+
+  private static Transformer setDocumentProperties() throws TransformerConfigurationException {
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    Transformer transformer = transformerFactory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    return transformer;
+  }
+
+  private static void translateDOMtoXML(Document document, Transformer transformer)
+      throws TransformerException {
+    DOMSource domSource = new DOMSource(document);
+    StreamResult streamResult = new StreamResult(new File(xmlFilePath));
+    transformer.transform(domSource, streamResult);
   }
 }

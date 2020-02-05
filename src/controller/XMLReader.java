@@ -113,6 +113,7 @@ public class XMLReader {
       //Get string of values corresponding to a row and store in an array
       String[] rowArray = iterator.nextNode().getTextContent().trim().split(" ");
       skipBlankLine(iterator);
+      //place each value in the row in it's corresponding grid position
       for (int j = 0; j < myGridWidth; j++) {
         initialStateGrid[i][j] = Integer.parseInt(rowArray[j]);
       }
