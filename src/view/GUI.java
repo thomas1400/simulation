@@ -1,6 +1,9 @@
 package view;
 
+import controller.Simulation;
 import events.IUpdate;
+import java.io.File;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,13 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-
-import controller.Simulation;
+import org.xml.sax.SAXException;
 
 /**
  * The 'view' for the Simulation project. Handles all visual aspects of the project, including
@@ -23,8 +21,8 @@ import controller.Simulation;
  */
 public class GUI extends Application implements IUpdate {
 
-  final private int WINDOW_HEIGHT = 512 + 30;
-  final private int WINDOW_WIDTH = 512;
+  private final int WINDOW_HEIGHT = 512 + 25;
+  private final int WINDOW_WIDTH = 512;
 
   private String windowTitle;
   private Stage mainWindow;
@@ -35,10 +33,9 @@ public class GUI extends Application implements IUpdate {
   private Stage myStage;
 
   /**
-     * Main method for the application - entry point
-     * @param args
-     */
-
+   * Main method for the application - entry point
+   *
+   */
   public static void main(String[] args) {
     Application.launch(args);
   }
@@ -47,10 +44,10 @@ public class GUI extends Application implements IUpdate {
    * Starts the JavaFX application and handles initial setup method calls
    *
    * @param primaryStage the main stage which the program draws on
-   * @throws Exception
    */
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start(Stage primaryStage)
+      throws IOException, SAXException, ParserConfigurationException {
     xmlFileName = getSimulationFile();
     myStage = primaryStage;
     newSimulation();
@@ -90,8 +87,9 @@ public class GUI extends Application implements IUpdate {
     GridPane mainGrid = new GridPane();
     group = new GridPane();
     gp = new GridPane();
-    gp.setHgap(1.0);
-    gp.setVgap(1.0);
+    double cellGap = 1.0;
+    gp.setHgap(cellGap);
+    gp.setVgap(cellGap);
     makeButtons();
     makeGrid();
     mainGrid.add(group, 0, 0);

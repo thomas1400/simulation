@@ -32,10 +32,12 @@ public class Simulation {
   private Timeline timeline;
   private IUpdate listener;
 
-  
+
   public Simulation(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
+
     Initializer myInitializer = new Initializer(xmlFileName);
+
     mySimulationTitle = myInitializer.getSimulationTitle();
     mySimulationAuthor = myInitializer.getSimulationAuthor();
     myCellGrid = myInitializer.getCellGrid();
@@ -104,7 +106,7 @@ public class Simulation {
   }
 
   /**
-   * return 2x2 grid of cellStates
+   * return 2x2 grid of cellColors
    */
   public Color[][] getColorGrid() {
     Color[][] myColorGrid = new Color[myGridHeight][myGridWidth];
@@ -120,6 +122,12 @@ public class Simulation {
     this.listener = listener;
   }
 
+
+  /**
+   * These getters are used to communicate with GUI the characteristics of the simulation
+   * as given from the Initializer
+   * @return Values of each specific initialized element
+   */
   public String getTitle() {
     return mySimulationTitle;
   }
