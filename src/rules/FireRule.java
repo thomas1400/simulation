@@ -2,11 +2,11 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public class FireRules extends Rules {
+public class FireRule extends Rule {
 
   private double fireSpreadProbability;
 
-  public FireRules() {
+  public FireRule() {
   }
 
   /**

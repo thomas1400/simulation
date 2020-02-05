@@ -2,7 +2,7 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public abstract class Rules {
+public abstract class Rule {
 
   public abstract int calculateNewState(int currentState, int[] neighbors);
 

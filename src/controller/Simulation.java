@@ -8,31 +8,26 @@ import javafx.util.Duration;
 import model.Cell;
 import javafx.scene.paint.Color;
 import java.io.IOException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.traversal.DocumentTraversal;
-import org.w3c.dom.traversal.NodeFilter;
-import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
-import rules.FireRules;
-import rules.GameOfLifeRules;
-import rules.PercolationRules;
-import rules.PredatorPreyRules;
-import rules.Rules;
-import rules.SegregationRules;
+import rules.FireRule;
+import rules.GameOfLifeRule;
+import rules.PercolationRule;
+import rules.PredatorPreyRule;
+import rules.Rule;
+import rules.SegregationRule;
 
 public class Simulation {
 
-  public Rules myRuleClass;
+  public Rule myRuleClass;
 
   public int simulationSpeed = 1000;
   public boolean simulationRunning;
 
   private String myRuleSelector;
   private String mySimulationTitle;
+  private String mySimulationAuthor;
   private double[] myGlobalVars;
   private int myGridWidth;
   private int myGridHeight;
@@ -141,109 +136,36 @@ public class Simulation {
 
   private void loadConfigFile(String file)
       throws ParserConfigurationException, SAXException, IOException {
-    NodeIterator iterator = getNodeIterator(file);
+    XMLReader xmlReader = new XMLReader(file);
+    XMLContent xmlContent = xmlReader.getXMLContent();
 
-    myRuleSelector = getRules(iterator);
-    mySimulationTitle = getSimulationName(iterator);
-
-    myGlobalVars = getGlobalVars(iterator);
-
-    myGridWidth = getGridWidth(iterator);
-    myGridHeight = getGridHeight(iterator);
-    myGridIsToroidal = getToroidal(iterator);
-
-    myInitialStateGrid = getInitialStateGrid(iterator);
-  }
-
-  private boolean getToroidal(NodeIterator iterator) {
-    boolean toroidal = Boolean.parseBoolean(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
-    skipBlankLine(iterator);
-    return toroidal;
-  }
-
-  private int[][] getInitialStateGrid(NodeIterator iterator) {
-    int[][] initialStateGrid = new int[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
-      //Get string of values corresponding to a row and store in an array
-      String[] rowArray = iterator.nextNode().getTextContent().trim().split(" ");
-      skipBlankLine(iterator);
-      for (int j = 0; j < myGridWidth; j++) {
-        initialStateGrid[i][j] = Integer.parseInt(rowArray[j]);
-      }
-    }
-    return initialStateGrid;
-  }
-
-  private int getGridHeight(NodeIterator iterator) {
-    int gridHeight = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
-    return gridHeight;
-  }
-
-  private int getGridWidth(NodeIterator iterator) {
-    int gridWidth = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
-    return gridWidth;
-  }
-
-  private double[] getGlobalVars(NodeIterator iterator) {
-    int numGlobalVars = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
-    skipBlankLine(iterator);
-    double[] globalVars = new double[numGlobalVars];
-    for (int i = 0; i < numGlobalVars; i++) {
-      globalVars[i] = Double.parseDouble(iterator.nextNode().getTextContent().trim());
-      skipBlankLine(iterator);
-    }
-    skipBlankLine(iterator);
-    return globalVars;
-  }
-
-  private String getRules(NodeIterator iterator) {
-    skipBlankLine(iterator);
-    String ruleSelector = iterator.nextNode().getTextContent().trim();
-    skipBlankLine(iterator);
-    return ruleSelector;
-  }
-
-  private String getSimulationName(NodeIterator iterator) {
-    String simulationTitle = iterator.nextNode().getTextContent().trim();
-    skipBlankLine(iterator);
-    return simulationTitle;
-  }
-
-  private void skipBlankLine(NodeIterator iterator) {
-    iterator.nextNode();
-  }
-
-  private NodeIterator getNodeIterator(String file)
-      throws ParserConfigurationException, SAXException, IOException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder loader = factory.newDocumentBuilder();
-    Document document = loader.parse(file);
-    DocumentTraversal traversal = (DocumentTraversal) document;
-    return traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_TEXT,
-        null, true);
+    myRuleSelector = xmlContent.getRule();
+    mySimulationTitle = xmlContent.getSimulationTitle();
+    mySimulationAuthor = xmlContent.getSimulationAuthor();
+    myGlobalVars = xmlContent.getGlobalVars();
+    myGridWidth = xmlContent.getGridWidth();
+    myGridHeight = xmlContent.getGridHeight();
+    myGridIsToroidal = xmlContent.getIsToroidal();
+    myInitialStateGrid = xmlContent.getGrid();
   }
 
   private void setNewRulesClass(String rulesType, double[] myGlobalVars) {
     switch (rulesType) {
       case "fireRules":
         //first global variable should be fire spread probability
-        myRuleClass = new FireRules();
+        myRuleClass = new FireRule();
         break;
       case "gameOfLifeRules":
-        myRuleClass = new GameOfLifeRules();
+        myRuleClass = new GameOfLifeRule();
         break;
       case "percolationRules":
-        myRuleClass = new PercolationRules();
+        myRuleClass = new PercolationRule();
         break;
       case "predatorPreyRules":
-        myRuleClass = new PredatorPreyRules();
+        myRuleClass = new PredatorPreyRule();
         break;
       case "segregationRules":
-        myRuleClass = new SegregationRules();
+        myRuleClass = new SegregationRule();
         break;
       default:
         System.out.println("Invalid Rules Class");
@@ -252,7 +174,7 @@ public class Simulation {
     myRuleClass.setGlobalVariables(myGlobalVars);
   }
 
-  private void fillCellGrid(Rules ruleType) {
+  private void fillCellGrid(Rule ruleType) {
     myCellGrid = new Cell[myGridHeight][myGridWidth];
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {

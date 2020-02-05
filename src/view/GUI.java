@@ -38,7 +38,7 @@ public class GUI extends Application implements IUpdate {
      * Main method for the application - entry point
      * @param args
      */
-  
+
   public static void main(String[] args) {
     Application.launch(args);
   }

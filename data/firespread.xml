@@ -2,6 +2,7 @@
 <simulation>
     <rule>fireRules</rule>
     <simulationTitle>Spread the FIRE!!</simulationTitle>
+    <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
     <numGlobalVars>1</numGlobalVars>
     <globalVars>
         <var0>0.9</var0>
