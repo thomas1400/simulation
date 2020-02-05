@@ -1,137 +1,52 @@
 package controller;
 
+
 import events.IUpdate;
+import java.util.ArrayList;
+import java.util.List;
+import model.Cell;
+
+import rules.Rule;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import model.Cell;
 import javafx.scene.paint.Color;
+
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.xml.sax.SAXException;
-import rules.FireRule;
-import rules.GameOfLifeRule;
-import rules.PercolationRule;
-import rules.PredatorPreyRule;
-import rules.Rule;
-import rules.SegregationRule;
+
 
 public class Simulation {
 
-  public Rule myRuleClass;
-
-  public int simulationSpeed = 1000;
-  public boolean simulationRunning;
-
-  private String myRuleSelector;
   private String mySimulationTitle;
   private String mySimulationAuthor;
+  private int mySimulationSpeed = 1000;
+  private boolean mySimulationRunning;
+
+  private String myRuleSelector;
   private double[] myGlobalVars;
-  private int myGridWidth;
-  private int myGridHeight;
   private boolean myGridIsToroidal;
   private int[][] myInitialStateGrid;
-  private Cell[][] myCellGrid;
-  private Timeline timeline;
 
+  private int myGridWidth;
+  private int myGridHeight;
+
+  private Cell[][] myCellGrid;
+  private List<Cell> myCells;
+
+  private Timeline timeline;
   private IUpdate listener;
 
   public Simulation(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
     loadConfigFile(xmlFileName);
-    setNewRulesClass(myRuleSelector, myGlobalVars);
+    CellInitializer myInitializer = new CellInitializer(myRuleSelector, myGlobalVars);
+    Rule myRuleClass = myInitializer.setNewRulesClass();
     fillCellGrid(myRuleClass);
     initializeCellPointers();
-    //printGridStates();
-  }
-
-  /**
-   * Runs the simulation with the set settings
-   */
-  public void play() {
-    simulationRunning = true;
-    autoStep();
-  }
-
-  private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(simulationSpeed / 1000.0), ev -> step()));
-    timeline.setCycleCount(Animation.INDEFINITE);
-    timeline.play();
-  }
-
-  /**
-   * Step the simulation one generation
-   */
-  public void step() {
-    for (Cell[] cells : myCellGrid) {
-      for (Cell cell : cells) {
-        cell.getNextState();
-      }
-    }
-    for (Cell[] cells : myCellGrid) {
-      for (Cell cell : cells) {
-        cell.updateState();
-      }
-    }
-    alertGUI();
-    //printGridStates();
-  }
-
-  /**
-   * Pause the simulation
-   */
-  public void pause() {
-    if (simulationRunning) {
-      timeline.pause();
-    }
-    simulationRunning = false;
-  }
-
-  /**
-   * Speed up the simulation by 2x
-   */
-  public void speedUp() {
-    simulationSpeed /= 2;
-    timeline.stop();
-    autoStep();
-  }
-
-  /**
-   * Slow down the simulation by 0.5x
-   */
-  public void slowDown() {
-    simulationSpeed *= 2;
-    timeline.stop();
-    autoStep();
-  }
-
-  /**
-   * return 2x2 grid of cellStates
-   */
-  public Color[][] getColorGrid() {
-    Color[][] myColorGrid = new Color[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
-      for (int j = 0; j < myGridWidth; j++) {
-        myColorGrid[i][j] = myCellGrid[i][j].getColor();
-      }
-    }
-    return myColorGrid;
-  }
-
-//  public void printGridStates() {
-//    for (Cell[] cells : myCellGrid) {
-//      System.out.println();
-//      for (Cell cell : cells) {
-//        System.out.print(cell.getState() + " ");
-//      }
-//    }
-//    System.out.println();
-//  }
-
-  public String getTitle() {
-    return mySimulationTitle;
   }
 
   private void loadConfigFile(String file)
@@ -148,38 +63,15 @@ public class Simulation {
     myInitialStateGrid = xmlReader.getGrid();
   }
 
-  private void setNewRulesClass(String rulesType, double[] myGlobalVars) {
-    switch (rulesType) {
-      case "fireRules":
-        //first global variable should be fire spread probability
-        myRuleClass = new FireRule();
-        break;
-      case "gameOfLifeRules":
-        myRuleClass = new GameOfLifeRule();
-        break;
-      case "percolationRules":
-        myRuleClass = new PercolationRule();
-        break;
-      case "predatorPreyRules":
-        myRuleClass = new PredatorPreyRule();
-        break;
-      case "segregationRules":
-        myRuleClass = new SegregationRule();
-        break;
-      default:
-        System.out.println("Invalid Rules Class");
-        System.exit(0);
-    }
-    myRuleClass.setGlobalVariables(myGlobalVars);
-  }
-
   private void fillCellGrid(Rule ruleType) {
     myCellGrid = new Cell[myGridHeight][myGridWidth];
+    myCells = new ArrayList<>();
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
         int initialCellState = myInitialStateGrid[i][j];
         Cell newCell = new Cell(ruleType, initialCellState);
         myCellGrid[i][j] = newCell;
+        myCells.add(newCell);
       }
     }
   }
@@ -188,7 +80,6 @@ public class Simulation {
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
         Cell myCell = myCellGrid[i][j];
-
         int index = 0;
         int[] indices = new int[]{7, 0, 1, 6, 2, 5, 4, 3};
         for (int io = -1; io <= 1; io++) {
@@ -226,14 +117,90 @@ public class Simulation {
   }
 
   private boolean gridCoordinatesInBounds(int y, int x) {
-    return (0 <= y && y < myGridHeight && 0 <= x && x < myGridWidth);
+    return (y >= 0 && y < myGridHeight && x >= 0 && x < myGridWidth);
+  }
+  /**
+   * Runs the simulation with the set settings
+   */
+  public void play() {
+    mySimulationRunning = true;
+    autoStep();
+  }
+
+  private void autoStep() {
+    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed /1000.0), ev -> step()));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
+  }
+
+  /**
+   * Step the simulation one generation
+   */
+  public void step() {
+    for (Cell cell : myCells) {
+        cell.getNextState();
+    }
+    for (Cell cell : myCells) {
+      cell.updateState();
+    }
+    alertGUI();
+  }
+
+  private void alertGUI() {
+    listener.simulationUpdate();
+  }
+
+  /**
+   * Pause the simulation
+   */
+  public void pause() {
+    if (mySimulationRunning) {
+      timeline.pause();
+    }
+    mySimulationRunning = false;
+  }
+
+  /**
+   * Speed up the simulation by 2x
+   */
+  public void speedUp() {
+    mySimulationSpeed /= 2;
+    timeline.stop();
+    autoStep();
+  }
+
+  /**
+   * Slow down the simulation by 0.5x
+   */
+  public void slowDown() {
+    mySimulationSpeed *= 2;
+    timeline.stop();
+    autoStep();
+  }
+
+  /**
+   * return 2x2 grid of cellStates
+   */
+  public Color[][] getColorGrid() {
+    Color[][] myColorGrid = new Color[myGridHeight][myGridWidth];
+    for (int i = 0; i < myGridHeight; i++) {
+      for (int j = 0; j < myGridWidth; j++) {
+        myColorGrid[i][j] = myCellGrid[i][j].getColor();
+      }
+    }
+    return myColorGrid;
   }
 
   public void setListener(IUpdate listener) {
     this.listener = listener;
   }
 
-  private void alertGUI() {
-    listener.simulationUpdate();
+  public String getTitle() {
+    return mySimulationTitle;
   }
+
+  public String getAuthor() {
+    return mySimulationAuthor;
+  }
+
 }
