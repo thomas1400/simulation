@@ -11,8 +11,6 @@ import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
 
 public class XMLReader {
-  private String myFile;
-
   //File Attributes
   private String myRule;
   private String mySimulationTitle;
@@ -25,7 +23,6 @@ public class XMLReader {
   private int[][] myGrid;
 
   public XMLReader(String file) throws IOException, SAXException, ParserConfigurationException {
-    myFile = file;
     NodeIterator iterator = getNodeIterator(file);
     readFile(iterator);
   }
@@ -42,12 +39,6 @@ public class XMLReader {
     myIsToroidal = updateIsToroidal(iterator);
 
     myGrid = updateInitialStateGrid(iterator);
-  }
-
-
-  public XMLContent getXMLContent() {
-    return new XMLContent(myRule, mySimulationTitle, mySimulationAuthor,
-        myNumGlobalVars, myGlobalVars, myGridWidth, myGridHeight, myIsToroidal, myGrid);
   }
 
   private boolean updateIsToroidal(NodeIterator iterator) {
@@ -84,6 +75,7 @@ public class XMLReader {
 
   private double[] updateGlobalVars(NodeIterator iterator) {
     int numGlobalVars = Integer.parseInt(iterator.nextNode().getTextContent().trim());
+    myNumGlobalVars = numGlobalVars;
     skipBlankLine(iterator);
     skipBlankLine(iterator);
     double[] globalVars = new double[numGlobalVars];
@@ -128,5 +120,40 @@ public class XMLReader {
         null, true);
   }
 
+  public String getRule() {
+    return myRule;
+  }
+
+  public String getSimulationTitle() {
+    return mySimulationTitle;
+  }
+
+  public String getSimulationAuthor() {
+    return mySimulationAuthor;
+  }
+
+  public int getNumGlobalVars() {
+    return myNumGlobalVars;
+  }
+
+  public double[] getGlobalVars() {
+    return myGlobalVars;
+  }
+
+  public int getGridWidth() {
+    return myGridWidth;
+  }
+
+  public int getGridHeight() {
+    return myGridHeight;
+  }
+
+  public boolean getIsToroidal() {
+    return myIsToroidal;
+  }
+
+  public int[][] getGrid() {
+    return myGrid;
+  }
 
 }

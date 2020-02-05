@@ -137,16 +137,15 @@ public class Simulation {
   private void loadConfigFile(String file)
       throws ParserConfigurationException, SAXException, IOException {
     XMLReader xmlReader = new XMLReader(file);
-    XMLContent xmlContent = xmlReader.getXMLContent();
 
-    myRuleSelector = xmlContent.getRule();
-    mySimulationTitle = xmlContent.getSimulationTitle();
-    mySimulationAuthor = xmlContent.getSimulationAuthor();
-    myGlobalVars = xmlContent.getGlobalVars();
-    myGridWidth = xmlContent.getGridWidth();
-    myGridHeight = xmlContent.getGridHeight();
-    myGridIsToroidal = xmlContent.getIsToroidal();
-    myInitialStateGrid = xmlContent.getGrid();
+    myRuleSelector = xmlReader.getRule();
+    mySimulationTitle = xmlReader.getSimulationTitle();
+    mySimulationAuthor = xmlReader.getSimulationAuthor();
+    myGlobalVars = xmlReader.getGlobalVars();
+    myGridWidth = xmlReader.getGridWidth();
+    myGridHeight = xmlReader.getGridHeight();
+    myGridIsToroidal = xmlReader.getIsToroidal();
+    myInitialStateGrid = xmlReader.getGrid();
   }
 
   private void setNewRulesClass(String rulesType, double[] myGlobalVars) {
