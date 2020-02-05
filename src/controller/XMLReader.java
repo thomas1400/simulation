@@ -27,11 +27,22 @@ public class XMLReader {
     readFile(iterator);
   }
 
+  private NodeIterator getNodeIterator(String file)
+      throws ParserConfigurationException, SAXException, IOException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder loader = factory.newDocumentBuilder();
+    Document document = loader.parse(file);
+    DocumentTraversal traversal = (DocumentTraversal) document;
+    return traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_TEXT,
+        null, true);
+  }
+
   private void readFile(NodeIterator iterator) {
     myRule = updateRules(iterator);
-    mySimulationTitle = updateSimulationName(iterator);
+    mySimulationTitle = updateSimulationTitle(iterator);
     mySimulationAuthor = updateSimulationAuthor(iterator);
 
+    myNumGlobalVars = updateNumGlobalVars(iterator);
     myGlobalVars = updateGlobalVars(iterator);
 
     myGridWidth = updateGridWidth(iterator);
@@ -39,6 +50,54 @@ public class XMLReader {
     myIsToroidal = updateIsToroidal(iterator);
 
     myGrid = updateInitialStateGrid(iterator);
+  }
+
+  private String updateRules(NodeIterator iterator) {
+    skipBlankLine(iterator);
+    String ruleSelector = iterator.nextNode().getTextContent().trim();
+    skipBlankLine(iterator);
+    return ruleSelector;
+  }
+
+  private String updateSimulationTitle(NodeIterator iterator) {
+    String simulationTitle = iterator.nextNode().getTextContent().trim();
+    skipBlankLine(iterator);
+    return simulationTitle;
+  }
+
+  private String updateSimulationAuthor(NodeIterator iterator) {
+    String simulationAuthor = iterator.nextNode().getTextContent().trim();
+    skipBlankLine(iterator);
+    return simulationAuthor;
+  }
+
+  private int updateNumGlobalVars(NodeIterator iterator) {
+    int numGlobalVars = Integer.parseInt(iterator.nextNode().getTextContent().trim());
+    skipBlankLine(iterator);
+    skipBlankLine(iterator);
+    return numGlobalVars;
+  }
+
+  private double[] updateGlobalVars(NodeIterator iterator) {
+    double[] globalVars = new double[myNumGlobalVars];
+    for (int i = 0; i < myNumGlobalVars; i++) {
+      globalVars[i] = Double.parseDouble(iterator.nextNode().getTextContent().trim());
+      skipBlankLine(iterator);
+    }
+    skipBlankLine(iterator);
+    return globalVars;
+  }
+
+  private int updateGridWidth(NodeIterator iterator) {
+    int gridWidth = Integer.parseInt(iterator.nextNode().getTextContent().trim());
+    skipBlankLine(iterator);
+    return gridWidth;
+  }
+
+  private int updateGridHeight(NodeIterator iterator) {
+    int gridHeight = Integer.parseInt(iterator.nextNode().getTextContent().trim());
+    skipBlankLine(iterator);
+    return gridHeight;
   }
 
   private boolean updateIsToroidal(NodeIterator iterator) {
@@ -61,65 +120,15 @@ public class XMLReader {
     return initialStateGrid;
   }
 
-  private int updateGridHeight(NodeIterator iterator) {
-    int gridHeight = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
-    return gridHeight;
-  }
-
-  private int updateGridWidth(NodeIterator iterator) {
-    int gridWidth = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
-    return gridWidth;
-  }
-
-  private double[] updateGlobalVars(NodeIterator iterator) {
-    int numGlobalVars = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    myNumGlobalVars = numGlobalVars;
-    skipBlankLine(iterator);
-    skipBlankLine(iterator);
-    double[] globalVars = new double[numGlobalVars];
-    for (int i = 0; i < numGlobalVars; i++) {
-      globalVars[i] = Double.parseDouble(iterator.nextNode().getTextContent().trim());
-      skipBlankLine(iterator);
-    }
-    skipBlankLine(iterator);
-    return globalVars;
-  }
-
-  private String updateRules(NodeIterator iterator) {
-    skipBlankLine(iterator);
-    String ruleSelector = iterator.nextNode().getTextContent().trim();
-    skipBlankLine(iterator);
-    return ruleSelector;
-  }
-
-  private String updateSimulationAuthor(NodeIterator iterator) {
-    String simulationAuthor = iterator.nextNode().getTextContent().trim();
-    skipBlankLine(iterator);
-    return simulationAuthor;
-  }
-
-  private String updateSimulationName(NodeIterator iterator) {
-    String simulationTitle = iterator.nextNode().getTextContent().trim();
-    skipBlankLine(iterator);
-    return simulationTitle;
-  }
-
   private void skipBlankLine(NodeIterator iterator) {
     iterator.nextNode();
   }
 
-  private NodeIterator getNodeIterator(String file)
-      throws ParserConfigurationException, SAXException, IOException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder loader = factory.newDocumentBuilder();
-    Document document = loader.parse(file);
-    DocumentTraversal traversal = (DocumentTraversal) document;
-    return traversal.createNodeIterator(document.getDocumentElement(), NodeFilter.SHOW_TEXT,
-        null, true);
-  }
-
+  /**
+   * These getters are used to communicate with Simulation the characteristics of the simulation
+   * as read from the XML file
+   * @return Values of each specific element of the XML File
+   */
   public String getRule() {
     return myRule;
   }
