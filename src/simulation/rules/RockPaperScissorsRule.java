@@ -5,11 +5,15 @@ import javafx.scene.paint.Color;
 public class RockPaperScissorsRule implements Rule {
   private int thresholdValue;
 
+  private final int ROCK = 0;
+  private final int PAPER = 1;
+  private final int SCISSORS = 2;
+
   /**
    * State 0 = rock, 1 = paper, 2 = scissors
-   * @param currentState
-   * @param neighbors
-   * @return
+   * @param currentState the current numerical state of the cell
+   * @param neighbors a list of all neighbors
+   * @return the cell's new state
    */
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
@@ -26,7 +30,7 @@ public class RockPaperScissorsRule implements Rule {
   }
 
   private int mortalEnemy(int currentState) {
-    int[] enemies = {1,2,0};
+    int[] enemies = {PAPER,SCISSORS,ROCK};
     return enemies[currentState];
   }
 
@@ -64,11 +68,11 @@ public class RockPaperScissorsRule implements Rule {
 
   @Override
   public Color getStateColor(int state) {
-    if (state == 0) {
+    if (state == ROCK) {
       return Color.GREEN;
-    } else if (state == 1) {
+    } else if (state == PAPER) {
       return Color.BLUE;
-    } else if (state == 2) {
+    } else if (state == SCISSORS) {
       return Color.RED;
     } else {
       throw new IllegalArgumentException("Unexpected cell state");
