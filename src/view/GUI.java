@@ -33,13 +33,6 @@ public class GUI extends Application implements IUpdate {
   private String xmlFileName;
   private Stage myStage;
 
-  /**
-   * Main method for the application - entry point
-   *
-   */
-  public static void main(String[] args) {
-    Application.launch(args);
-  }
 
   /**
    * Starts the JavaFX application and handles initial setup method calls
