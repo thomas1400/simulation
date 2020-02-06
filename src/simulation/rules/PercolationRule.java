@@ -8,6 +8,8 @@ public class PercolationRule implements Rule {
   private static final int EMPTY = 1;
   private static final int FILLED = 2;
 
+  public PercolationRule(double[] variables) { }
+
   /**
    * @param currentState   is the cell's current state
    * @param neighborStates is the cell's neighbor's states as an array
@@ -47,8 +49,4 @@ public class PercolationRule implements Rule {
     }
   }
 
-  @Override
-  public void setGlobalVariables(double[] variables) {
-
-  }
 }

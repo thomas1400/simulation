@@ -54,28 +54,27 @@ public class Initializer {
     Rule myRuleClass = null;
     switch (myRulesType) {
       case "fireRules":
-        myRuleClass = new FireRule();
+        myRuleClass = new FireRule(myGlobalVars);
         break;
       case "gameOfLifeRules":
-        myRuleClass = new GameOfLifeRule();
+        myRuleClass = new GameOfLifeRule(myGlobalVars);
         break;
       case "percolationRules":
-        myRuleClass = new PercolationRule();
+        myRuleClass = new PercolationRule(myGlobalVars);
         break;
       case "predatorPreyRules":
-        myRuleClass = new PredatorPreyRule();
+        myRuleClass = new PredatorPreyRule(myGlobalVars);
         break;
       case "segregationRules":
-        myRuleClass = new SegregationRule();
+        myRuleClass = new SegregationRule(myGlobalVars);
         break;
       case "rockPaperScissorsRules":
-        myRuleClass = new RockPaperScissorsRule();
+        myRuleClass = new RockPaperScissorsRule(myGlobalVars);
         break;
       default:
         System.out.println("Invalid Rules Class");
         System.exit(0);
     }
-    myRuleClass.setGlobalVariables(myGlobalVars);
     return myRuleClass;
   }
 

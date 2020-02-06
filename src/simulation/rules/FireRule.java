@@ -10,7 +10,9 @@ public class FireRule implements Rule {
 
   private double fireSpreadProbability;
 
-  public FireRule() { }
+  public FireRule(double[] variables) {
+    setGlobalVariables(variables);
+  }
 
   /**
    * 0 corresponds to Empty, 1 Corresponds to Alive, 2 Corresponds to Burning
@@ -52,7 +54,6 @@ public class FireRule implements Rule {
     }
   }
 
-  @Override
   public void setGlobalVariables(double[] variables) {
     fireSpreadProbability = variables[0];
   }

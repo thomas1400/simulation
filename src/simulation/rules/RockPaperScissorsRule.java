@@ -10,6 +10,10 @@ public class RockPaperScissorsRule implements Rule {
   private static final int PAPER = 1;
   private static final int SCISSORS = 2;
 
+  public RockPaperScissorsRule(double[] variables) {
+    setGlobalVariables(variables);
+  }
+
   /**
    * State 0 = rock, 1 = paper, 2 = scissors
    * @param currentState the current numerical state of the cell
@@ -80,7 +84,6 @@ public class RockPaperScissorsRule implements Rule {
     }
   }
 
-  @Override
   public void setGlobalVariables(double[] variables) {
     thresholdValue = (int)variables[0];
   }

@@ -11,6 +11,10 @@ public class SegregationRule implements Rule {
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
       Color.PURPLE, Color.ORANGE};
 
+  public SegregationRule(double[] variables) {
+    setGlobalVariables(variables);
+  }
+
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
     if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold
@@ -48,7 +52,6 @@ public class SegregationRule implements Rule {
     }
   }
 
-  @Override
   public void setGlobalVariables(double[] variables) {
     if (variables.length != 1) {
       throw new IllegalArgumentException(
