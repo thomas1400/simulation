@@ -13,6 +13,10 @@ public class PredatorPreyRule implements Rule {
   private static final int PREY = 1;
   private static final int PREDATOR = 2;
 
+  public PredatorPreyRule(double[] variables) {
+    setGlobalVariables(variables);
+  }
+
 
   /**
    * @param currentState the current state of the cell
@@ -63,7 +67,6 @@ public class PredatorPreyRule implements Rule {
     return stateColors[state];
   }
 
-  @Override
   public void setGlobalVariables(double[] variables) {
     if (variables.length != 3) {
       throw new IllegalArgumentException(

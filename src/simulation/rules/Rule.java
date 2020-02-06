@@ -8,6 +8,4 @@ public interface Rule {
 
   Color getStateColor(int state);
 
-  void setGlobalVariables(double[] variables);
-
 }

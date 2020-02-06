@@ -7,9 +7,7 @@ public class GameOfLifeRule implements Rule {
   private static final int DEAD = 0;
   private static final int ALIVE = 1;
 
-  public GameOfLifeRule() {
-    super();
-  }
+  public GameOfLifeRule(double[] variables) { }
 
   /**
    * @param currentState
@@ -37,7 +35,4 @@ public class GameOfLifeRule implements Rule {
   public Color getStateColor(int state) {
     return (state == ALIVE) ? Color.BLACK : Color.WHITE;
   }
-
-  @Override
-  public void setGlobalVariables(double[] variables) { }
 }
