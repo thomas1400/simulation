@@ -59,7 +59,7 @@ public class GUI extends Application implements IUpdate {
     fc.setInitialDirectory(workingDirectory);
     File file = fc.showOpenDialog(mainWindow);
     if (file == null) {
-      return xmlFileName;
+      myStage.close();
     }
     return file.toString();
   }
