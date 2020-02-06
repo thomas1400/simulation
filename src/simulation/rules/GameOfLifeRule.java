@@ -4,15 +4,12 @@ import javafx.scene.paint.Color;
 
 public class GameOfLifeRule implements Rule {
 
-  public GameOfLifeRule() {
-    super();
-  }
+  private static final int DEAD = 0;
+  private static final int ALIVE = 1;
 
-  ;
+  public GameOfLifeRule(double[] variables) { }
 
   /**
-   * 0 is Dead, 1 is Alive
-   *
    * @param currentState
    * @param neighborStates
    * @return
@@ -20,16 +17,10 @@ public class GameOfLifeRule implements Rule {
   @Override
   public int calculateNewState(int currentState, int[] neighborStates) {
     int numNeighbors = sum(neighborStates);
-    if (currentState == 0) {
-      if (numNeighbors == 3) {
-        return 1;
-      }
-      return 0;
+    if (currentState == DEAD) {
+      return (numNeighbors == 3) ? ALIVE : DEAD;
     }
-    if (numNeighbors <= 1 || numNeighbors >= 4) {
-      return 0;
-    }
-    return 1;
+    return (numNeighbors <= 1 || numNeighbors >= 4) ? DEAD : ALIVE;
   }
 
   private int sum(int[] intArray) {
@@ -42,14 +33,6 @@ public class GameOfLifeRule implements Rule {
 
   @Override
   public Color getStateColor(int state) {
-    if (state == 1) {
-      return Color.BLACK;
-    } else {
-      return Color.WHITE;
-    }
-  }
-
-  @Override
-  public void setGlobalVariables(double[] variables) {
+    return (state == ALIVE) ? Color.BLACK : Color.WHITE;
   }
 }
