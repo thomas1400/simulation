@@ -7,23 +7,19 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Home extends Application{
-  private Stage myHomeWindow;
-  private Scene myHomeScene;
 
   /**
    * Main method for the application - entry point
-   * @param args
    */
   public static void main(String[] args) {
     Application.launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
-    myHomeWindow = primaryStage;
-    myHomeScene = new Scene(makeHomeGrid(), 512, 512);
-    myHomeWindow.setScene(myHomeScene);
-    myHomeWindow.show();
+  public void start(Stage primaryStage) {
+    Scene myHomeScene = new Scene(makeHomeGrid(), 512, 512);
+    primaryStage.setScene(myHomeScene);
+    primaryStage.show();
   }
 
   private GridPane makeHomeGrid(){
