@@ -1,4 +1,4 @@
-package xmlGeneration;
+package simulation.xmlGeneration;
 
 import java.io.FileNotFoundException;
 

@@ -1,4 +1,4 @@
-package controller;
+package simulation.controller;
 
 import org.xml.sax.SAXException;
 import javafx.scene.paint.Color;

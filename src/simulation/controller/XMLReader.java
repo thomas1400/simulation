@@ -1,4 +1,4 @@
-package controller;
+package simulation.controller;
 
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;

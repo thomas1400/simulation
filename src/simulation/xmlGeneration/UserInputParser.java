@@ -1,4 +1,4 @@
-package xmlGeneration;
+package simulation.xmlGeneration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,7 +37,7 @@ public class UserInputParser {
   private static void askForRuleSelector() {
     Scanner input = new Scanner(System.in);
 
-    System.out.println("Please choose your simulation rules:");
+    System.out.println("Please choose your simulation simulation.rules:");
     System.out.println(" 0 - Fire");
     System.out.println(" 1 - Game of Life");
     System.out.println(" 2 - Percolation");

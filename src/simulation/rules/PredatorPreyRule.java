@@ -1,4 +1,4 @@
-package rules;
+package simulation.rules;
 
 import javafx.scene.paint.Color;
 
