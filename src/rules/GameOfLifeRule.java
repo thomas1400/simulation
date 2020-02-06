@@ -2,7 +2,7 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public class GameOfLifeRule extends Rule {
+public class GameOfLifeRule implements Rule {
 
   public GameOfLifeRule() {
     super();

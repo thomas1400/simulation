@@ -27,7 +27,7 @@ public class Cell {
         myNeighbors[index] = pointer;
     }
 
-    public void getNextState(){
+    public void getNextState() throws Exception {
         int[] neighborStates = new int[myNeighbors.length];
         for (int i = 0; i < myNeighbors.length; i++) {
             if (myNeighbors[i] != null) {
