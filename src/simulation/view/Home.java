@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public class Home extends Application{
+public class Home extends Application {
 
   private final int WINDOW_WIDTH = 512;
   private final int WINDOW_HEIGHT = 512;
@@ -31,17 +31,12 @@ public class Home extends Application{
   private GridPane makeHomeGrid(){
     GridPane homeGridPane = new GridPane();
     Button btn = new Button("Launch");
-    btn.setOnAction(e -> {
-      try {
-        launchSim();
-      } catch (Exception ex) {
-        ex.printStackTrace();
-      }
-    });
+    btn.setOnAction(e -> launchSim());
     homeGridPane.add(btn, 0,0);
     return homeGridPane;
   }
-  private void launchSim() throws ParserConfigurationException, SAXException, IOException {
+
+  private void launchSim() {
     GUI gui = new GUI();
     gui.start(new Stage());
   }

@@ -28,7 +28,7 @@ public class XMLReader {
   }
 
   private NodeIterator getNodeIterator(String file)
-      throws ParserConfigurationException, SAXException, IOException {
+      throws ParserConfigurationException, IOException, SAXException {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder loader = factory.newDocumentBuilder();
     Document document = loader.parse(file);
