@@ -49,7 +49,7 @@ public class GUI extends Application implements IUpdate {
       xmlFileName = getSimulationFile();
       newSimulation();
     } catch (Exception e) {
-      // Pop up an error message for malformed XML.
+      // TODO: Pop up an error message for malformed XML.
       myStage.close();
     }
   }
@@ -72,6 +72,7 @@ public class GUI extends Application implements IUpdate {
 
     File file = fc.showOpenDialog(mainWindow);
     if (file == null) {
+      // TODO: Potentially a better way to handle this
       return null;
     }
     return file.toString();
