@@ -2,12 +2,12 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public class PercolationRules extends Rules {
+public class PercolationRule extends Rule {
 
   /**
    * State 2 corresponds with Filled, 1 with Empty, and 0 with Blocked
    *
-   * @param currentState is the cell's current state
+   * @param currentState   is the cell's current state
    * @param neighborStates is the cell's neighbor's states as an array
    * @return returns new state of cell
    */

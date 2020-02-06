@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <rule>fireRules</rule>
+    <simulationTitle>Spread the FIRE!!</simulationTitle>
+    <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
+    <numGlobalVars>1</numGlobalVars>
+    <globalVars>
+        <var0>0.9</var0>
+    </globalVars>
+    <gridWidth>20</gridWidth>
+    <gridHeight>20</gridHeight>
+    <toroidalGrid>false</toroidalGrid>
+    <gridRows>
+        <row0>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row0>
+        <row1>1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row1>
+        <row2>1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row2>
+        <row3>1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row3>
+        <row4>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row4>
+        <row5>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row5>
+        <row6>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row6>
+        <row7>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row7>
+        <row8>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row8>
+        <row9>1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 </row9>
+        <row10>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row10>
+        <row11>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row11>
+        <row12>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row12>
+        <row13>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row13>
+        <row14>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row14>
+        <row15>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row15>
+        <row16>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row16>
+        <row17>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row17>
+        <row18>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row18>
+        <row19>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row19>
+    </gridRows>
+</simulation>

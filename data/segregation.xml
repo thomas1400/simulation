@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <rule>segregationRules</rule>
+    <simulationTitle>Segregate Mee!</simulationTitle>
+    <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
+    <numGlobalVars>1</numGlobalVars>
+    <globalVars>
+        <var0>0.7</var0>
+    </globalVars>
+    <gridWidth>10</gridWidth>
+    <gridHeight>10</gridHeight>
+    <toroidalGrid>true</toroidalGrid>
+    <gridRows>
+        <row0>1 2 2 0 2 2 2 1 2 1 </row0>
+        <row1>2 0 1 1 1 1 1 2 0 0 </row1>
+        <row2>2 1 2 2 1 2 1 2 1 2 </row2>
+        <row2>2 0 2 2 2 1 2 1 1 1 </row2>
+        <row1>2 1 2 1 2 2 0 0 2 1 </row1>
+        <row0>2 2 2 1 1 1 2 1 0 1 </row0>
+        <row6>1 2 1 2 0 1 2 2 2 1 </row6>
+        <row7>1 0 2 0 1 1 2 0 2 1 </row7>
+        <row8>1 1 1 0 1 2 1 1 2 1 </row8>
+        <row9>1 1 1 2 2 1 1 2 2 1 </row9>
+    </gridRows>
+</simulation>
