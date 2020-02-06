@@ -4,6 +4,9 @@ import javafx.scene.paint.Color;
 
 public class SegregationRule implements Rule {
 
+  public static final int EMPTY = 0;
+  public static final int SWITCHING = -1;
+
   private double segregation_threshold;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
       Color.PURPLE, Color.ORANGE};
@@ -11,17 +14,18 @@ public class SegregationRule implements Rule {
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
     if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold
-        || currentState == 0) {
-      return -1;
+        || currentState == EMPTY) {
+      return SWITCHING;
     } else {
       return currentState;
     }
   }
 
   private double percentLikeNeighbors(int currentState, int[] neighbors) {
-    if (currentState == 0) {
-      return 0;
+    if (currentState == EMPTY) {
+      return EMPTY;
     }
+
     int likeNeighbors = 0;
     float numNeighbors = 0;
     for (int n : neighbors) {
@@ -37,10 +41,10 @@ public class SegregationRule implements Rule {
 
   @Override
   public Color getStateColor(int state) {
-    if (state == 0) {
+    if (state == EMPTY) {
       return Color.WHITE;
     } else {
-      return groupColors[state];
+      return groupColors[state-1];
     }
   }
 
