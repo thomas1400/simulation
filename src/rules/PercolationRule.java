@@ -2,7 +2,7 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public class PercolationRule extends Rule {
+public class PercolationRule implements Rule {
 
   /**
    * State 2 corresponds with Filled, 1 with Empty, and 0 with Blocked

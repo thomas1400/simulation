@@ -55,7 +55,13 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed /1000.0), ev -> step()));
+    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed /1000.0), ev -> {
+      try {
+        step();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -63,7 +69,7 @@ public class Simulation {
   /**
    * Step the simulation one generation
    */
-  public void step() {
+  public void step() throws Exception {
     for (Cell cell : myCells) {
         cell.getNextState();
     }

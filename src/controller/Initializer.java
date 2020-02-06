@@ -10,6 +10,7 @@ import rules.FireRule;
 import rules.GameOfLifeRule;
 import rules.PercolationRule;
 import rules.PredatorPreyRule;
+import rules.RockPaperScissorsRule;
 import rules.Rule;
 import rules.SegregationRule;
 
@@ -66,6 +67,9 @@ public class Initializer {
         break;
       case "segregationRules":
         myRuleClass = new SegregationRule();
+        break;
+      case "rockPaperScissorsRules":
+        myRuleClass = new RockPaperScissorsRule();
         break;
       default:
         System.out.println("Invalid Rules Class");

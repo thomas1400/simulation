@@ -120,7 +120,13 @@ public class GUI extends Application implements IUpdate {
     group.add(mySpeedUpButton, 4, 0);
 
     Button myStepButton = new Button("Step");
-    myStepButton.setOnAction(e -> simulation.step());
+    myStepButton.setOnAction(e -> {
+      try {
+        simulation.step();
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    });
     group.add(myStepButton, 5, 0);
 
     Button myPlayButton = new Button("Play");

@@ -2,7 +2,7 @@ package rules;
 
 import javafx.scene.paint.Color;
 
-public class SegregationRule extends Rule {
+public class SegregationRule implements Rule {
 
   private double segregation_threshold;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,

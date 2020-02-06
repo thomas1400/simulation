@@ -43,6 +43,7 @@ public class UserInputParser {
     System.out.println(" 2 - Percolation");
     System.out.println(" 3 - Predator Prey");
     System.out.println(" 4 - Segregation");
+    System.out.println(" 5 - Rock, Paper, Scissors");
     System.out.print("Enter the integer corresponding to your selection: ");
 
     if (!input.hasNextInt()) {
@@ -60,6 +61,8 @@ public class UserInputParser {
         myRuleSelector = "predatorPreyRules";
       } else if (selection == 4) {
         myRuleSelector = "segregationRules";
+      } else if (selection == 5) {
+        myRuleSelector = "rockPaperScissorsRules";
       } else {
         System.out.println("Invalid Input, Try Again");
         System.out.println();
