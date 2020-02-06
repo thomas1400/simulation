@@ -1,7 +1,7 @@
 simulation
 ====
 
-This project implements a cellular automata controller.
+This project implements a cellular automata simulation.controller.
 
 Names:
 

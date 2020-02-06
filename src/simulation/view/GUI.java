@@ -1,7 +1,7 @@
-package view;
+package simulation.view;
 
-import controller.Simulation;
-import events.IUpdate;
+import simulation.controller.Simulation;
+import simulation.events.IUpdate;
 import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
@@ -16,12 +16,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- * The 'view' for the Simulation project. Handles all visual aspects of the project, including
- * updating the main window and listening to the simulation controller
+ * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project, including
+ * updating the main window and listening to the simulation simulation.controller
  */
 public class GUI extends Application implements IUpdate {
 
-  final private String WINDOW_TITLE = "SIMULATION";
   private final int WINDOW_HEIGHT = 512 + 25;
   private final int WINDOW_WIDTH = 512;
 

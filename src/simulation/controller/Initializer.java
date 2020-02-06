@@ -1,18 +1,18 @@
-package controller;
+package simulation.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
-import model.Cell;
+import simulation.model.Cell;
 import org.xml.sax.SAXException;
-import rules.FireRule;
-import rules.GameOfLifeRule;
-import rules.PercolationRule;
-import rules.PredatorPreyRule;
-import rules.RockPaperScissorsRule;
-import rules.Rule;
-import rules.SegregationRule;
+import simulation.rules.FireRule;
+import simulation.rules.GameOfLifeRule;
+import simulation.rules.PercolationRule;
+import simulation.rules.PredatorPreyRule;
+import simulation.rules.RockPaperScissorsRule;
+import simulation.rules.Rule;
+import simulation.rules.SegregationRule;
 
 public class Initializer {
 

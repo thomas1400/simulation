@@ -1,7 +1,7 @@
-package model;
+package simulation.model;
 
 import javafx.scene.paint.Color;
-import rules.Rule;
+import simulation.rules.Rule;
 
 import java.util.ArrayList;
 import java.util.Arrays;

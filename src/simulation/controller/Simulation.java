@@ -1,9 +1,9 @@
-package controller;
+package simulation.controller;
 
 
-import events.IUpdate;
+import simulation.events.IUpdate;
 import java.util.List;
-import model.Cell;
+import simulation.model.Cell;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;

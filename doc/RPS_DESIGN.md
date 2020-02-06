@@ -11,7 +11,7 @@
     - Contains map of each weapon type & weaknesses
     - Returns who wins
     - Will have add/remove weapon methods
-    - Can read rules from a file
+    - Can read simulation.rules from a file
     - Can save added weapons to a file
 - Game Class
     - Handles turns
