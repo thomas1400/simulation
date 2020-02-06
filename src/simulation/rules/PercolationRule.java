@@ -4,9 +4,11 @@ import javafx.scene.paint.Color;
 
 public class PercolationRule implements Rule {
 
+  private static final int BLOCKED = 0;
+  private static final int EMPTY = 1;
+  private static final int FILLED = 2;
+
   /**
-   * State 2 corresponds with Filled, 1 with Empty, and 0 with Blocked
-   *
    * @param currentState   is the cell's current state
    * @param neighborStates is the cell's neighbor's states as an array
    * @return returns new state of cell
@@ -14,19 +16,17 @@ public class PercolationRule implements Rule {
   @Override
   public int calculateNewState(int currentState, int[] neighborStates) {
     boolean doesPercolate = shouldPercolate(neighborStates);
-    if (currentState == 0) {
-      return 0;
-    } else if (currentState == 2 || doesPercolate) {
-      return 2;
+    if (currentState == BLOCKED) {
+      return BLOCKED;
     } else {
-      return 1;
+      return (currentState == FILLED || doesPercolate) ? FILLED : EMPTY;
     }
   }
 
   private boolean shouldPercolate(int[] neighborStates) {
     // Only check directly adjacent squares, not diagonals (indices 0, 2, 4, 8)
     for (int i = 0; i < neighborStates.length; i += 2) {
-      if (neighborStates[i] == 2) {
+      if (neighborStates[i] == FILLED) {
         return true;
       }
     }
@@ -38,9 +38,9 @@ public class PercolationRule implements Rule {
    */
   @Override
   public Color getStateColor(int state) {
-    if (state == 2) {
+    if (state == FILLED) {
       return Color.BLUE;
-    } else if (state == 1) {
+    } else if (state == EMPTY) {
       return Color.LIGHTGRAY;
     } else {
       return Color.BLACK;

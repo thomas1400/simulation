@@ -8,42 +8,45 @@ public class PredatorPreyRule implements Rule {
   private double predator_death_probability;
   private double predator_birth_probability;
 
+  private static final Color[] stateColors = {Color.WHITE, Color.GREEN, Color.ORANGE};
+  private static final int EMPTY = 0;
+  private static final int PREY = 1;
+  private static final int PREDATOR = 2;
+
+
   /**
-   * State: 0 for empty, 1 for prey, 2 for predator
-   *
    * @param currentState the current state of the cell
    * @param neighbors    the states of the neighbors
    * @return the next state
    */
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {
-    if (currentState == 0) {
-      if (hasStateAsNeighbor(1, neighbors) && !hasStateAsNeighbor(2, neighbors)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } else if (currentState == 1) {
-      if (hasStateAsNeighbor(2, neighbors)) {
-        if (Math.random() < predator_birth_probability) {
-          return 2;
-        } else {
-          return 0;
-        }
-      } else if (Math.random() < prey_death_probability) {
-        return 0;
-      } else {
-        return 1;
-      }
-    } else if (currentState == 2) {
-      if (Math.random() < predator_death_probability || !hasStateAsNeighbor(1, neighbors)) {
-        return 0;
-      } else {
-        return 2;
-      }
+    if (currentState == EMPTY) {
+      return calculateEmptyCellNewState(neighbors);
+    } else if (currentState == PREY) {
+      return calculatePreyCellNewState(neighbors);
+    } else if (currentState == PREDATOR) {
+      return calculatePredatorCellNewState(neighbors);
     } else {
       throw new IllegalArgumentException("Unexpected cell state");
     }
+  }
+
+  private int calculateEmptyCellNewState(int[] neighbors) {
+    return (hasStateAsNeighbor(PREY, neighbors) && !hasStateAsNeighbor(PREDATOR, neighbors)) ? PREY : EMPTY;
+  }
+
+  private int calculatePreyCellNewState(int[] neighbors) {
+    if (hasStateAsNeighbor(PREDATOR, neighbors)) {
+      return (Math.random() < predator_birth_probability) ? PREDATOR : PREY;
+    } else {
+      return (Math.random() < prey_death_probability) ? EMPTY : PREY;
+    }
+  }
+
+
+  private int calculatePredatorCellNewState(int[] neighbors) {
+    return (Math.random() < predator_death_probability || !hasStateAsNeighbor(PREY, neighbors)) ? EMPTY : PREDATOR;
   }
 
   private boolean hasStateAsNeighbor(int state, int[] neighbors) {
@@ -57,7 +60,6 @@ public class PredatorPreyRule implements Rule {
 
   @Override
   public Color getStateColor(int state) {
-    Color[] stateColors = {Color.WHITE, Color.GREEN, Color.ORANGE};
     return stateColors[state];
   }
 
