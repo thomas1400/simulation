@@ -4,8 +4,8 @@ import javafx.scene.paint.Color;
 
 public class GameOfLifeRule implements Rule {
 
-  public static final int DEAD = 0;
-  public static final int ALIVE = 1;
+  private static final int DEAD = 0;
+  private static final int ALIVE = 1;
 
   public GameOfLifeRule() {
     super();

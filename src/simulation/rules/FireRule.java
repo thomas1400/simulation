@@ -4,9 +4,9 @@ import javafx.scene.paint.Color;
 
 public class FireRule implements Rule {
 
-  public static final int EMPTY = 0;
-  public static final int TREE = 1;
-  public static final int ABLAZE = 2;
+  private static final int EMPTY = 0;
+  private static final int TREE = 1;
+  private static final int ABLAZE = 2;
 
   private double fireSpreadProbability;
 

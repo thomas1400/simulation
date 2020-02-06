@@ -4,16 +4,17 @@ import javafx.scene.paint.Color;
 
 public class RockPaperScissorsRule implements Rule {
 
-  public static final int ROCK = 0;
-  public static final int PAPER = 1;
-  public static final int SCISSORS = 2;
   private int thresholdValue;
+
+  private static final int ROCK = 0;
+  private static final int PAPER = 1;
+  private static final int SCISSORS = 2;
 
   /**
    * State 0 = rock, 1 = paper, 2 = scissors
-   * @param currentState
-   * @param neighbors
-   * @return
+   * @param currentState the current numerical state of the cell
+   * @param neighbors a list of all neighbors
+   * @return the cell's new state
    */
   @Override
   public int calculateNewState(int currentState, int[] neighbors) {

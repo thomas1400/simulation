@@ -4,9 +4,9 @@ import javafx.scene.paint.Color;
 
 public class PercolationRule implements Rule {
 
-  public static final int BLOCKED = 0;
-  public static final int EMPTY = 1;
-  public static final int FILLED = 2;
+  private static final int BLOCKED = 0;
+  private static final int EMPTY = 1;
+  private static final int FILLED = 2;
 
   /**
    * @param currentState   is the cell's current state

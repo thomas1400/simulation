@@ -4,8 +4,8 @@ import javafx.scene.paint.Color;
 
 public class SegregationRule implements Rule {
 
-  public static final int EMPTY = 0;
-  public static final int SWITCHING = -1;
+  private static final int EMPTY = 0;
+  private static final int SWITCHING = -1;
 
   private double segregation_threshold;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,

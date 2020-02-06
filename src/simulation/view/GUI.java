@@ -24,8 +24,9 @@ import org.xml.sax.SAXException;
  */
 public class GUI extends Application implements IUpdate {
 
-  private final int WINDOW_HEIGHT = 512 + 25;
-  private final int WINDOW_WIDTH = 512;
+  private static final int WINDOW_HEIGHT = 512 + 25;
+  private static final int WINDOW_WIDTH = 512;
+  private static final int BUTTON_START_INDEX = 0;
 
   private String windowTitle;
   private Stage mainWindow;
@@ -103,8 +104,8 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void makeButtons() {
-    //  members
-    group.add(makeButton("Home", e -> System.out.println("Home")), 0, 0);
+    int colIndex = BUTTON_START_INDEX;
+    group.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
     group.add(makeButton("Reset", e -> {
       try {
         reset();
@@ -115,18 +116,18 @@ public class GUI extends Application implements IUpdate {
       } catch (IOException ex) {
         ex.printStackTrace();
       }
-    }), 1, 0);
-    group.add(makeButton("Slow Down", e -> simulation.slowDown()), 2, 0);
-    group.add(makeButton("Pause", e -> simulation.pause()), 3, 0);
-    group.add(makeButton("Speed Up", e -> simulation.speedUp()), 4, 0);
+    }), colIndex++, 0);
+    group.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex++, 0);
+    group.add(makeButton("Pause", e -> simulation.pause()), colIndex++, 0);
+    group.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex++, 0);
     group.add(makeButton("Step", e -> {
       try {
         simulation.step();
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    }), 5, 0);
-    group.add(makeButton("Play", e -> simulation.play()), 6, 0);
+    }), colIndex++, 0);
+    group.add(makeButton("Play", e -> simulation.play()), colIndex++, 0);
     group.add(makeButton("Config", e -> {
       try {
         loadConfig();
@@ -137,7 +138,7 @@ public class GUI extends Application implements IUpdate {
       } catch (IOException ex) {
         ex.printStackTrace();
       }
-    }), 7, 0);
+    }), colIndex++, 0);
   }
 
   private Button makeButton(String title, EventHandler<ActionEvent> action){

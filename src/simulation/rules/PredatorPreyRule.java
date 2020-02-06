@@ -8,10 +8,10 @@ public class PredatorPreyRule implements Rule {
   private double predator_death_probability;
   private double predator_birth_probability;
 
-  private final Color[] stateColors = {Color.WHITE, Color.GREEN, Color.ORANGE};
-  private final int EMPTY = 0;
-  private final int PREY = 1;
-  private final int PREDATOR = 2;
+  private static final Color[] stateColors = {Color.WHITE, Color.GREEN, Color.ORANGE};
+  private static final int EMPTY = 0;
+  private static final int PREY = 1;
+  private static final int PREDATOR = 2;
 
 
   /**
