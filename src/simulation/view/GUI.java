@@ -1,5 +1,8 @@
 package simulation.view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javax.swing.Action;
 import simulation.controller.Simulation;
 import simulation.events.IUpdate;
 import java.io.File;
@@ -101,57 +104,47 @@ public class GUI extends Application implements IUpdate {
 
   private void makeButtons() {
     //  members
-    Button myHomeButton = new Button("Home");
-    group.add(myHomeButton, 0, 0);
-    // command for going home
-
-    Button myResetButton = new Button("Reset");
-    myResetButton.setOnAction(e -> {
+    group.add(makeButton("Home", e -> System.out.println("Home")), 0, 0);
+    group.add(makeButton("Reset", e -> {
       try {
         reset();
-      } catch (ParserConfigurationException | SAXException | IOException ex) {
+      } catch (ParserConfigurationException ex) {
+        ex.printStackTrace();
+      } catch (SAXException ex) {
+        ex.printStackTrace();
+      } catch (IOException ex) {
         ex.printStackTrace();
       }
-    });
-    group.add(myResetButton, 1, 0);
-
-    Button mySlowDownButton = new Button("Slow Down");
-    mySlowDownButton.setOnAction(e -> simulation.slowDown());
-    group.add(mySlowDownButton, 2, 0);
-
-    Button myPauseButton = new Button("Pause");
-    myPauseButton.setOnAction(e -> simulation.pause());
-    group.add(myPauseButton, 3, 0);
-
-    Button mySpeedUpButton = new Button("Speed Up");
-    mySpeedUpButton.setOnAction(e -> simulation.speedUp());
-    group.add(mySpeedUpButton, 4, 0);
-
-    Button myStepButton = new Button("Step");
-    myStepButton.setOnAction(e -> {
+    }), 1, 0);
+    group.add(makeButton("Slow Down", e -> simulation.slowDown()), 2, 0);
+    group.add(makeButton("Pause", e -> simulation.pause()), 3, 0);
+    group.add(makeButton("Speed Up", e -> simulation.speedUp()), 4, 0);
+    group.add(makeButton("Step", e -> {
       try {
         simulation.step();
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    });
-    group.add(myStepButton, 5, 0);
-
-    Button myPlayButton = new Button("Play");
-    myPlayButton.setOnAction(e -> simulation.play());
-    group.add(myPlayButton, 6, 0);
-
-    Button myLoadConfigButton = new Button("Config");
-    myLoadConfigButton.setOnAction(e -> {
+    }), 5, 0);
+    group.add(makeButton("Play", e -> simulation.play()), 6, 0);
+    group.add(makeButton("Config", e -> {
       try {
         loadConfig();
-      } catch (ParserConfigurationException | SAXException | IOException ex) {
+      } catch (ParserConfigurationException ex) {
+        ex.printStackTrace();
+      } catch (SAXException ex) {
+        ex.printStackTrace();
+      } catch (IOException ex) {
         ex.printStackTrace();
       }
-    });
-    group.add(myLoadConfigButton, 7, 0);
+    }), 7, 0);
   }
 
+  private Button makeButton(String title, EventHandler<ActionEvent> action){
+    Button btn = new Button(title);
+    btn.setOnAction(action);
+    return btn;
+  }
   private void reset() throws ParserConfigurationException, SAXException, IOException {
     simulation.pause();
     simulation = null;
