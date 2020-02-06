@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class Home extends Application{
+public class Home extends Application {
 
   /**
    * Main method for the application - entry point
@@ -25,17 +25,11 @@ public class Home extends Application{
   private GridPane makeHomeGrid(){
     GridPane homeGridPane = new GridPane();
     Button btn = new Button("Launch");
-    btn.setOnAction(e -> {
-      try {
-        launchSim();
-      } catch (Exception ex) {
-        ex.printStackTrace();
-      }
-    });
+    btn.setOnAction(e -> launchSim());
     homeGridPane.add(btn, 0,0);
     return homeGridPane;
   }
-  private void launchSim() throws Exception {
+  private void launchSim() {
     GUI gui = new GUI();
     gui.start(new Stage());
   }

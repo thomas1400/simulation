@@ -39,11 +39,15 @@ public class GUI extends Application implements IUpdate {
    * @param primaryStage the main stage which the program draws on
    */
   @Override
-  public void start(Stage primaryStage)
-      throws IOException, SAXException, ParserConfigurationException {
-    xmlFileName = getSimulationFile();
+  public void start(Stage primaryStage) {
     myStage = primaryStage;
-    newSimulation();
+    try {
+      xmlFileName = getSimulationFile();
+      newSimulation();
+    } catch (Exception e) {
+      // Pop up an error message for malformed XML.
+      myStage.close();
+    }
   }
 
   private void newSimulation() throws ParserConfigurationException, SAXException, IOException {
@@ -58,9 +62,13 @@ public class GUI extends Application implements IUpdate {
     String dataPath = System.getProperty("user.dir") + "/data";
     File workingDirectory = new File(dataPath);
     fc.setInitialDirectory(workingDirectory);
+
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+    fc.getExtensionFilters().add(extFilter);
+
     File file = fc.showOpenDialog(mainWindow);
     if (file == null) {
-      return xmlFileName;
+      return null;
     }
     return file.toString();
   }
