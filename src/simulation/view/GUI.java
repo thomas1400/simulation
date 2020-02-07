@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
  * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project, including
  * updating the main window and listening to the simulation simulation.controller
  */
-class GUI extends Application implements IUpdate {
+public class GUI extends Application implements IUpdate {
 
   private static final int WINDOW_HEIGHT = 512 + 25;
   private static final int WINDOW_WIDTH = 512;
@@ -111,31 +111,38 @@ class GUI extends Application implements IUpdate {
   private void makeButtons() throws MalformedXMLException{
     int colIndex = BUTTON_START_INDEX;
     group.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
+    colIndex ++;
     group.add(makeButton("Reset", e -> {
       try {
         reset();
       } catch (MalformedXMLException ex) {
         ex.printStackTrace();
       }
-    }), colIndex++, 0);
-    group.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex++, 0);
-    group.add(makeButton("Pause", e -> simulation.pause()), colIndex++, 0);
-    group.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex++, 0);
+    }), colIndex, 0);
+    colIndex ++;
+    group.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex, 0);
+    colIndex ++;
+    group.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
+    colIndex ++;
+    group.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex, 0);
+    colIndex ++;
     group.add(makeButton("Step", e -> {
       try {
         simulation.step();
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    }), colIndex++, 0);
-    group.add(makeButton("Play", e -> simulation.play()), colIndex++, 0);
+    }), colIndex, 0);
+    colIndex ++;
+    group.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
+    colIndex ++;
     group.add(makeButton("Config", e -> {
       try {
         loadConfig();
       } catch (MalformedXMLException ex) {
         ex.printStackTrace();
       }
-    }), colIndex++, 0);
+    }), colIndex, 0);
   }
 
   private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{

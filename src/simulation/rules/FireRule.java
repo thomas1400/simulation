@@ -8,6 +8,11 @@ public class FireRule implements Rule {
   private static final int TREE = 1;
   private static final int ABLAZE = 2;
 
+  private static final int ABOVE = 0;
+  private static final int TO_RIGHT = 2;
+  private static final int BELOW = 4;
+  private static final int TO_LEFT = 6;
+
   private double fireSpreadProbability;
 
   public FireRule(double[] variables) {
@@ -33,13 +38,8 @@ public class FireRule implements Rule {
   }
 
   private boolean adjacentNeighborIsOnFire(int[] neighbors) {
-    int above = 0;
-    int toRight = 2;
-    int below = 4;
-    int toLeft = 6;
-
-    return (neighbors[above] == ABLAZE || neighbors[toRight] == ABLAZE
-        || neighbors[below] == ABLAZE || neighbors[toLeft] == ABLAZE);
+    return (neighbors[ABOVE] == ABLAZE || neighbors[TO_RIGHT] == ABLAZE
+        || neighbors[BELOW] == ABLAZE || neighbors[TO_LEFT] == ABLAZE);
   }
 
   /**

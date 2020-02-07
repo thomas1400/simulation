@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-class UserInputParser {
+public class UserInputParser {
   
   private static String xmlFilePath;
   private static String myRuleSelector;
@@ -16,6 +16,7 @@ class UserInputParser {
   private static int myGridHeight;
   private static boolean myGridIsToroidal;
   private static int[][] myInitialStateGrid;
+
 
   public static void getUserInput() throws FileNotFoundException {
     askForFilePath();
