@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class UserInputParser {
+class UserInputParser {
   
   private static String xmlFilePath;
   private static String myRuleSelector;
@@ -37,17 +37,10 @@ public class UserInputParser {
   private static void askForRuleSelector() {
     Scanner input = new Scanner(System.in);
 
-    System.out.println("Please choose your simulation simulation.rules:");
-    System.out.println(" 0 - Fire");
-    System.out.println(" 1 - Game of Life");
-    System.out.println(" 2 - Percolation");
-    System.out.println(" 3 - Predator Prey");
-    System.out.println(" 4 - Segregation");
-    System.out.println(" 5 - Rock, Paper, Scissors");
-    System.out.print("Enter the integer corresponding to your selection: ");
+    displaySimulationTypePrompt();
 
     if (!input.hasNextInt()) {
-      System.out.println("That's not a valid number. Try Again.\n");
+      displayInvalidNumInput();
       askForRuleSelector();
     } else {
       int selection = input.nextInt();
@@ -71,6 +64,17 @@ public class UserInputParser {
     }
   }
 
+  private static void displaySimulationTypePrompt() {
+    System.out.println("Please choose your simulation simulation.rules:");
+    System.out.println(" 0 - Fire");
+    System.out.println(" 1 - Game of Life");
+    System.out.println(" 2 - Percolation");
+    System.out.println(" 3 - Predator Prey");
+    System.out.println(" 4 - Segregation");
+    System.out.println(" 5 - Rock, Paper, Scissors");
+    System.out.print("Enter the integer corresponding to your selection: ");
+  }
+
   private static void askForSimulationTitle() {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter a simulation title: ");
@@ -87,7 +91,7 @@ public class UserInputParser {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter a valid number of global variables: ");
     if (!input.hasNextInt()) {
-      System.out.println("That's not a valid number. Try Again.\n");
+      displayInvalidNumInput();
       askForNumGlobalVars();
     } else {
       int inputHolder = input.nextInt();
@@ -100,13 +104,17 @@ public class UserInputParser {
     }
   }
 
+  private static void displayInvalidNumInput() {
+    System.out.println("That's not a valid number. Try Again.\n");
+  }
+
   private static void askForGlobalVars() {
     myGlobalVars = new double[myNumGlobalVars];
     for (int i = 0; i < myNumGlobalVars; i++) {
       System.out.print("Please enter global variable " + (i + 1) + ": ");
       Scanner input = new Scanner(System.in);
       if (!input.hasNextDouble()) {
-        System.out.println("That's not a valid number. Try Again.\n");
+        displayInvalidNumInput();
         i--;
       } else {
         myGlobalVars[i] = input.nextDouble();
@@ -182,7 +190,7 @@ public class UserInputParser {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter the simulation's grid WIDTH: ");
     if (!input.hasNextInt()) {
-      System.out.println("That's not a valid number. Try Again.\n");
+      displayInvalidNumInput();
       askForGridWidth();
     } else {
       myGridWidth = input.nextInt();
@@ -193,7 +201,7 @@ public class UserInputParser {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter the simulation's grid HEIGHT: ");
     if (!input.hasNextInt()) {
-      System.out.println("That's not a valid number. Try Again.\n");
+      displayInvalidNumInput();
       askForGridHeight();
     } else {
       myGridHeight = input.nextInt();
@@ -207,7 +215,7 @@ public class UserInputParser {
       for (int j = 0; j < myGridWidth; j++) {
         System.out.print("Please enter the state of Cell " + i + ", " + j + ": ");
         if (!input.hasNextInt()) {
-          System.out.println("That's not a valid number. Try Again.\n");
+          displayInvalidNumInput();
           j--;
         } else {
           myInitialStateGrid[i][j] = input.nextInt();

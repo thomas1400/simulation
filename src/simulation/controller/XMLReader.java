@@ -10,7 +10,7 @@ import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
 
-public class XMLReader {
+class XMLReader {
   //File Attributes
   private String myRule;
   private String mySimulationTitle;
