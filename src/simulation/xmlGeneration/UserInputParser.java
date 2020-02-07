@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class UserInputParser {
   
-  public static String xmlFilePath;
+  private static String xmlFilePath;
   private static String myRuleSelector;
   private static String mySimulationTitle;
   private static String mySimulationAuthor;
