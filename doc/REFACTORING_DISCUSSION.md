@@ -3,7 +3,8 @@
 ## To Fix:
  - Make Grid only contained in a "Grid" class.
      - Make the Grid handle updating and stepping instead of delegating to individual Cells, in order to make the Grid more open to extension.
-
+ - Grid needs to implement immutable interface 
+    - Interface has smaller set of methods
 
 ## Fixed:
 - Fixed XML leading errors by surrounding with try/catch and using a .xml filter
