@@ -14,7 +14,16 @@ import simulation.rules.RockPaperScissorsRule;
 import simulation.rules.Rule;
 import simulation.rules.SegregationRule;
 
-public class Initializer {
+class Initializer {
+  //neighbor indexes in clockwise order
+  private static final int TOP_MIDDLE = 0;
+  private static final int TOP_RIGHT = 1;
+  private static final int MIDDLE_RIGHT = 2;
+  private static final int BOTTOM_RIGHT = 3;
+  private static final int BOTTOM_MIDDLE = 4;
+  private static final int BOTTOM_LEFT = 5;
+  private static final int MIDDLE_LEFT = 6;
+  private static final int TOP_LEFT = 7;
 
   private String myRulesType;
   private double[] myGlobalVars;
@@ -103,7 +112,8 @@ public class Initializer {
   private void assignNeighbors(int i, int j, Cell myCell) {
     int index = 0;
     //position indexes, 1-8 from the top middle rotating clockwise, ordered in parsing order
-    int[] indices = new int[]{7, 0, 1, 6, 2, 5, 4, 3};
+    int[] indices = new int[]{TOP_LEFT, TOP_MIDDLE, TOP_RIGHT, MIDDLE_LEFT, MIDDLE_RIGHT,
+        BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT};
     for (int io = -1; io <= 1; io++) {
       for (int jo = -1; jo <= 1; jo++) {
         if (gridCoordinatesInBounds(i + io, j + jo) && (io != 0 || jo != 0)) {

@@ -11,8 +11,8 @@ import org.xml.sax.SAXException;
 
 public class Home extends Application {
 
-  private final int WINDOW_WIDTH = 512;
-  private final int WINDOW_HEIGHT = 512;
+  private static final int WINDOW_WIDTH = 512;
+  private static final int WINDOW_HEIGHT = 512;
 
   /**
    * Main method for the application - entry point

@@ -33,8 +33,13 @@ public class FireRule implements Rule {
   }
 
   private boolean adjacentNeighborIsOnFire(int[] neighbors) {
-    return (neighbors[0] == ABLAZE || neighbors[2] == ABLAZE
-        || neighbors[4] == ABLAZE || neighbors[6] == ABLAZE);
+    int above = 0;
+    int toRight = 2;
+    int below = 4;
+    int toLeft = 6;
+
+    return (neighbors[above] == ABLAZE || neighbors[toRight] == ABLAZE
+        || neighbors[below] == ABLAZE || neighbors[toLeft] == ABLAZE);
   }
 
   /**

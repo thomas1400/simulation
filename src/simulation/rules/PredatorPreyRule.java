@@ -9,6 +9,7 @@ public class PredatorPreyRule implements Rule {
   private double predator_birth_probability;
 
   private static final Color[] stateColors = {Color.WHITE, Color.GREEN, Color.ORANGE};
+  private static final int NUM_EXPECTED_VARIABLES = 3;
   private static final int EMPTY = 0;
   private static final int PREY = 1;
   private static final int PREDATOR = 2;
@@ -68,7 +69,7 @@ public class PredatorPreyRule implements Rule {
   }
 
   public void setGlobalVariables(double[] variables) {
-    if (variables.length != 3) {
+    if (variables.length != NUM_EXPECTED_VARIABLES) {
       throw new IllegalArgumentException(
           "Unexpected number of variables for PredatorPreyRules. Expected 3 but got "
               + variables.length

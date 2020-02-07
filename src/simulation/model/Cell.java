@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Cell {
+    private static final int NEIGHBORHOOD_SIZE = 8;
     private Cell[] myNeighbors; // Indexed starting with 'up' neighbor and moving clockwise.
     private Rule myRules;
 
@@ -19,7 +20,7 @@ public class Cell {
         myRules = ruleType;
         myState = state;
         myColor = myRules.getStateColor(state);
-        myNeighbors = new Cell[8];
+        myNeighbors = new Cell[NEIGHBORHOOD_SIZE];
     }
 
     // 0: up, 1: up-right, 2: right, 3: down-right, 4: down, 5: down-left; 6: left; 7: up-left

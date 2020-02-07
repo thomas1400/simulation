@@ -17,10 +17,12 @@ import org.xml.sax.SAXException;
 
 
 public class Simulation {
+  private static final double MS_TO_SECONDS = 1000.0;
+  private static final int INITIAL_SIM_SPEED = 1000;
 
   private String mySimulationTitle;
   private String mySimulationAuthor;
-  private int mySimulationSpeed = 1000;
+  private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
 
   private int myGridWidth;
@@ -55,7 +57,7 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed /1000.0), ev -> step()));
+    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> step()));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }

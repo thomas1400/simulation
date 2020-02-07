@@ -4,11 +4,12 @@ import javafx.scene.paint.Color;
 
 public class RockPaperScissorsRule implements Rule {
 
-  private int thresholdValue;
-
+  private static final int NUM_TYPES = 3;
   private static final int ROCK = 0;
   private static final int PAPER = 1;
   private static final int SCISSORS = 2;
+
+  private int thresholdValue;
 
   public RockPaperScissorsRule(double[] variables) {
     setGlobalVariables(variables);
@@ -25,10 +26,8 @@ public class RockPaperScissorsRule implements Rule {
     int greatestNeighbor = greatestNeighborType(neighbors);
     int enemy = mortalEnemy(currentState);
 
-    if (greatestNeighbor == enemy){
-      if (sumNeighborsOfType(greatestNeighbor, neighbors) >= thresholdValue){
+    if (greatestNeighbor == enemy && sumNeighborsOfType(greatestNeighbor, neighbors) >= thresholdValue){
         return enemy;
-      }
     }
 
     return currentState;
@@ -40,9 +39,9 @@ public class RockPaperScissorsRule implements Rule {
   }
 
   private int greatestNeighborType(int[] neighbors) {
-    int[] quantities = new int[3];
+    int[] quantities = new int[NUM_TYPES];
     for (int neighbor:neighbors){
-      for (int i = 0; i < 3; i++){
+      for (int i = 0; i < NUM_TYPES; i++){
         if (neighbor == i) {
           quantities[i] ++;
         }

@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
  * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project, including
  * updating the main window and listening to the simulation simulation.controller
  */
-public class GUI extends Application implements IUpdate {
+class GUI extends Application implements IUpdate {
 
   private static final int WINDOW_HEIGHT = 512 + 25;
   private static final int WINDOW_WIDTH = 512;
