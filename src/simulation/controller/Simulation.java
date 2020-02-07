@@ -1,6 +1,7 @@
 package simulation.controller;
 
 
+import exceptions.MalformedXMLException;
 import simulation.events.IUpdate;
 import java.util.List;
 import simulation.model.Cell;
@@ -57,7 +58,13 @@ public class Simulation {
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> step()));
+    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> {
+      try {
+        step();
+      } catch (MalformedXMLException e) {
+        e.printStackTrace();
+      }
+    }));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -65,7 +72,7 @@ public class Simulation {
   /**
    * Step the simulation one generation
    */
-  public void step() {
+  public void step() throws MalformedXMLException {
     for (Cell cell : myCells) {
         cell.getNextState();
     }
@@ -75,7 +82,7 @@ public class Simulation {
     alertGUI();
   }
 
-  private void alertGUI() {
+  private void alertGUI() throws MalformedXMLException {
     listener.simulationUpdate();
   }
 
