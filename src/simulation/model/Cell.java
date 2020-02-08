@@ -64,7 +64,13 @@ public class Cell {
     public int getState() {
         return myState;
     }
-
+    public void incrementState(){
+        // TODO: Figure out what this number should be
+        if(myState < 4) myState++;
+        else{
+            myState = 0;
+        }
+    }
     public Color getColor() {
         return myColor;
     }

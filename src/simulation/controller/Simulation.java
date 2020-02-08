@@ -150,8 +150,12 @@ public class Simulation {
     return 5;
   }
   public void onGridClick(int i, int j){
-    // TODO: Implement logic for altering state of simulation from click
-    System.out.println(i + " " + j);
+    myCellGrid[i][j].incrementState();
+    try {
+      step();
+    } catch (MalformedXMLException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
