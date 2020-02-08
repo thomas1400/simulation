@@ -1,12 +1,12 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import java.util.Collections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  */
 public class GUI extends Application implements IUpdate {
 
-  private static final int WINDOW_HEIGHT = 512 + 25;
+  private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
   private static final int BUTTON_START_INDEX = 0;
 
@@ -109,6 +109,7 @@ public class GUI extends Application implements IUpdate {
     gridGroup.setVgap(cellGap);
     makeButtons();
     makeGrid();
+    makeGraphs();
     mainGrid.add(buttonGroup, 0, 0);
     mainGrid.add(gridGroup, 0, 1);
     mainGrid.add(graphGroup,0,2);
@@ -116,13 +117,13 @@ public class GUI extends Application implements IUpdate {
   }
 
   private void makeGraphs(){
-    // TODO: Get number of certain values from each simulation to graph them
-    int val1 = simulation.getStats();
-    int val2 = simulation.getStats();
-    NumberAxis xAxis = new NumberAxis(0, val1, 1);
-    xAxis.setLabel("Test");
-    NumberAxis yAxis = new NumberAxis(0, val2, 1);
-    yAxis.setLabel("Test2");
+    simulation.getMaxSizes();
+    // TODO: Get max values, so you don't have to graph all the way up to 1500
+    //graphGroup = new GridPane();
+    NumberAxis xAxis = new NumberAxis(0, 1500, 1);
+    xAxis.setLabel(simulation.getTitle());
+    NumberAxis yAxis = new NumberAxis(0, 1500, 1);
+    yAxis.setLabel(simulation.getTitle());
     LineChart lineChart = new LineChart(xAxis, yAxis);
     lineChart.getData().add(data);
     graphGroup.add(lineChart, 0, 0);

@@ -57,6 +57,15 @@ public class Simulation {
     autoStep();
   }
 
+  private int[] getStatsFromGrid(){
+    int[] statArray = new int[100];
+    for(Cell[] ca : myCellGrid){
+      for(Cell c : ca){
+        statArray[c.getState()]++;
+      }
+    }
+    return statArray;
+  }
   private void autoStep() {
     timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> {
       try {
@@ -83,7 +92,8 @@ public class Simulation {
   }
 
   private void alertGUI() throws MalformedXMLException {
-    listener.simulationUpdate();
+    int[] temp = getStatsFromGrid();
+    listener.simulationUpdate(temp[0], temp[1]);
   }
 
   /**
@@ -136,7 +146,7 @@ public class Simulation {
    * TODO: Implement
    * @return stats
    */
-  public int getStats(){
+  public int getMaxSizes(){
     return 5;
   }
   public void onGridClick(int i, int j){
