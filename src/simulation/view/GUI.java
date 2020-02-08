@@ -3,6 +3,10 @@ package simulation.view;
 import exceptions.MalformedXMLException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -33,12 +37,13 @@ public class GUI extends Application implements IUpdate {
 
   private String windowTitle;
   private Stage mainWindow;
-  private GridPane gp;
+  private GridPane gridGroup;
   private Simulation simulation;
-  private GridPane group;
+  private GridPane buttonGroup;
+  private GridPane graphGroup;
   private String xmlFileName;
   private Stage myStage;
-
+  private XYChart.Series data;
 
   /**
    * Starts the JavaFX application and handles initial setup method calls
@@ -47,6 +52,7 @@ public class GUI extends Application implements IUpdate {
    */
   @Override
   public void start(Stage primaryStage) {
+    data = new XYChart.Series();
     myStage = primaryStage;
     try {
       xmlFileName = getSimulationFile();
@@ -81,7 +87,7 @@ public class GUI extends Application implements IUpdate {
     return file.toString();
   }
 
-  private void update() throws MalformedXMLException {
+  private void updateGUI() throws MalformedXMLException {
     setUpWindow(mainWindow);
   }
 
@@ -95,23 +101,37 @@ public class GUI extends Application implements IUpdate {
 
   private GridPane makeMasterGrid() throws MalformedXMLException {
     GridPane mainGrid = new GridPane();
-    group = new GridPane();
-    gp = new GridPane();
+    buttonGroup = new GridPane();
+    gridGroup = new GridPane();
+    graphGroup = new GridPane();
     double cellGap = 1.0;
-    gp.setHgap(cellGap);
-    gp.setVgap(cellGap);
+    gridGroup.setHgap(cellGap);
+    gridGroup.setVgap(cellGap);
     makeButtons();
     makeGrid();
-    mainGrid.add(group, 0, 0);
-    mainGrid.add(gp, 0, 1);
+    mainGrid.add(buttonGroup, 0, 0);
+    mainGrid.add(gridGroup, 0, 1);
+    mainGrid.add(graphGroup,0,2);
     return mainGrid;
   }
 
+  private void makeGraphs(){
+    // TODO: Get number of certain values from each simulation to graph them
+    int val1 = simulation.getStats();
+    int val2 = simulation.getStats();
+    NumberAxis xAxis = new NumberAxis(0, val1, 1);
+    xAxis.setLabel("Test");
+    NumberAxis yAxis = new NumberAxis(0, val2, 1);
+    yAxis.setLabel("Test2");
+    LineChart lineChart = new LineChart(xAxis, yAxis);
+    lineChart.getData().add(data);
+    graphGroup.add(lineChart, 0, 0);
+  }
   private void makeButtons() throws MalformedXMLException{
     int colIndex = BUTTON_START_INDEX;
-    group.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
+    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Reset", e -> {
+    buttonGroup.add(makeButton("Reset", e -> {
       try{
         reset();
       } catch (MalformedXMLException ex) {
@@ -120,13 +140,13 @@ public class GUI extends Application implements IUpdate {
       }
     }), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex, 0);
+    buttonGroup.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
+    buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex, 0);
+    buttonGroup.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Step", e -> {
+    buttonGroup.add(makeButton("Step", e -> {
       try {
         simulation.step();
       } catch (Exception ex) {
@@ -134,9 +154,9 @@ public class GUI extends Application implements IUpdate {
       }
     }), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
+    buttonGroup.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
     colIndex ++;
-    group.add(makeButton("Config", e -> {
+    buttonGroup.add(makeButton("Config", e -> {
       try {
         loadConfig();
       } catch (MalformedXMLException ex) {
@@ -182,7 +202,7 @@ public class GUI extends Application implements IUpdate {
         rec.setWidth(squareSize);
         rec.setHeight(squareSize);
         rec.setOnMouseClicked(e -> simulation.onGridClick(iTemp, jTemp));
-        gp.add(rec, j, i);
+        gridGroup.add(rec, j, i);
       }
     }
   }
@@ -217,11 +237,15 @@ public class GUI extends Application implements IUpdate {
           + e.getMessage());
     }
   }
+  private void updateStats(int newX, int newY){
+    data.getData().add(new XYChart.Data(newX, newY));
+  }
   /**
    * From IUpdate: method called when the simulation alerts the GUI when the simulation steps
    */
   @Override
-  public void simulationUpdate() throws MalformedXMLException {
-    update();
+  public void simulationUpdate(int newX, int newY) throws MalformedXMLException {
+    updateStats(newX, newY);
+    updateGUI();
   }
 }
