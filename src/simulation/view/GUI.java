@@ -144,7 +144,6 @@ public class GUI extends Application implements IUpdate {
       }
     }), colIndex, 0);
   }
-
   private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
     Button btn = new Button(title);
     btn.setOnAction(action);
