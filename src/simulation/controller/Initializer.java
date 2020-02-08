@@ -1,6 +1,7 @@
 package simulation.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
@@ -18,6 +19,14 @@ class Initializer {
   private double[] myGlobalVars;
 
   private boolean myGridIsToroidal;
+  private int myNeighborhoodType;
+
+  private static final int[][][] NEIGHBORHOOD_SHAPES = {
+      { {1, 1, 1}, {1, 0, 1}, {1, 1, 1} },
+      { {0, 1, 0}, {1, 0, 1}, {0, 1, 0} },
+      { {1, 0, 1}, {0, 0, 0}, {1, 0, 1} }
+  };
+
   private int[][] myInitialStateGrid;
   private Grid myGrid;
 
@@ -40,13 +49,9 @@ class Initializer {
     myGlobalVars = xmlReader.getGlobalVars();
     myGridIsToroidal = xmlReader.getIsToroidal();
     myInitialStateGrid = xmlReader.getGrid();
-
-    int[][] tempNeighborhoodShape =
-        {   {0, 1, 0},
-            {1, -1, 1},
-            {0, 1, 0}   };
-
-    myGrid = new Grid(myInitialStateGrid, tempNeighborhoodShape, newRuleClass(), myGridIsToroidal);
+    myNeighborhoodType = xmlReader.getNeighborhoodType();
+    
+    myGrid = new Grid(myInitialStateGrid, NEIGHBORHOOD_SHAPES[myNeighborhoodType-1], newRuleClass(), myGridIsToroidal);
   }
 
   private Rules newRuleClass() {

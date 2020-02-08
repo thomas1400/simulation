@@ -62,7 +62,7 @@ public class GUI extends Application implements IUpdate {
       xmlFileName = getSimulationFile();
       newSimulation();
     } catch (Exception e) {
-      // TODO: Pop up an error message for malformed XML.
+      e.printStackTrace(); // TODO : remove
       myStage.close();
     }
   }
@@ -97,6 +97,7 @@ public class GUI extends Application implements IUpdate {
 
   private void setUpWindow(Stage primaryStage) throws MalformedXMLException {
     mainWindow = primaryStage;
+    primaryStage.setOnCloseRequest(event -> simulation.stop());
     mainWindow.setTitle(windowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
     //gridScene.getStylesheets().add(getClass().getResource("/resources/stylesheet.css").toExternalForm());
@@ -272,4 +273,5 @@ public class GUI extends Application implements IUpdate {
     updateStats(newX, newY);
     updateGUI();
   }
+
 }

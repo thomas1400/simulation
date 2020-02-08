@@ -1,43 +1,60 @@
 package simulation.rules;
 
+import java.util.List;
 import javafx.scene.paint.Color;
+import simulation.model.Grid;
+import simulation.model.State;
 
 public class SegregationRules extends Rules {
 
   private static final int EMPTY = 0;
-  private static final int SWITCHING = -1;
-
-  private double segregation_threshold;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
       Color.PURPLE, Color.ORANGE};
-  private static final int MY_MAX_GROUPS = 6;
+  private static final int MY_MAX_GROUPS = groupColors.length;
+
+  private double segregation_threshold;
+
+  private Grid myGrid;
 
   public SegregationRules(double[] variables) {
     setGlobalVariables(variables);
   }
 
+  public void setGrid(Grid grid) {
+    myGrid = grid;
+  }
+
   @Override
-  public int calculateNewState(int currentState, int[] neighbors) {
-    if (percentLikeNeighbors(currentState, neighbors) < segregation_threshold
-        || currentState == EMPTY) {
-      return SWITCHING;
-    } else {
-      return currentState;
+  public void calculateUpdate(State state, List<State> neighbors) {
+    if (percentLikeNeighbors(state, neighbors) < segregation_threshold) {
+      moveToEmptyCell(state);
+    } else if (!state.equals(EMPTY)) {
+      state.setUpdate(state);
     }
   }
 
-  private double percentLikeNeighbors(int currentState, int[] neighbors) {
-    if (currentState == EMPTY) {
-      return EMPTY;
+  private void moveToEmptyCell(State state) {
+    List<State> emptyStates = myGrid.getEmptyStates();
+    if (emptyStates.size() > 0) {
+      int i = (int) (Math.random() * emptyStates.size());
+      emptyStates.get(i).setUpdate(state);
+      emptyStates.get(i).update();
+      state.setUpdate(EMPTY);
+      state.update();
     }
+  }
 
+  private double percentLikeNeighbors(State state, List<State> neighbors) {
+    if (state.toInt() == EMPTY) {
+      return 0;
+    }
     int likeNeighbors = 0;
     float numNeighbors = 0;
-    for (int n : neighbors) {
-      if (n == currentState) {
+    for (State n : neighbors) {
+      if (n.equals(state)) {
         likeNeighbors += 1;
       }
-      if (n > 0) {
+      if (!n.equals(EMPTY)) {
         numNeighbors += 1;
       }
     }
@@ -45,11 +62,11 @@ public class SegregationRules extends Rules {
   }
 
   @Override
-  public Color getStateColor(int state) {
-    if (state == EMPTY) {
+  public Color getStateColor(State state) {
+    if (state.equals(EMPTY)) {
       return Color.WHITE;
     } else {
-      return groupColors[state-1];
+      return groupColors[state.toInt()-1];
     }
   }
 
@@ -63,7 +80,8 @@ public class SegregationRules extends Rules {
     segregation_threshold = variables[0];
   }
 
-  public int incrementState(int state) {
-    return (state + 1) % (MY_MAX_GROUPS+1);
+  public void incrementState(State state) {
+    state.setUpdate((state.toInt() + 1) % (MY_MAX_GROUPS+1));
+    state.update();
   }
 }

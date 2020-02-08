@@ -1,6 +1,9 @@
 package simulation.rules;
 
+import java.util.List;
 import javafx.scene.paint.Color;
+import simulation.model.Grid;
+import simulation.model.State;
 
 public class RockPaperScissorsRules extends Rules {
 
@@ -10,6 +13,7 @@ public class RockPaperScissorsRules extends Rules {
   private static final int SCISSORS = 2;
 
   private int thresholdValue;
+  private Grid myGrid;
 
   public RockPaperScissorsRules(double[] variables) {
     setGlobalVariables(variables);
@@ -17,33 +21,32 @@ public class RockPaperScissorsRules extends Rules {
 
   /**
    * State 0 = rock, 1 = paper, 2 = scissors
-   * @param currentState the current numerical state of the cell
+   * @param state the current numerical state of the cell
    * @param neighbors a list of all neighbors
-   * @return the cell's new state
    */
   @Override
-  public int calculateNewState(int currentState, int[] neighbors) {
+  public void calculateUpdate(State state, List<State> neighbors) {
     int greatestNeighbor = greatestNeighborType(neighbors);
-    int enemy = mortalEnemy(currentState);
+    int enemy = mortalEnemy(state);
 
     if (greatestNeighbor == enemy && sumNeighborsOfType(greatestNeighbor, neighbors) >= thresholdValue){
-        return enemy;
+      state.setUpdate(enemy);
+    } else {
+      state.setUpdate(state.toInt());
     }
-
-    return currentState;
   }
 
-  private int mortalEnemy(int currentState) {
+  private int mortalEnemy(State state) {
     int[] enemies = {PAPER, SCISSORS, ROCK};
-    return enemies[currentState];
+    return enemies[state.toInt()];
   }
 
-  private int greatestNeighborType(int[] neighbors) {
+  private int greatestNeighborType(List<State> neighbors) {
     int[] quantities = new int[NUM_TYPES];
-    for (int neighbor:neighbors){
+    for (State neighbor : neighbors){
       for (int i = 0; i < NUM_TYPES; i++){
-        if (neighbor == i) {
-          quantities[i] ++;
+        if (neighbor.equals(i)) {
+          quantities[i] += 1;
         }
       }
     }
@@ -60,10 +63,10 @@ public class RockPaperScissorsRules extends Rules {
     return largest;
   }
 
-  private int sumNeighborsOfType(int type, int[] neighbors){
+  private int sumNeighborsOfType(int type, List<State> neighbors){
     int sum = 0;
-    for (int neighbor:neighbors){
-      if (neighbor == type) {
+    for (State neighbor : neighbors){
+      if (neighbor.equals(type)) {
         sum ++;
       }
     }
@@ -71,12 +74,12 @@ public class RockPaperScissorsRules extends Rules {
   }
 
   @Override
-  public Color getStateColor(int state) {
-    if (state == ROCK) {
+  public Color getStateColor(State state) {
+    if (state.equals(ROCK)) {
       return Color.GREEN;
-    } else if (state == PAPER) {
+    } else if (state.equals(PAPER)) {
       return Color.BLUE;
-    } else if (state == SCISSORS) {
+    } else if (state.equals(SCISSORS)) {
       return Color.RED;
     } else {
       throw new IllegalArgumentException("Unexpected cell state");
@@ -87,7 +90,13 @@ public class RockPaperScissorsRules extends Rules {
     thresholdValue = (int)variables[0];
   }
 
-  public int incrementState(int state) {
-    return (state + 1) % (SCISSORS+1);
+  public void incrementState(State state) {
+    state.setUpdate((state.toInt() + 1) % (SCISSORS+1));
+    state.update();
+  }
+
+
+  public void setGrid(Grid grid) {
+    myGrid = grid;
   }
 }

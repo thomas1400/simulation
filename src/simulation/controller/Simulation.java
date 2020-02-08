@@ -3,8 +3,6 @@ package simulation.controller;
 
 import exceptions.MalformedXMLException;
 import simulation.events.IUpdate;
-import java.util.List;
-import simulation.model.Cell;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -106,6 +104,12 @@ public class Simulation {
     mySimulationSpeed *= 2;
     timeline.stop();
     autoStep();
+  }
+
+  public void stop() {
+    if (timeline != null) {
+      timeline.stop();
+    }
   }
 
   /**

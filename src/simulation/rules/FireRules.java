@@ -1,6 +1,9 @@
 package simulation.rules;
 
+import java.util.List;
 import javafx.scene.paint.Color;
+import simulation.model.Grid;
+import simulation.model.State;
 
 public class FireRules extends Rules {
 
@@ -8,12 +11,8 @@ public class FireRules extends Rules {
   private static final int TREE = 1;
   private static final int ABLAZE = 2;
 
-  private static final int ABOVE = 0;
-  private static final int TO_RIGHT = 2;
-  private static final int BELOW = 4;
-  private static final int TO_LEFT = 6;
-
   private double fireSpreadProbability;
+  private Grid myGrid;
 
   public FireRules(double[] variables) {
     setGlobalVariables(variables);
@@ -22,24 +21,24 @@ public class FireRules extends Rules {
   /**
    * 0 corresponds to Empty, 1 Corresponds to Alive, 2 Corresponds to Burning
    *
-   * @param currentState
+   * @param state
    * @param neighbors
-   * @return
    */
   @Override
-  public int calculateNewState(int currentState, int[] neighbors) {
-    if (currentState == TREE && adjacentNeighborIsOnFire(neighbors)
+  public void calculateUpdate(State state, List<State> neighbors) {
+    if (state.equals(TREE) && adjacentNeighborIsOnFire(neighbors)
         && Math.random() < fireSpreadProbability) {
-      return ABLAZE;
-    } else if (currentState == ABLAZE) {
-      return EMPTY;
+      state.setUpdate(ABLAZE);
+    } else if (state.equals(ABLAZE)) {
+      state.setUpdate(EMPTY);
+    } else {
+      state.setUpdate(state.toInt());
     }
-    return currentState;
   }
 
-  private boolean adjacentNeighborIsOnFire(int[] neighbors) {
-    for (int neighbor : neighbors) {
-      if (neighbor == ABLAZE) {
+  private boolean adjacentNeighborIsOnFire(List<State> neighbors) {
+    for (State neighbor : neighbors) {
+      if (neighbor.equals(ABLAZE)) {
         return true;
       }
     }
@@ -47,16 +46,14 @@ public class FireRules extends Rules {
   }
 
   /**
-   * Burnt is Black, Alive is Green, Burning is Red
-   *
    * @param state
    * @return
    */
   @Override
-  public Color getStateColor(int state) {
-    if (state == EMPTY) {
+  public Color getStateColor(State state) {
+    if (state.equals(EMPTY)) {
       return Color.BLACK;
-    } else if (state == 1) {
+    } else if (state.equals(TREE)) {
       return Color.GREEN;
     } else {
       return Color.RED;
@@ -67,7 +64,12 @@ public class FireRules extends Rules {
     fireSpreadProbability = variables[0];
   }
 
-  public int incrementState(int state) {
-    return (state + 1) % (ABLAZE+1);
+  public void incrementState(State state) {
+    state.setUpdate((state.toInt() + 1) % (ABLAZE+1));
+    state.update();
+  }
+
+  public void setGrid(Grid grid) {
+    myGrid = grid;
   }
 }

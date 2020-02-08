@@ -1,5 +1,8 @@
 package simulation.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.scene.paint.Color;
 import simulation.rules.Rules;
 
@@ -9,8 +12,8 @@ import simulation.rules.Rules;
 public class Grid {
 
   public static final int NEIGHBORHOOD_CENTER = -1;
-  private int[][] myStates;
-  private int[][] myUpdates;
+  private State[][] myStates;
+  private List<State> myUpdateOrder;
   private int myHeight;
   private int myWidth;
 
@@ -23,12 +26,15 @@ public class Grid {
     myWidth = initialStates.length;
     myHeight = initialStates[0].length;
 
-    myStates = new int[myWidth][myHeight];
+    myStates = new State[myWidth][myHeight];
+    myUpdateOrder = new ArrayList<>();
     for (int x = 0; x < myWidth; x++) {
-      myStates[x] = initialStates[x].clone();
+      for (int y = 0; y < myHeight; y++) {
+        State newState = new State(initialStates[x][y], new int[]{x, y});
+        myStates[x][y] = newState;
+        myUpdateOrder.add(newState);
+      }
     }
-
-    myUpdates = new int[myWidth][myHeight];
 
     myNeighborhoodShape = new int[neighborhoodShape.length][neighborhoodShape[0].length];
     for (int x = 0; x < neighborhoodShape.length; x++) {
@@ -36,24 +42,27 @@ public class Grid {
     }
 
     myRuleSet = ruleSet;
+    myRuleSet.setGrid(this);
 
     isToroidal = toroidal;
   }
 
   public void step() {
-    for (int x = 0; x < myWidth; x++) {
-      for (int y = 0; y < myHeight; y++) {
-        int[] neighborStates = getNeighborStates(x, y);
-        myUpdates[x][y] = myRuleSet.calculateNewState(myStates[x][y], neighborStates);
-      }
+    Collections.shuffle(myUpdateOrder);
+    for (State s : myUpdateOrder) {
+        int[] location = s.getLocation();
+        List<State> neighborStates = getNeighborStates(location);
+        myRuleSet.calculateUpdate(s, neighborStates);
     }
-    for (int x = 0; x < myWidth; x++) {
-      myStates[x] = myUpdates[x].clone();
+    for (State s : myUpdateOrder) {
+      s.update();
     }
   }
 
-  private int[] getNeighborStates(int x, int y) {
-    int[] neighborStates = new int[myNeighborhoodShape.length*myNeighborhoodShape[0].length-1];
+  private List<State> getNeighborStates(int[] location) {
+    ArrayList<State> neighborStates = new ArrayList<>();
+
+    int x = location[0], y = location[1];
 
     int centerX = myNeighborhoodShape.length / 2;
     int centerY = myNeighborhoodShape[0].length / 2;
@@ -68,14 +77,12 @@ public class Grid {
     }
 
     int xOffset, yOffset;
-    int counter = 0;
     for (int i = 0; i < myNeighborhoodShape.length; i++) {
       for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
         xOffset = i - centerX;
         yOffset = j - centerY;
-        if ((xOffset != 0 || yOffset != 0) && inGridBounds(x + xOffset, y + yOffset)) {
-          neighborStates[counter] = myStates[x + xOffset][y + yOffset] * myNeighborhoodShape[i][j];
-          counter += 1;
+        if (myNeighborhoodShape[i][j] == 1 && inGridBounds(x + xOffset, y + yOffset)) {
+          neighborStates.add(myStates[x + xOffset][y + yOffset]);
         }
       }
     }
@@ -91,10 +98,10 @@ public class Grid {
    * return 2x2 grid of cellColors
    */
   public Color[][] getColorGrid() {
-    Color[][] myColorGrid = new Color[myHeight][myWidth];
-    for (int i = 0; i < myHeight; i++) {
-      for (int j = 0; j < myWidth; j++) {
-        myColorGrid[i][j] = myRuleSet.getStateColor(myStates[i][j]);
+    Color[][] myColorGrid = new Color[myWidth][myHeight];
+    for (int x = 0; x < myWidth; x++) {
+      for (int y = 0; y < myHeight; y++) {
+        myColorGrid[x][y] = myRuleSet.getStateColor(myStates[x][y]);
       }
     }
     return myColorGrid;
@@ -102,16 +109,28 @@ public class Grid {
 
   public int[] getStats() {
     int[] statArray = new int[100];
-    for(int[] ca : myStates){
-      for(int c : ca){
-        statArray[c]++;
+    for(State[] sa : myStates){
+      for(State s : sa){
+        statArray[s.toInt()]++;
       }
     }
     return statArray;
   }
 
+  public List<State> getEmptyStates() {
+    ArrayList<State> emptyStates = new ArrayList<>();
+    for (State[] sa : myStates) {
+      for (State s : sa) {
+        if (s.isEmpty()) {
+          emptyStates.add(s);
+        }
+      }
+    }
+    return emptyStates;
+  }
+
   public void incrementState(int x, int y){
-    myStates[x][y] = myRuleSet.incrementState(myStates[x][y]);
+    myRuleSet.incrementState(myStates[x][y]);
   }
 
 }

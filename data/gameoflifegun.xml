@@ -10,6 +10,7 @@
     <gridWidth>38</gridWidth>
     <gridHeight>30</gridHeight>
     <toroidalGrid>false</toroidalGrid>
+    <neighborhoodType>1</neighborhoodType>
     <gridRows>
         <row0>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row0>
         <row1>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 </row1>

@@ -1,6 +1,9 @@
 package simulation.rules;
 
+import java.util.List;
 import javafx.scene.paint.Color;
+import simulation.model.Grid;
+import simulation.model.State;
 
 public class PercolationRules extends Rules {
 
@@ -8,27 +11,28 @@ public class PercolationRules extends Rules {
   private static final int EMPTY = 1;
   private static final int FILLED = 2;
 
+  private Grid myGrid;
+
   public PercolationRules(double[] variables) { }
 
   /**
-   * @param currentState   is the cell's current state
+   * @param state   is the cell's current state
    * @param neighborStates is the cell's neighbor's states as an array
-   * @return returns new state of cell
    */
   @Override
-  public int calculateNewState(int currentState, int[] neighborStates) {
+  public void calculateUpdate(State state, List<State> neighborStates) {
     boolean doesPercolate = shouldPercolate(neighborStates);
-    if (currentState == BLOCKED) {
-      return BLOCKED;
+    if (state.equals(BLOCKED)) {
+      state.setUpdate(BLOCKED);
     } else {
-      return (currentState == FILLED || doesPercolate) ? FILLED : EMPTY;
+      state.setUpdate((state.equals(FILLED) || doesPercolate) ? FILLED : EMPTY);
     }
   }
 
-  private boolean shouldPercolate(int[] neighborStates) {
+  private boolean shouldPercolate(List<State> neighborStates) {
     // Only check directly adjacent squares, not diagonals (indices 0, 2, 4, 8)
-    for (int i = 0; i < neighborStates.length; i += 2) {
-      if (neighborStates[i] == FILLED) {
+    for (int i = 0; i < neighborStates.size(); i += 2) {
+      if (neighborStates.get(i).equals(FILLED)) {
         return true;
       }
     }
@@ -37,20 +41,26 @@ public class PercolationRules extends Rules {
 
   /**
    * Colors will be "Blue" for filled with water,"White" for empty, and "Black" for blocked
+   * @param state
    */
   @Override
-  public Color getStateColor(int state) {
-    if (state == FILLED) {
+  public Color getStateColor(State state) {
+    if (state.equals(FILLED)) {
       return Color.BLUE;
-    } else if (state == EMPTY) {
+    } else if (state.equals(EMPTY)) {
       return Color.LIGHTGRAY;
     } else {
       return Color.BLACK;
     }
   }
 
-  public int incrementState(int state) {
-    return (state + 1) % (FILLED+1);
+  public void incrementState(State state) {
+    state.setUpdate((state.toInt() + 1) % (FILLED+1));
+    state.update();
+  }
+
+  public void setGrid(Grid grid) {
+    myGrid = grid;
   }
 
 }

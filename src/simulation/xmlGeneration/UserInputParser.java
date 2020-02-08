@@ -16,6 +16,7 @@ public class UserInputParser {
   private static int myGridHeight;
   private static boolean myGridIsToroidal;
   private static int[][] myInitialStateGrid;
+  private static int myNeighborhoodType;
 
 
   public static void getUserInput() throws FileNotFoundException {
@@ -27,6 +28,7 @@ public class UserInputParser {
     askForGlobalVars();
     askForSimulationGrid();
     askForGridIsToroidal();
+    askForNeighborhoodType();
   }
 
   private static void askForFilePath() {
@@ -225,6 +227,18 @@ public class UserInputParser {
     }
   }
 
+  private static void askForNeighborhoodType() {
+    myInitialStateGrid = new int[myGridHeight][myGridWidth];
+    Scanner input = new Scanner(System.in);
+    System.out.print("Please enter the simulation's grid neighborhood type (1-3): ");
+    if (!input.hasNextInt()) {
+      displayInvalidNumInput();
+      askForNeighborhoodType();
+    } else {
+      myNeighborhoodType = input.nextInt();
+    }
+  }
+
   public static String getXmlFilePath() {
     return xmlFilePath;
   }
@@ -263,5 +277,9 @@ public class UserInputParser {
 
   public static int[][] getInitialStateGrid() {
     return myInitialStateGrid;
+  }
+
+  public static int getNeighborhoodType() {
+    return myNeighborhoodType;
   }
 }
