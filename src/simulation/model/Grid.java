@@ -81,8 +81,13 @@ public class Grid {
       for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
         xOffset = i - centerX;
         yOffset = j - centerY;
-        if (myNeighborhoodShape[i][j] == 1 && inGridBounds(x + xOffset, y + yOffset)) {
-          neighborStates.add(myStates[x + xOffset][y + yOffset]);
+        if (myNeighborhoodShape[i][j] == 1) {
+          if (inGridBounds(x + xOffset, y + yOffset)) {
+            neighborStates.add(myStates[x + xOffset][y + yOffset]);
+          } else if (isToroidal) {
+            int[] tc = toroidizeCoordinates(x+xOffset, y+yOffset);
+            neighborStates.add(myStates[tc[0]][tc[1]]);
+          }
         }
       }
     }
@@ -92,6 +97,17 @@ public class Grid {
 
   private boolean inGridBounds(int x, int y) {
     return (0 <= x && 0 <= y && x < myWidth && y < myHeight);
+  }
+
+  private int[] toroidizeCoordinates(int x, int y) {
+    return new int[]{normalize(x, myWidth), normalize(y, myHeight)};
+  }
+
+  private int normalize(int c, int bound) {
+    if (c < 0 || c >= bound) {
+      c = (c+bound) % bound;
+    }
+    return c;
   }
 
   /**

@@ -13,6 +13,7 @@ public class RockPaperScissorsRules extends Rules {
   private static final int SCISSORS = 2;
 
   private int thresholdValue;
+  private int randomThresholdAdjustment;
   private Grid myGrid;
 
   public RockPaperScissorsRules(double[] variables) {
@@ -26,10 +27,10 @@ public class RockPaperScissorsRules extends Rules {
    */
   @Override
   public void calculateUpdate(State state, List<State> neighbors) {
-    int greatestNeighbor = greatestNeighborType(neighbors);
     int enemy = mortalEnemy(state);
+    int numberOfEnemies = sumNeighborsOfType(enemy, neighbors);
 
-    if (greatestNeighbor == enemy && sumNeighborsOfType(greatestNeighbor, neighbors) >= thresholdValue){
+    if (numberOfEnemies >= thresholdValue + (int)(Math.random() * randomThresholdAdjustment)){
       state.setUpdate(enemy);
     } else {
       state.setUpdate(state.toInt());
@@ -39,28 +40,6 @@ public class RockPaperScissorsRules extends Rules {
   private int mortalEnemy(State state) {
     int[] enemies = {PAPER, SCISSORS, ROCK};
     return enemies[state.toInt()];
-  }
-
-  private int greatestNeighborType(List<State> neighbors) {
-    int[] quantities = new int[NUM_TYPES];
-    for (State neighbor : neighbors){
-      for (int i = 0; i < NUM_TYPES; i++){
-        if (neighbor.equals(i)) {
-          quantities[i] += 1;
-        }
-      }
-    }
-    return indexOfMax(quantities);
-  }
-
-  private int indexOfMax(int[] quantities) {
-    int largest = 0;
-    for ( int i = 1; i < quantities.length; i++ ) {
-      if ( quantities[i] > quantities[largest] ) {
-        largest = i;
-      }
-    }
-    return largest;
   }
 
   private int sumNeighborsOfType(int type, List<State> neighbors){
