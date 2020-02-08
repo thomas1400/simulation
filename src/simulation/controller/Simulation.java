@@ -137,6 +137,10 @@ public class Simulation {
     return myColorGrid;
   }
 
+  public void parseSettings(String string){
+    System.out.println(string);
+  }
+
   public void setListener(IUpdate listener) {
     this.listener = listener;
   }

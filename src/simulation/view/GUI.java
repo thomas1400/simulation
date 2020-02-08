@@ -10,6 +10,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import simulation.controller.Simulation;
 import simulation.events.IUpdate;
 import java.io.File;
@@ -41,6 +44,7 @@ public class GUI extends Application implements IUpdate {
   private Simulation simulation;
   private GridPane buttonGroup;
   private GridPane graphGroup;
+  private GridPane settingGroup;
   private String xmlFileName;
   private Stage myStage;
   private XYChart.Series data;
@@ -104,16 +108,30 @@ public class GUI extends Application implements IUpdate {
     buttonGroup = new GridPane();
     gridGroup = new GridPane();
     graphGroup = new GridPane();
+    settingGroup = new GridPane();
     double cellGap = 1.0;
     gridGroup.setHgap(cellGap);
     gridGroup.setVgap(cellGap);
     makeButtons();
     makeGrid();
     makeGraphs();
+    makeSetting();
     mainGrid.add(buttonGroup, 0, 0);
     mainGrid.add(gridGroup, 0, 1);
     mainGrid.add(graphGroup,0,2);
+    mainGrid.add(settingGroup,1,0);
     return mainGrid;
+  }
+
+  private void makeSetting(){
+    Label label = new Label("Enter Setting:");
+    TextField textField = new TextField();
+    Button confirmBtn = new Button("Confirm");
+    confirmBtn.setOnAction(e -> simulation.parseSettings(textField.getText()));
+    HBox hb = new HBox();
+    hb.getChildren().addAll(label, textField, confirmBtn);
+    hb.setSpacing(10);
+    settingGroup.add(hb, 0,0);
   }
 
   private void makeGraphs(){
