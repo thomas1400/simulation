@@ -2,7 +2,7 @@ package simulation.rules;
 
 import javafx.scene.paint.Color;
 
-public class FireRule implements Rule {
+public class FireRules extends Rules {
 
   private static final int EMPTY = 0;
   private static final int TREE = 1;
@@ -15,7 +15,7 @@ public class FireRule implements Rule {
 
   private double fireSpreadProbability;
 
-  public FireRule(double[] variables) {
+  public FireRules(double[] variables) {
     setGlobalVariables(variables);
   }
 
@@ -38,8 +38,12 @@ public class FireRule implements Rule {
   }
 
   private boolean adjacentNeighborIsOnFire(int[] neighbors) {
-    return (neighbors[ABOVE] == ABLAZE || neighbors[TO_RIGHT] == ABLAZE
-        || neighbors[BELOW] == ABLAZE || neighbors[TO_LEFT] == ABLAZE);
+    for (int neighbor : neighbors) {
+      if (neighbor == ABLAZE) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -61,5 +65,9 @@ public class FireRule implements Rule {
 
   public void setGlobalVariables(double[] variables) {
     fireSpreadProbability = variables[0];
+  }
+
+  public int incrementState(int state) {
+    return (state + 1) % (ABLAZE+1);
   }
 }

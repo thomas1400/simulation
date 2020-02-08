@@ -219,7 +219,13 @@ public class GUI extends Application implements IUpdate {
         rec.setFill(colorGrid[i][j]);
         rec.setWidth(squareSize);
         rec.setHeight(squareSize);
-        rec.setOnMouseClicked(e -> simulation.onGridClick(iTemp, jTemp));
+        rec.setOnMouseClicked(e -> {
+          try {
+            simulation.onGridClick(iTemp, jTemp);
+          } catch (MalformedXMLException ex) {
+            ex.printStackTrace();
+          }
+        });
         gridGroup.add(rec, j, i);
       }
     }

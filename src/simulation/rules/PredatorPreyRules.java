@@ -2,7 +2,7 @@ package simulation.rules;
 
 import javafx.scene.paint.Color;
 
-public class PredatorPreyRule implements Rule {
+public class PredatorPreyRules extends Rules {
 
   private double prey_death_probability;
   private double predator_death_probability;
@@ -14,7 +14,7 @@ public class PredatorPreyRule implements Rule {
   private static final int PREY = 1;
   private static final int PREDATOR = 2;
 
-  public PredatorPreyRule(double[] variables) {
+  public PredatorPreyRules(double[] variables) {
     setGlobalVariables(variables);
   }
 
@@ -78,5 +78,9 @@ public class PredatorPreyRule implements Rule {
     prey_death_probability = variables[0];
     predator_death_probability = variables[1];
     predator_birth_probability = variables[2];
+  }
+
+  public int incrementState(int state) {
+    return (state + 1) % (PREDATOR+1);
   }
 }

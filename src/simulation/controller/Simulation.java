@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import simulation.model.Grid;
 
 
 public class Simulation {
@@ -26,11 +27,7 @@ public class Simulation {
   private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
 
-  private int myGridWidth;
-  private int myGridHeight;
-
-  private Cell[][] myCellGrid;
-  private List<Cell> myCells;
+  private Grid myGrid;
 
   private Timeline timeline;
   private IUpdate listener;
@@ -43,10 +40,7 @@ public class Simulation {
 
     mySimulationTitle = myInitializer.getSimulationTitle();
     mySimulationAuthor = myInitializer.getSimulationAuthor();
-    myCellGrid = myInitializer.getCellGrid();
-    myGridHeight = myCellGrid.length;
-    myGridWidth = myCellGrid[0].length;
-    myCells = myInitializer.getCells();
+    myGrid = myInitializer.getGrid();
   }
 
   /**
@@ -58,14 +52,9 @@ public class Simulation {
   }
 
   private int[] getStatsFromGrid(){
-    int[] statArray = new int[100];
-    for(Cell[] ca : myCellGrid){
-      for(Cell c : ca){
-        statArray[c.getState()]++;
-      }
-    }
-    return statArray;
+    return myGrid.getStats();
   }
+
   private void autoStep() {
     timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> {
       try {
@@ -82,12 +71,7 @@ public class Simulation {
    * Step the simulation one generation
    */
   public void step() throws MalformedXMLException {
-    for (Cell cell : myCells) {
-        cell.getNextState();
-    }
-    for (Cell cell : myCells) {
-      cell.updateState();
-    }
+    myGrid.step();
     alertGUI();
   }
 
@@ -128,13 +112,7 @@ public class Simulation {
    * return 2x2 grid of cellColors
    */
   public Color[][] getColorGrid() {
-    Color[][] myColorGrid = new Color[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
-      for (int j = 0; j < myGridWidth; j++) {
-        myColorGrid[i][j] = myCellGrid[i][j].getColor();
-      }
-    }
-    return myColorGrid;
+    return myGrid.getColorGrid();
   }
 
   public void parseSettings(String string){
@@ -153,13 +131,10 @@ public class Simulation {
   public int getMaxSizes(){
     return 5;
   }
-  public void onGridClick(int i, int j){
-    myCellGrid[i][j].incrementState();
-    try {
-      step();
-    } catch (MalformedXMLException e) {
-      e.printStackTrace();
-    }
+
+  public void onGridClick(int x, int y) throws MalformedXMLException {
+    myGrid.incrementState(x, y);
+    alertGUI();
   }
 
   /**

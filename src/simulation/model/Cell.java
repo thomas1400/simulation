@@ -1,7 +1,7 @@
 package simulation.model;
 
 import javafx.scene.paint.Color;
-import simulation.rules.Rule;
+import simulation.rules.Rules;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,14 +10,14 @@ import java.util.Collections;
 public class Cell {
     private static final int NEIGHBORHOOD_SIZE = 8;
     private Cell[] myNeighbors; // Indexed starting with 'up' neighbor and moving clockwise.
-    private Rule myRules;
+    private Rules myRules;
 
     private int myState; // convert to enum
     private int myNextState;
     private Color myColor;
 
-    public Cell(Rule ruleType, int state){
-        myRules = ruleType;
+    public Cell(Rules rulesType, int state){
+        myRules = rulesType;
         myState = state;
         myColor = myRules.getStateColor(state);
         myNeighbors = new Cell[NEIGHBORHOOD_SIZE];

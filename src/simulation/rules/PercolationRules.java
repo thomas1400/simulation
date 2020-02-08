@@ -2,13 +2,13 @@ package simulation.rules;
 
 import javafx.scene.paint.Color;
 
-public class PercolationRule implements Rule {
+public class PercolationRules extends Rules {
 
   private static final int BLOCKED = 0;
   private static final int EMPTY = 1;
   private static final int FILLED = 2;
 
-  public PercolationRule(double[] variables) { }
+  public PercolationRules(double[] variables) { }
 
   /**
    * @param currentState   is the cell's current state
@@ -47,6 +47,10 @@ public class PercolationRule implements Rule {
     } else {
       return Color.BLACK;
     }
+  }
+
+  public int incrementState(int state) {
+    return (state + 1) % (FILLED+1);
   }
 
 }

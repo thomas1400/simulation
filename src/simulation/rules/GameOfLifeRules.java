@@ -2,16 +2,17 @@ package simulation.rules;
 
 import javafx.scene.paint.Color;
 
-public class GameOfLifeRule implements Rule {
+public class GameOfLifeRules extends Rules {
 
   private static final int DEAD = 0;
   private static final int ALIVE = 1;
+  private static final int MY_MAX_STATE = 1;
 
   private static final int MIN_TO_DIE = 1;
   private static final int MAX_TO_DIE = 4;
   private static final int NUM_TO_REVIVE = 3;
 
-  public GameOfLifeRule(double[] variables) { }
+  public GameOfLifeRules(double[] variables) { }
 
   /**
    * @param currentState
@@ -38,5 +39,9 @@ public class GameOfLifeRule implements Rule {
   @Override
   public Color getStateColor(int state) {
     return (state == ALIVE) ? Color.BLACK : Color.WHITE;
+  }
+
+  public int incrementState(int state) {
+    return (state + 1) % (ALIVE+1);
   }
 }

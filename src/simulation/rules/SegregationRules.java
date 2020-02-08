@@ -2,7 +2,7 @@ package simulation.rules;
 
 import javafx.scene.paint.Color;
 
-public class SegregationRule implements Rule {
+public class SegregationRules extends Rules {
 
   private static final int EMPTY = 0;
   private static final int SWITCHING = -1;
@@ -10,8 +10,9 @@ public class SegregationRule implements Rule {
   private double segregation_threshold;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
       Color.PURPLE, Color.ORANGE};
+  private static final int MY_MAX_GROUPS = 6;
 
-  public SegregationRule(double[] variables) {
+  public SegregationRules(double[] variables) {
     setGlobalVariables(variables);
   }
 
@@ -60,5 +61,9 @@ public class SegregationRule implements Rule {
       );
     }
     segregation_threshold = variables[0];
+  }
+
+  public int incrementState(int state) {
+    return (state + 1) % (MY_MAX_GROUPS+1);
   }
 }

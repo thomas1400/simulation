@@ -2,7 +2,7 @@ package simulation.rules;
 
 import javafx.scene.paint.Color;
 
-public class RockPaperScissorsRule implements Rule {
+public class RockPaperScissorsRules extends Rules {
 
   private static final int NUM_TYPES = 3;
   private static final int ROCK = 0;
@@ -11,7 +11,7 @@ public class RockPaperScissorsRule implements Rule {
 
   private int thresholdValue;
 
-  public RockPaperScissorsRule(double[] variables) {
+  public RockPaperScissorsRules(double[] variables) {
     setGlobalVariables(variables);
   }
 
@@ -85,5 +85,9 @@ public class RockPaperScissorsRule implements Rule {
 
   public void setGlobalVariables(double[] variables) {
     thresholdValue = (int)variables[0];
+  }
+
+  public int incrementState(int state) {
+    return (state + 1) % (SCISSORS+1);
   }
 }
