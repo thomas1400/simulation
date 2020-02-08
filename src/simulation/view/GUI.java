@@ -99,6 +99,8 @@ public class GUI extends Application implements IUpdate {
     mainWindow = primaryStage;
     mainWindow.setTitle(windowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
+    String style = getClass().getResource("/resources/stylesheet.css").toExternalForm();
+    gridScene.getStylesheets().add(style);
     //gridScene.getStylesheets().add(getClass().getResource("/resources/stylesheet.css").toExternalForm());
     mainWindow.setScene(gridScene);
   }
@@ -159,11 +161,11 @@ public class GUI extends Application implements IUpdate {
       }
     }), colIndex, 0);
     colIndex ++;
-    buttonGroup.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex, 0);
+    buttonGroup.add(makeButton("Slow-Down", e -> simulation.slowDown()), colIndex, 0);
     colIndex ++;
     buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
     colIndex ++;
-    buttonGroup.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex, 0);
+    buttonGroup.add(makeButton("Speed-Up", e -> simulation.speedUp()), colIndex, 0);
     colIndex ++;
     buttonGroup.add(makeButton("Step", e -> {
       try {
@@ -186,6 +188,7 @@ public class GUI extends Application implements IUpdate {
   private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
     Button btn = new Button(title);
     btn.setOnAction(action);
+    btn.setId(title);
     return btn;
   }
   private void reset() throws MalformedXMLException {
