@@ -131,6 +131,10 @@ public class Simulation {
     this.listener = listener;
   }
 
+  public void onGridClick(int i, int j){
+    // TODO: Implement logic for altering state of simulation from click
+    System.out.println(i + " " + j);
+  }
 
   /**
    * These getters are used to communicate with GUI the characteristics of the simulation

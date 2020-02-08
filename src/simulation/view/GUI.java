@@ -6,7 +6,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javax.swing.Action;
 import simulation.controller.Simulation;
 import simulation.events.IUpdate;
 import java.io.File;
@@ -113,9 +112,10 @@ public class GUI extends Application implements IUpdate {
     group.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
     colIndex ++;
     group.add(makeButton("Reset", e -> {
-      try {
+      try{
         reset();
       } catch (MalformedXMLException ex) {
+        // TODO: Figure out lambda exceptions
         ex.printStackTrace();
       }
     }), colIndex, 0);
@@ -175,10 +175,13 @@ public class GUI extends Application implements IUpdate {
     int squareSize = WINDOW_WIDTH / largestDimension - 1;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
+        int iTemp = i;
+        int jTemp = j;
         Rectangle rec = new Rectangle();
         rec.setFill(colorGrid[i][j]);
         rec.setWidth(squareSize);
         rec.setHeight(squareSize);
+        rec.setOnMouseClicked(e -> simulation.onGridClick(iTemp, jTemp));
         gp.add(rec, j, i);
       }
     }
