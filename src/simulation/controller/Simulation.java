@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-import simulation.model.Grid;
+import simulation.model.RectangularGrid;
 
 
 public class Simulation {
@@ -26,7 +26,7 @@ public class Simulation {
   private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
 
-  private Grid myGrid;
+  private RectangularGrid myGrid;
 
   private Timeline timeline;
   private IUpdate listener;
@@ -111,13 +111,6 @@ public class Simulation {
     if (timeline != null) {
       timeline.stop();
     }
-  }
-
-  /**
-   * return 2x2 grid of cellColors
-   */
-  public Color[][] getColorGrid() {
-    return myGrid.getColorGrid();
   }
 
   public void parseSettings(String string){

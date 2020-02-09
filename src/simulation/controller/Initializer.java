@@ -1,10 +1,9 @@
 package simulation.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-import simulation.model.Grid;
+import simulation.model.RectangularGrid;
 import simulation.rules.FireRules;
 import simulation.rules.GameOfLifeRules;
 import simulation.rules.PercolationRules;
@@ -28,7 +27,7 @@ class Initializer {
   };
 
   private int[][] myInitialStateGrid;
-  private Grid myGrid;
+  private RectangularGrid myGrid;
 
   private String mySimulationTitle;
   private String mySimulationAuthor;
@@ -51,7 +50,7 @@ class Initializer {
     myInitialStateGrid = xmlReader.getGrid();
     myNeighborhoodType = xmlReader.getNeighborhoodType();
     
-    myGrid = new Grid(myInitialStateGrid, NEIGHBORHOOD_SHAPES[myNeighborhoodType-1], newRuleClass(), myGridIsToroidal);
+    myGrid = new RectangularGrid(myInitialStateGrid, NEIGHBORHOOD_SHAPES[myNeighborhoodType-1], newRuleClass(), myGridIsToroidal);
   }
 
   private Rules newRuleClass() {
@@ -82,7 +81,7 @@ class Initializer {
     return myRulesClass;
   }
 
-  public Grid getGrid() {
+  public RectangularGrid getGrid() {
     return myGrid;
   }
 
