@@ -1,10 +1,7 @@
 package simulation.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import simulation.rules.Rules;
 
@@ -15,44 +12,7 @@ public class RectangularGrid extends Grid {
   }
 
   @Override
-  protected List<State> getNeighborStates(int[] location) {
-    ArrayList<State> neighborStates = new ArrayList<>();
-
-    int x = location[0], y = location[1];
-
-    int centerX = myNeighborhoodShape.length / 2;
-    int centerY = myNeighborhoodShape[0].length / 2;
-    for (int i = 0; i < myNeighborhoodShape.length; i++) {
-      for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
-        if (myNeighborhoodShape[i][j] == NEIGHBORHOOD_CENTER) {
-          centerX = i;
-          centerY = j;
-          break;
-        }
-      }
-    }
-
-    int xOffset, yOffset;
-    for (int i = 0; i < myNeighborhoodShape.length; i++) {
-      for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
-        xOffset = i - centerX;
-        yOffset = j - centerY;
-        if (myNeighborhoodShape[i][j] == 1) {
-          if (inGridBounds(x + xOffset, y + yOffset)) {
-            neighborStates.add(myStates[x + xOffset][y + yOffset]);
-          } else if (isToroidal) {
-            int[] tc = toroidizeCoordinates(x+xOffset, y+yOffset);
-            neighborStates.add(myStates[tc[0]][tc[1]]);
-          }
-        }
-      }
-    }
-
-    return neighborStates;
-  }
-
-  @Override
-  public GridPane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+  public Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
     final double CELL_GAP = 0.25;
 
     GridPane gridGroup = new GridPane();

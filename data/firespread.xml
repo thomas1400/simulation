@@ -5,12 +5,13 @@
     <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
     <numGlobalVars>1</numGlobalVars>
     <globalVars>
-        <var0>0.9</var0>
+        <var0>1.0</var0>
     </globalVars>
     <gridWidth>20</gridWidth>
     <gridHeight>20</gridHeight>
+    <gridType>triangular</gridType>
     <toroidalGrid>false</toroidalGrid>
-    <neighborhoodType>2</neighborhoodType>
+    <neighborhoodType>4</neighborhoodType>
     <gridRows>
         <row0>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row0>
         <row1>1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 </row1>

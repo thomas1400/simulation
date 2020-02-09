@@ -54,6 +54,7 @@ public class XMLGenerator {
 
     addElement(document, root, "gridWidth", "" + UserInputParser.getGridWidth());
     addElement(document, root, "gridHeight", "" + UserInputParser.getGridHeight());
+    addElement(document, root, "gridType", "" + UserInputParser.getGridType());
     addElement(document, root, "isToroidal", "" + UserInputParser.getGridIsToroidal());
     addElement(document, root, "neighborhoodType", "" + UserInputParser.getNeighborhoodType());
 

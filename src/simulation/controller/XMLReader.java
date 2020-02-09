@@ -22,6 +22,7 @@ class XMLReader {
   private boolean myIsToroidal;
   private int[][] myGrid;
   private int myNeighborhoodType;
+  private String myGridType;
 
   public XMLReader(String file) throws IOException, SAXException, ParserConfigurationException {
     NodeIterator iterator = getNodeIterator(file);
@@ -48,8 +49,10 @@ class XMLReader {
 
     myGridWidth = updateGridWidth(iterator);
     myGridHeight = updateGridHeight(iterator);
+    myGridType = updateGridType(iterator);
     myIsToroidal = updateIsToroidal(iterator);
     myNeighborhoodType = updateNeighborhoodType(iterator);
+    skipBlankLine(iterator);
 
     myGrid = updateInitialStateGrid(iterator);
   }
@@ -102,6 +105,12 @@ class XMLReader {
     return gridHeight;
   }
 
+  private String updateGridType(NodeIterator iterator) {
+    String gridType = iterator.nextNode().getTextContent().trim();
+    skipBlankLine(iterator);
+    return gridType;
+  }
+
   private boolean updateIsToroidal(NodeIterator iterator) {
     boolean toroidal = Boolean.parseBoolean(iterator.nextNode().getTextContent().trim());
     skipBlankLine(iterator);
@@ -110,7 +119,6 @@ class XMLReader {
 
   private int updateNeighborhoodType(NodeIterator iterator) {
     int neighborhoodType = Integer.parseInt(iterator.nextNode().getTextContent().trim());
-    skipBlankLine(iterator);
     skipBlankLine(iterator);
     return neighborhoodType;
   }
@@ -178,4 +186,7 @@ class XMLReader {
     return myGrid;
   }
 
+  public String getGridType() {
+    return myGridType;
+  }
 }

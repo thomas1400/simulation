@@ -5,11 +5,13 @@ public class State {
   private int myState;
   private int myUpdate;
   private int[] myLocation;
+  private boolean isStatic;
 
   public State(int initialState, int[] location) {
     myState = initialState;
     myUpdate = 0;
     myLocation = location;
+    isStatic = false;
   }
 
   public void setUpdate(int update) {
@@ -21,6 +23,7 @@ public class State {
   }
 
   public void update() {
+    isStatic = (myState == myUpdate);
     myState = myUpdate;
   }
 
@@ -43,5 +46,9 @@ public class State {
 
   public int[] getLocation() {
     return myLocation;
+  }
+
+  public boolean isStatic() {
+    return isStatic;
   }
 }

@@ -1,7 +1,6 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
-import java.util.Collections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.chart.LineChart;
@@ -13,6 +12,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import simulation.controller.Simulation;
 import simulation.events.IUpdate;
 import java.io.File;
@@ -21,8 +21,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,7 +39,7 @@ public class GUI extends Application implements IUpdate {
 
   private String windowTitle;
   private Stage mainWindow;
-  private GridPane gridGroup;
+  private Pane gridPane;
   private Simulation simulation;
   private GridPane buttonGroup;
   private GridPane graphGroup;
@@ -109,16 +107,17 @@ public class GUI extends Application implements IUpdate {
   private GridPane makeMasterGrid() throws MalformedXMLException {
     GridPane mainGrid = new GridPane();
     buttonGroup = new GridPane();
-    gridGroup = simulation.getGridPane(WINDOW_WIDTH, WINDOW_WIDTH);
+    gridPane = simulation.getGridPane(WINDOW_WIDTH, WINDOW_WIDTH);
     graphGroup = new GridPane();
     settingGroup = new GridPane();
     makeButtons();
     makeGraphs();
     makeSetting();
+    mainGrid.setVgap(2.0);
     mainGrid.add(buttonGroup, 0, 0);
-    mainGrid.add(gridGroup, 0, 1);
-    mainGrid.add(graphGroup,0,2);
-    mainGrid.add(settingGroup,1,0);
+    mainGrid.add(settingGroup,0,1);
+    mainGrid.add(gridPane, 0, 2);
+    //mainGrid.add(graphGroup,0,3);
     return mainGrid;
   }
 
@@ -144,9 +143,11 @@ public class GUI extends Application implements IUpdate {
     LineChart lineChart = new LineChart(xAxis, yAxis);
     lineChart.getData().add(data);
     graphGroup.add(lineChart, 0, 0);
+    graphGroup.autosize();
   }
   private void makeButtons() throws MalformedXMLException{
     int colIndex = BUTTON_START_INDEX;
+    buttonGroup.setHgap(2);
     buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
     colIndex ++;
     buttonGroup.add(makeButton("Reset", e -> {

@@ -3,7 +3,7 @@ package simulation.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import simulation.rules.Rules;
 
@@ -36,7 +36,9 @@ public abstract class Grid {
 
     myNeighborhoodShape = new int[neighborhoodShape.length][neighborhoodShape[0].length];
     for (int x = 0; x < neighborhoodShape.length; x++) {
-      myNeighborhoodShape[x] = neighborhoodShape[x].clone();
+      for (int y = 0; y < neighborhoodShape[x].length; y++) {
+        myNeighborhoodShape[x][y] = neighborhoodShape[x][y];
+      }
     }
 
     myRuleSet = ruleSet;
@@ -45,9 +47,7 @@ public abstract class Grid {
     isToroidal = toroidal;
   }
 
-  protected abstract List<State> getNeighborStates(int[] location);
-
-  protected abstract GridPane getGridPane(int MAX_WIDTH, int MAX_HEIGHT);
+  public abstract Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT);
 
   public void step() {
     Collections.shuffle(myUpdateOrder);
@@ -59,6 +59,42 @@ public abstract class Grid {
     for (State s : myUpdateOrder) {
       s.update();
     }
+  }
+
+  protected List<State> getNeighborStates(int[] location) {
+    ArrayList<State> neighborStates = new ArrayList<>();
+
+    int x = location[0], y = location[1];
+
+    int centerX = myNeighborhoodShape.length / 2;
+    int centerY = myNeighborhoodShape[0].length / 2;
+    for (int i = 0; i < myNeighborhoodShape.length; i++) {
+      for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
+        if (myNeighborhoodShape[i][j] == NEIGHBORHOOD_CENTER) {
+          centerX = i;
+          centerY = j;
+          break;
+        }
+      }
+    }
+
+    int xOffset, yOffset;
+    for (int i = 0; i < myNeighborhoodShape.length; i++) {
+      for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
+        xOffset = i - centerX;
+        yOffset = j - centerY;
+        if (myNeighborhoodShape[i][j] == 1) {
+          if (inGridBounds(x + xOffset, y + yOffset)) {
+            neighborStates.add(myStates[x + xOffset][y + yOffset]);
+          } else if (isToroidal) {
+            int[] tc = toroidizeCoordinates(x+xOffset, y+yOffset);
+            neighborStates.add(myStates[tc[0]][tc[1]]);
+          }
+        }
+      }
+    }
+
+    return neighborStates;
   }
 
   protected boolean inGridBounds(int x, int y) {
@@ -101,5 +137,16 @@ public abstract class Grid {
   public Color dynamicallyIncrement(int x, int y) {
     myRuleSet.incrementState(myStates[x][y]);
     return myRuleSet.getStateColor(myStates[x][y]);
+  }
+
+  public boolean isStatic() {
+    for (State[] sa : myStates) {
+      for (State s : sa) {
+        if (!s.isStatic()) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

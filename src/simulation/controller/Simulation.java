@@ -3,6 +3,7 @@ package simulation.controller;
 
 import exceptions.MalformedXMLException;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import simulation.events.IUpdate;
 
 import javafx.animation.Animation;
@@ -14,6 +15,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import simulation.model.Grid;
 import simulation.model.RectangularGrid;
 
 
@@ -26,7 +28,7 @@ public class Simulation {
   private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
 
-  private RectangularGrid myGrid;
+  private Grid myGrid;
 
   private Timeline timeline;
   private IUpdate listener;
@@ -143,7 +145,7 @@ public class Simulation {
     return mySimulationAuthor;
   }
 
-  public GridPane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+  public Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
     return myGrid.getGridPane(MAX_WIDTH, MAX_HEIGHT);
   }
 }
