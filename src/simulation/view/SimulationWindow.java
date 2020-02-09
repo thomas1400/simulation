@@ -1,7 +1,6 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
-import java.util.Collections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.chart.LineChart;
@@ -21,8 +20,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,7 +29,7 @@ import org.xml.sax.SAXException;
  * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project, including
  * updating the main window and listening to the simulation simulation.controller
  */
-public class GUI extends Application implements IUpdate {
+public class SimulationWindow extends Application implements IUpdate {
 
   private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
@@ -56,16 +53,11 @@ public class GUI extends Application implements IUpdate {
    * @param primaryStage the main stage which the program draws on
    */
   @Override
-  public void start(Stage primaryStage) {
+  public void start(Stage primaryStage) throws MalformedXMLException {
     data = new XYChart.Series();
     myStage = primaryStage;
-    try {
-      xmlFileName = getSimulationFile();
-      newSimulation();
-    } catch (Exception e) {
-      e.printStackTrace(); // TODO : remove
-      myStage.close();
-    }
+    xmlFileName = getSimulationFile();
+    newSimulation();
   }
 
   private void newSimulation() throws MalformedXMLException {
@@ -104,7 +96,6 @@ public class GUI extends Application implements IUpdate {
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
     String style = getClass().getResource("/resources/stylesheet.css").toExternalForm();
     gridScene.getStylesheets().add(style);
-    //gridScene.getStylesheets().add(getClass().getResource("/resources/stylesheet.css").toExternalForm());
     mainWindow.setScene(gridScene);
   }
 
@@ -138,7 +129,6 @@ public class GUI extends Application implements IUpdate {
   private void makeGraphs(){
     simulation.getMaxSizes();
     // TODO: Get max values, so you don't have to graph all the way up to 1500
-    //graphGroup = new GridPane();
     NumberAxis xAxis = new NumberAxis(0, 1500, 1);
     xAxis.setLabel(simulation.getTitle());
     NumberAxis yAxis = new NumberAxis(0, 1500, 1);
@@ -155,8 +145,7 @@ public class GUI extends Application implements IUpdate {
       try{
         reset();
       } catch (MalformedXMLException ex) {
-        // TODO: Figure out lambda exceptions
-        ex.printStackTrace();
+        errorAlert();
       }
     }), colIndex, 0);
     colIndex ++;
@@ -169,8 +158,8 @@ public class GUI extends Application implements IUpdate {
     buttonGroup.add(makeButton("Step", e -> {
       try {
         simulation.step();
-      } catch (Exception ex) {
-        ex.printStackTrace();
+      } catch (MalformedXMLException ex) {
+        errorAlert();
       }
     }), colIndex, 0);
     colIndex ++;
@@ -180,7 +169,7 @@ public class GUI extends Application implements IUpdate {
       try {
         loadConfig();
       } catch (MalformedXMLException ex) {
-        ex.printStackTrace();
+        errorAlert();
       }
     }), colIndex, 0);
   }
@@ -238,6 +227,13 @@ public class GUI extends Application implements IUpdate {
   }
   private void updateStats(int newX, int newY){
     data.getData().add(new XYChart.Data(newX, newY));
+  }
+
+  private void errorAlert(){
+    Alert alert = new Alert(AlertType.WARNING, "", ButtonType.OK);
+    alert.setContentText("Exception caused by bad XML file - close the window and reload the"
+        + "simulation");
+    alert.show();
   }
   /**
    * From IUpdate: method called when the simulation alerts the GUI when the simulation steps

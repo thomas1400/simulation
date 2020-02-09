@@ -1,18 +1,17 @@
 package simulation.view;
 
+import exceptions.MalformedXMLException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 public class Home extends Application {
 
@@ -26,6 +25,11 @@ public class Home extends Application {
     Application.launch(args);
   }
 
+  /**
+   * Entry point for application
+   * @param primaryStage the main stage for the Home view
+   * @throws IOException caused by FileInputStream for loading the FXML
+   */
   @Override
   public void start(Stage primaryStage) throws IOException {
     FXMLLoader loader = new FXMLLoader();
@@ -38,17 +42,17 @@ public class Home extends Application {
     primaryStage.show();
   }
 
-  private GridPane makeHomeGrid(){
-    GridPane homeGridPane = new GridPane();
-    Button btn = new Button("Launch");
-    btn.setOnAction(e -> launchSim());
-    homeGridPane.add(btn, 0,0);
-    return homeGridPane;
-  }
-
   @FXML
   private void launchSim() {
-    GUI gui = new GUI();
-    gui.start(new Stage());
+    SimulationWindow simulationWindow = new SimulationWindow();
+    try{
+      simulationWindow.start(new Stage());
+    } catch (MalformedXMLException e){
+      new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
+    } catch (NumberFormatException e2){
+      new Alert(AlertType.WARNING, "Error in XML file - try another one. "
+          + "Error message: " + e2.getMessage(), ButtonType.OK).show();
+    }
   }
+
 }

@@ -1,25 +1,7 @@
-#Home{
-    -fx-font-size: 12px;
-}
-#Reset{
-    -fx-font-size: 12px;
-}
-#Slow-Down{
-    -fx-font-size: 12px;
-}
-#Step{
-    -fx-font-size: 12px;
-}
-#Play{
-    -fx-font-size: 12px;
-}
-#Config{
-    -fx-font-size: 12px;
+.button{
+    -fx-padding: 8px;
+    -fx-border-width: 2px;
 }
 .chart{
     -fx-padding: 10px;
-}
-#HomePane{
-    -fx-background-image: url("background.PNG");
-    -fx-background-color: BLUE;
 }
