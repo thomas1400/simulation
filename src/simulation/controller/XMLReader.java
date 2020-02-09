@@ -21,6 +21,7 @@ class XMLReader {
   private int myGridHeight;
   private boolean myIsToroidal;
   private int[][] myGrid;
+  private int myNeighborhoodType;
 
   public XMLReader(String file) throws IOException, SAXException, ParserConfigurationException {
     NodeIterator iterator = getNodeIterator(file);
@@ -48,6 +49,7 @@ class XMLReader {
     myGridWidth = updateGridWidth(iterator);
     myGridHeight = updateGridHeight(iterator);
     myIsToroidal = updateIsToroidal(iterator);
+    myNeighborhoodType = updateNeighborhoodType(iterator);
 
     myGrid = updateInitialStateGrid(iterator);
   }
@@ -103,19 +105,25 @@ class XMLReader {
   private boolean updateIsToroidal(NodeIterator iterator) {
     boolean toroidal = Boolean.parseBoolean(iterator.nextNode().getTextContent().trim());
     skipBlankLine(iterator);
-    skipBlankLine(iterator);
     return toroidal;
   }
 
+  private int updateNeighborhoodType(NodeIterator iterator) {
+    int neighborhoodType = Integer.parseInt(iterator.nextNode().getTextContent().trim());
+    skipBlankLine(iterator);
+    skipBlankLine(iterator);
+    return neighborhoodType;
+  }
+
   private int[][] updateInitialStateGrid(NodeIterator iterator) {
-    int[][] initialStateGrid = new int[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
+    int[][] initialStateGrid = new int[myGridWidth][myGridHeight];
+    for (int y = 0; y < myGridHeight; y++) {
       //Get string of values corresponding to a row and store in an array
       String[] rowArray = iterator.nextNode().getTextContent().trim().split(" ");
       skipBlankLine(iterator);
       //place each value in the row in it's corresponding grid position
-      for (int j = 0; j < myGridWidth; j++) {
-        initialStateGrid[i][j] = Integer.parseInt(rowArray[j]);
+      for (int x = 0; x < myGridWidth; x++) {
+        initialStateGrid[x][y] = Integer.parseInt(rowArray[x]);
       }
     }
     return initialStateGrid;
@@ -160,6 +168,10 @@ class XMLReader {
 
   public boolean getIsToroidal() {
     return myIsToroidal;
+  }
+
+  public int getNeighborhoodType() {
+    return myNeighborhoodType;
   }
 
   public int[][] getGrid() {

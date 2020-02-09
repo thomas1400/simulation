@@ -37,6 +37,7 @@ public class GUI extends Application implements IUpdate {
   private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
   private static final int BUTTON_START_INDEX = 0;
+  private static final double CELL_GAP = 0.1;
 
   private String windowTitle;
   private Stage mainWindow;
@@ -62,7 +63,7 @@ public class GUI extends Application implements IUpdate {
       xmlFileName = getSimulationFile();
       newSimulation();
     } catch (Exception e) {
-      // TODO: Pop up an error message for malformed XML.
+      e.printStackTrace(); // TODO : remove
       myStage.close();
     }
   }
@@ -72,6 +73,7 @@ public class GUI extends Application implements IUpdate {
     setUpWindow(myStage);
     simulation.setListener(this);
     mainWindow.show();
+    setUpWindow(myStage);
   }
 
   private String getSimulationFile() {
@@ -97,6 +99,7 @@ public class GUI extends Application implements IUpdate {
 
   private void setUpWindow(Stage primaryStage) throws MalformedXMLException {
     mainWindow = primaryStage;
+    primaryStage.setOnCloseRequest(event -> simulation.stop());
     mainWindow.setTitle(windowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
     String style = getClass().getResource("/resources/stylesheet.css").toExternalForm();
@@ -108,14 +111,10 @@ public class GUI extends Application implements IUpdate {
   private GridPane makeMasterGrid() throws MalformedXMLException {
     GridPane mainGrid = new GridPane();
     buttonGroup = new GridPane();
-    gridGroup = new GridPane();
+    gridGroup = simulation.getGridPane(WINDOW_WIDTH, WINDOW_WIDTH);
     graphGroup = new GridPane();
     settingGroup = new GridPane();
-    double cellGap = 1.0;
-    gridGroup.setHgap(cellGap);
-    gridGroup.setVgap(cellGap);
     makeButtons();
-    makeGrid();
     makeGraphs();
     makeSetting();
     mainGrid.add(buttonGroup, 0, 0);
@@ -208,30 +207,9 @@ public class GUI extends Application implements IUpdate {
     newSimulation();
   }
 
-  private void makeGrid() {
-    Color[][] colorGrid = simulation.getColorGrid();
-    int width = colorGrid[0].length;
-    int height = colorGrid.length;
-    int largestDimension = Math.max(width, height);
-    int squareSize = WINDOW_WIDTH / largestDimension - 1;
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        int iTemp = i;
-        int jTemp = j;
-        Rectangle rec = new Rectangle();
-        rec.setFill(colorGrid[i][j]);
-        rec.setWidth(squareSize);
-        rec.setHeight(squareSize);
-        rec.setOnMouseClicked(e -> simulation.onGridClick(iTemp, jTemp));
-        gridGroup.add(rec, j, i);
-      }
-    }
-  }
-
   private void loadSimulation() throws MalformedXMLException {
     simulation = makeSimulation(xmlFileName);
     windowTitle = simulation.getTitle();
-    //you can use simulation.getColorGrid() to get a Color[][] for each cell's state
   }
 
   private Simulation makeSimulation(String xmlFileName) throws MalformedXMLException {
@@ -269,4 +247,5 @@ public class GUI extends Application implements IUpdate {
     updateStats(newX, newY);
     updateGUI();
   }
+
 }

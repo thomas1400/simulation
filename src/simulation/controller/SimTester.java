@@ -14,11 +14,11 @@ public class SimTester {
       throws ParserConfigurationException, SAXException, IOException {
     mySim = new Simulation(mySimulationFile);
     //mySim.play();
-    Color[][] myGrid = mySim.getColorGrid();
-    for (Color[] colors : myGrid) {
-      for (Color color : colors) {
-        System.out.println(color);
-      }
-    }
+//    Color[][] myGrid = mySim.getColorGrid();
+//    for (Color[] colors : myGrid) {
+//      for (Color color : colors) {
+//        System.out.println(color);
+//      }
+//    }
   }
 }

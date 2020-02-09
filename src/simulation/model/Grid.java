@@ -1,21 +1,105 @@
 package simulation.model;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import simulation.rules.Rules;
 
-/**
- * Pass this class if Grid needs to be changed
- */
-public class Grid implements ImmutableGrid {
+public abstract class Grid {
+  protected static final int NEIGHBORHOOD_CENTER = -1;
 
-  @Override
-  public Color getCellColorByCoordinates() {
-    return null;
+  protected State[][] myStates;
+  protected List<State> myUpdateOrder;
+  protected int myHeight;
+  protected int myWidth;
+
+  protected Rules myRuleSet;
+
+  protected boolean isToroidal;
+  protected int[][] myNeighborhoodShape;
+
+  public Grid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleSet, boolean toroidal) {
+    myWidth = initialStates.length;
+    myHeight = initialStates[0].length;
+
+    myStates = new State[myWidth][myHeight];
+    myUpdateOrder = new ArrayList<>();
+    for (int x = 0; x < myWidth; x++) {
+      for (int y = 0; y < myHeight; y++) {
+        State newState = new State(initialStates[x][y], new int[]{x, y});
+        myStates[x][y] = newState;
+        myUpdateOrder.add(newState);
+      }
+    }
+
+    myNeighborhoodShape = new int[neighborhoodShape.length][neighborhoodShape[0].length];
+    for (int x = 0; x < neighborhoodShape.length; x++) {
+      myNeighborhoodShape[x] = neighborhoodShape[x].clone();
+    }
+
+    myRuleSet = ruleSet;
+    myRuleSet.setGrid(this);
+
+    isToroidal = toroidal;
   }
 
-  @Override
-  public Array getEmptyCellsCoordinates() {
-    return null;
+  protected abstract List<State> getNeighborStates(int[] location);
+
+  protected abstract GridPane getGridPane(int MAX_WIDTH, int MAX_HEIGHT);
+
+  public void step() {
+    Collections.shuffle(myUpdateOrder);
+    for (State s : myUpdateOrder) {
+      int[] location = s.getLocation();
+      List<State> neighborStates = getNeighborStates(location);
+      myRuleSet.calculateUpdate(s, neighborStates);
+    }
+    for (State s : myUpdateOrder) {
+      s.update();
+    }
   }
 
+  protected boolean inGridBounds(int x, int y) {
+    return (0 <= x && 0 <= y && x < myWidth && y < myHeight);
+  }
+
+  protected int[] toroidizeCoordinates(int x, int y) {
+    return new int[]{normalize(x, myWidth), normalize(y, myHeight)};
+  }
+
+  protected int normalize(int c, int bound) {
+    if (c < 0 || c >= bound) {
+      c = (c+bound) % bound;
+    }
+    return c;
+  }
+
+  public int[] getStats() {
+    int[] statArray = new int[100];
+    for(State[] sa : myStates){
+      for(State s : sa){
+        statArray[s.toInt()]++;
+      }
+    }
+    return statArray;
+  }
+
+  public List<State> getEmptyStates() {
+    ArrayList<State> emptyStates = new ArrayList<>();
+    for (State[] sa : myStates) {
+      for (State s : sa) {
+        if (s.isEmpty()) {
+          emptyStates.add(s);
+        }
+      }
+    }
+    return emptyStates;
+  }
+
+  public Color dynamicallyIncrement(int x, int y) {
+    myRuleSet.incrementState(myStates[x][y]);
+    return myRuleSet.getStateColor(myStates[x][y]);
+  }
 }
