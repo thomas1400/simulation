@@ -3,6 +3,7 @@ package simulation.view;
 import exceptions.MalformedXMLException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -111,7 +112,7 @@ public class SimulationWindow extends Application implements IUpdate {
     makeSetting();
     mainGrid.setVgap(2.0);
     mainGrid.add(buttonGroup, 0, 0);
-    mainGrid.add(settingGroup,0,1);
+    //mainGrid.add(settingGroup,0,1);
     mainGrid.add(gridPane, 0, 2);
     //mainGrid.add(graphGroup,0,3);
     return mainGrid;
