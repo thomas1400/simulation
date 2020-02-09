@@ -3,8 +3,6 @@ package simulation.controller;
 
 import exceptions.MalformedXMLException;
 import simulation.events.IUpdate;
-import java.util.List;
-import simulation.model.Cell;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,6 +13,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import simulation.model.Grid;
 
 
 public class Simulation {
@@ -26,11 +25,7 @@ public class Simulation {
   private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
 
-  private int myGridWidth;
-  private int myGridHeight;
-
-  private Cell[][] myCellGrid;
-  private List<Cell> myCells;
+  private Grid myGrid;
 
   private Timeline timeline;
   private IUpdate listener;
@@ -43,10 +38,7 @@ public class Simulation {
 
     mySimulationTitle = myInitializer.getSimulationTitle();
     mySimulationAuthor = myInitializer.getSimulationAuthor();
-    myCellGrid = myInitializer.getCellGrid();
-    myGridHeight = myCellGrid.length;
-    myGridWidth = myCellGrid[0].length;
-    myCells = myInitializer.getCells();
+    myGrid = myInitializer.getGrid();
   }
 
   /**
@@ -55,6 +47,10 @@ public class Simulation {
   public void play() {
     mySimulationRunning = true;
     autoStep();
+  }
+
+  private int[] getStatsFromGrid(){
+    return myGrid.getStats();
   }
 
   private void autoStep() {
@@ -73,17 +69,13 @@ public class Simulation {
    * Step the simulation one generation
    */
   public void step() throws MalformedXMLException {
-    for (Cell cell : myCells) {
-        cell.getNextState();
-    }
-    for (Cell cell : myCells) {
-      cell.updateState();
-    }
+    myGrid.step();
     alertGUI();
   }
 
   private void alertGUI() throws MalformedXMLException {
-    listener.simulationUpdate();
+    int[] temp = getStatsFromGrid();
+    listener.simulationUpdate(temp[0], temp[1]);
   }
 
   /**
@@ -114,23 +106,40 @@ public class Simulation {
     autoStep();
   }
 
+  public void stop() {
+    if (timeline != null) {
+      timeline.stop();
+    }
+  }
+
   /**
    * return 2x2 grid of cellColors
    */
   public Color[][] getColorGrid() {
-    Color[][] myColorGrid = new Color[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
-      for (int j = 0; j < myGridWidth; j++) {
-        myColorGrid[i][j] = myCellGrid[i][j].getColor();
-      }
-    }
-    return myColorGrid;
+    return myGrid.getColorGrid();
+  }
+
+  public void parseSettings(String string){
+    System.out.println(string);
   }
 
   public void setListener(IUpdate listener) {
     this.listener = listener;
   }
 
+  /**
+   * Method for returning important stats from the simulation
+   * TODO: Implement
+   * @return stats
+   */
+  public int getMaxSizes(){
+    return 5;
+  }
+
+  public void onGridClick(int x, int y) throws MalformedXMLException {
+    myGrid.incrementState(x, y);
+    alertGUI();
+  }
 
   /**
    * These getters are used to communicate with GUI the characteristics of the simulation

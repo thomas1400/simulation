@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <simulation>
     <rule>rockPaperScissorsRules</rule>
-    <simulationTitle>RPSSSS</simulationTitle>
+    <simulationTitle>RPS</simulationTitle>
     <simulationAuthor>Grant</simulationAuthor>
-    <numGlobalVars>1</numGlobalVars>
+    <numGlobalVars>2</numGlobalVars>
     <globalVars>
-        <var0>4.0</var0>
+        <var0>3.0</var0>
+        <var1>2.0</var1>
     </globalVars>
     <gridWidth>80</gridWidth>
     <gridHeight>80</gridHeight>
     <isToroidal>false</isToroidal>
+    <neighborhoodType>1</neighborhoodType>
     <gridRows>
         <row0>2 2 0 0 2 0 2 1 1 0 0 1 2 0 0 1 2 0 0 1 2 0 0 1 1 0 0 0 1 1 0 0 0 1 0 0 1 0 0 2 0 0 2 0 1 1 2 2 0 0 2 0 2 1 2 0 1 2 2 2 0 0 0 1 1 0 2 2 2 2 2 2 2 1 0 2 0 1 0 0 </row0>
         <row1>0 2 0 0 0 2 0 1 0 0 0 2 2 1 1 1 0 0 0 1 0 0 2 1 2 2 0 0 1 2 2 2 0 0 0 1 2 2 0 1 1 0 2 1 0 0 1 0 0 0 1 2 0 0 2 2 2 2 1 1 2 1 1 2 2 1 1 2 0 2 1 2 0 1 2 0 0 0 2 2 </row1>

@@ -1,8 +1,11 @@
 package simulation.rules;
 
+import java.util.List;
 import javafx.scene.paint.Color;
+import simulation.model.Grid;
+import simulation.model.State;
 
-public class PredatorPreyRule implements Rule {
+public class PredatorPreyRules extends Rules {
 
   private double prey_death_probability;
   private double predator_death_probability;
@@ -14,34 +17,35 @@ public class PredatorPreyRule implements Rule {
   private static final int PREY = 1;
   private static final int PREDATOR = 2;
 
-  public PredatorPreyRule(double[] variables) {
+  private Grid myGrid;
+
+  public PredatorPreyRules(double[] variables) {
     setGlobalVariables(variables);
   }
 
 
   /**
-   * @param currentState the current state of the cell
+   * @param state the current state of the cell
    * @param neighbors    the states of the neighbors
-   * @return the next state
    */
   @Override
-  public int calculateNewState(int currentState, int[] neighbors) {
-    if (currentState == EMPTY) {
-      return calculateEmptyCellNewState(neighbors);
-    } else if (currentState == PREY) {
-      return calculatePreyCellNewState(neighbors);
-    } else if (currentState == PREDATOR) {
-      return calculatePredatorCellNewState(neighbors);
+  public void calculateUpdate(State state, List<State> neighbors) {
+    if (state.equals(EMPTY)) {
+      state.setUpdate(calculateEmptyCellNewState(neighbors));
+    } else if (state.equals(PREY)) {
+      state.setUpdate(calculatePreyCellNewState(neighbors));
+    } else if (state.equals(PREDATOR)) {
+      state.setUpdate(calculatePredatorCellNewState(neighbors));
     } else {
       throw new IllegalArgumentException("Unexpected cell state");
     }
   }
 
-  private int calculateEmptyCellNewState(int[] neighbors) {
+  private int calculateEmptyCellNewState(List<State> neighbors) {
     return (hasStateAsNeighbor(PREY, neighbors) && !hasStateAsNeighbor(PREDATOR, neighbors)) ? PREY : EMPTY;
   }
 
-  private int calculatePreyCellNewState(int[] neighbors) {
+  private int calculatePreyCellNewState(List<State> neighbors) {
     if (hasStateAsNeighbor(PREDATOR, neighbors)) {
       return (Math.random() < predator_birth_probability) ? PREDATOR : PREY;
     } else {
@@ -50,13 +54,13 @@ public class PredatorPreyRule implements Rule {
   }
 
 
-  private int calculatePredatorCellNewState(int[] neighbors) {
+  private int calculatePredatorCellNewState(List<State> neighbors) {
     return (Math.random() < predator_death_probability || !hasStateAsNeighbor(PREY, neighbors)) ? EMPTY : PREDATOR;
   }
 
-  private boolean hasStateAsNeighbor(int state, int[] neighbors) {
-    for (int n : neighbors) {
-      if (n == state) {
+  private boolean hasStateAsNeighbor(int state, List<State> neighbors) {
+    for (State n : neighbors) {
+      if (n.equals(state)) {
         return true;
       }
     }
@@ -64,8 +68,8 @@ public class PredatorPreyRule implements Rule {
   }
 
   @Override
-  public Color getStateColor(int state) {
-    return stateColors[state];
+  public Color getStateColor(State state) {
+    return stateColors[state.toInt()];
   }
 
   public void setGlobalVariables(double[] variables) {
@@ -78,5 +82,14 @@ public class PredatorPreyRule implements Rule {
     prey_death_probability = variables[0];
     predator_death_probability = variables[1];
     predator_birth_probability = variables[2];
+  }
+
+  public void incrementState(State state) {
+    state.setUpdate((state.toInt() + 1) % (PREDATOR+1));
+    state.update();
+  }
+
+  public void setGrid(Grid grid) {
+    myGrid = grid;
   }
 }
