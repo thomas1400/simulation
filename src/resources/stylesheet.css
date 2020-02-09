@@ -1,3 +1,7 @@
-.root{
-    -fx-font-size: 14pt;
+.button{
+    -fx-padding: 8px;
+    -fx-border-width: 2px;
+}
+.chart{
+    -fx-padding: 10px;
 }

@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
  * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project, including
  * updating the main window and listening to the simulation simulation.controller
  */
-public class GUI extends Application implements IUpdate {
+public class SimulationWindow extends Application implements IUpdate {
 
   private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
@@ -54,16 +54,11 @@ public class GUI extends Application implements IUpdate {
    * @param primaryStage the main stage which the program draws on
    */
   @Override
-  public void start(Stage primaryStage) {
+  public void start(Stage primaryStage) throws MalformedXMLException {
     data = new XYChart.Series();
     myStage = primaryStage;
-    try {
-      xmlFileName = getSimulationFile();
-      newSimulation();
-    } catch (Exception e) {
-      e.printStackTrace(); // TODO : remove
-      myStage.close();
-    }
+    xmlFileName = getSimulationFile();
+    newSimulation();
   }
 
   private void newSimulation() throws MalformedXMLException {
@@ -100,7 +95,8 @@ public class GUI extends Application implements IUpdate {
     primaryStage.setOnCloseRequest(event -> simulation.stop());
     mainWindow.setTitle(windowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
-    //gridScene.getStylesheets().add(getClass().getResource("/resources/stylesheet.css").toExternalForm());
+    String style = getClass().getResource("/resources/stylesheet.css").toExternalForm();
+    gridScene.getStylesheets().add(style);
     mainWindow.setScene(gridScene);
   }
 
@@ -135,7 +131,6 @@ public class GUI extends Application implements IUpdate {
   private void makeGraphs(){
     simulation.getMaxSizes();
     // TODO: Get max values, so you don't have to graph all the way up to 1500
-    //graphGroup = new GridPane();
     NumberAxis xAxis = new NumberAxis(0, 1500, 1);
     xAxis.setLabel(simulation.getTitle());
     NumberAxis yAxis = new NumberAxis(0, 1500, 1);
@@ -154,22 +149,21 @@ public class GUI extends Application implements IUpdate {
       try{
         reset();
       } catch (MalformedXMLException ex) {
-        // TODO: Figure out lambda exceptions
-        ex.printStackTrace();
+        errorAlert();
       }
     }), colIndex, 0);
     colIndex ++;
-    buttonGroup.add(makeButton("Slow Down", e -> simulation.slowDown()), colIndex, 0);
+    buttonGroup.add(makeButton("Slow-Down", e -> simulation.slowDown()), colIndex, 0);
     colIndex ++;
     buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
     colIndex ++;
-    buttonGroup.add(makeButton("Speed Up", e -> simulation.speedUp()), colIndex, 0);
+    buttonGroup.add(makeButton("Speed-Up", e -> simulation.speedUp()), colIndex, 0);
     colIndex ++;
     buttonGroup.add(makeButton("Step", e -> {
       try {
         simulation.step();
-      } catch (Exception ex) {
-        ex.printStackTrace();
+      } catch (MalformedXMLException ex) {
+        errorAlert();
       }
     }), colIndex, 0);
     colIndex ++;
@@ -179,13 +173,14 @@ public class GUI extends Application implements IUpdate {
       try {
         loadConfig();
       } catch (MalformedXMLException ex) {
-        ex.printStackTrace();
+        errorAlert();
       }
     }), colIndex, 0);
   }
   private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
     Button btn = new Button(title);
     btn.setOnAction(action);
+    btn.setId(title);
     return btn;
   }
   private void reset() throws MalformedXMLException {
@@ -236,6 +231,13 @@ public class GUI extends Application implements IUpdate {
   }
   private void updateStats(int newX, int newY){
     data.getData().add(new XYChart.Data(newX, newY));
+  }
+
+  private void errorAlert(){
+    Alert alert = new Alert(AlertType.WARNING, "", ButtonType.OK);
+    alert.setContentText("Exception caused by bad XML file - close the window and reload the"
+        + "simulation");
+    alert.show();
   }
   /**
    * From IUpdate: method called when the simulation alerts the GUI when the simulation steps

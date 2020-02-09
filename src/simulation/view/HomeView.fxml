@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<GridPane fx:controller="simulation.view.Home" xmlns:fx="http://javafx.com/fxml" fx:id="HomePane">
+  <columnConstraints>
+    <ColumnConstraints minWidth="100" prefWidth="100" maxWidth="Infinity" halignment="RIGHT">
+    </ColumnConstraints>
+    <ColumnConstraints minWidth="200" prefWidth="200" maxWidth="Infinity" hgrow="ALWAYS">
+    </ColumnConstraints>
+  </columnConstraints>
+  <Label text="Welcome!" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"
+    GridPane.rowSpan="1" GridPane.halignment="CENTER">
+    <font><Font name="Arial" size="24"></Font></font>
+  </Label>
+  <Label text="Created by: Sebastian Williams, Grant LoPresti, and Thomas Owens" GridPane.columnIndex="0" GridPane.rowIndex="1"
+    GridPane.columnSpan="2" GridPane.rowSpan="1" GridPane.halignment="CENTER"><Font name="Arial" size="24"></Font></Label>
+  <Button text="Select Simulation" onAction="#launchSim" prefWidth="100" prefHeight="40" GridPane.columnIndex="0"
+    GridPane.rowIndex="4" GridPane.columnSpan="2" GridPane.rowSpan="1" GridPane.halignment="CENTER">
+  </Button>
+</GridPane>
