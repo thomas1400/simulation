@@ -2,6 +2,7 @@ package simulation.controller;
 
 
 import exceptions.MalformedXMLException;
+import javafx.scene.layout.GridPane;
 import simulation.events.IUpdate;
 
 import javafx.animation.Animation;
@@ -136,11 +137,6 @@ public class Simulation {
     return 5;
   }
 
-  public void onGridClick(int x, int y) throws MalformedXMLException {
-    myGrid.incrementState(x, y);
-    alertGUI();
-  }
-
   /**
    * These getters are used to communicate with GUI the characteristics of the simulation
    * as given from the Initializer
@@ -154,4 +150,7 @@ public class Simulation {
     return mySimulationAuthor;
   }
 
+  public GridPane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+    return myGrid.getGridPane(MAX_WIDTH, MAX_HEIGHT);
+  }
 }

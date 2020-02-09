@@ -1,14 +1,15 @@
 package simulation.model;
 
+import exceptions.MalformedXMLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import simulation.rules.Rules;
 
-/**
- * Pass this class if Grid needs to be changed
- */
 public class Grid {
 
   public static final int NEIGHBORHOOD_CENTER = -1;
@@ -123,6 +124,38 @@ public class Grid {
     return myColorGrid;
   }
 
+  public GridPane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+    final double CELL_GAP = 0.25;
+
+    GridPane gridGroup = new GridPane();
+    gridGroup.setHgap(CELL_GAP);
+    gridGroup.setVgap(CELL_GAP);
+
+    int squareSize;
+    if (myWidth > myHeight) {
+      squareSize = (int)((float) MAX_WIDTH / myWidth - CELL_GAP);
+    } else {
+      squareSize = (int)((float) MAX_HEIGHT / myHeight - CELL_GAP);
+    }
+
+    for (int x = 0; x < myWidth; x++) {
+      for (int y = 0; y < myHeight; y++) {
+        Rectangle rect = new Rectangle();
+        rect.setFill(myRuleSet.getStateColor(myStates[x][y]));
+        rect.setWidth(squareSize);
+        rect.setHeight(squareSize);
+
+        final int finalX = x;
+        final int finalY = y;
+        rect.setOnMouseClicked(e -> rect.setFill(this.dynamicallyIncrement(finalX, finalY)));
+
+        gridGroup.add(rect, x, y);
+      }
+    }
+
+    return gridGroup;
+  }
+
   public int[] getStats() {
     int[] statArray = new int[100];
     for(State[] sa : myStates){
@@ -145,8 +178,8 @@ public class Grid {
     return emptyStates;
   }
 
-  public void incrementState(int x, int y){
+  public Color dynamicallyIncrement(int x, int y) {
     myRuleSet.incrementState(myStates[x][y]);
+    return myRuleSet.getStateColor(myStates[x][y]);
   }
-
 }

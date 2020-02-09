@@ -116,14 +116,14 @@ class XMLReader {
   }
 
   private int[][] updateInitialStateGrid(NodeIterator iterator) {
-    int[][] initialStateGrid = new int[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
+    int[][] initialStateGrid = new int[myGridWidth][myGridHeight];
+    for (int y = 0; y < myGridHeight; y++) {
       //Get string of values corresponding to a row and store in an array
       String[] rowArray = iterator.nextNode().getTextContent().trim().split(" ");
       skipBlankLine(iterator);
       //place each value in the row in it's corresponding grid position
-      for (int j = 0; j < myGridWidth; j++) {
-        initialStateGrid[i][j] = Integer.parseInt(rowArray[j]);
+      for (int x = 0; x < myGridWidth; x++) {
+        initialStateGrid[x][y] = Integer.parseInt(rowArray[x]);
       }
     }
     return initialStateGrid;
