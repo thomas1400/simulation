@@ -9,7 +9,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,6 +30,7 @@ public class CustomSimulationWindow extends Application {
   private static final double PADDING = 5;
 
   private String myWindowTitle;
+  private Stage myStage;
 
   public CustomSimulationWindow(String simulationName) {
     myWindowTitle = simulationName + " Settings";
@@ -35,6 +39,7 @@ public class CustomSimulationWindow extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle(myWindowTitle);
+    myStage = primaryStage;
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     String style = getClass().getResource("/resources/stylesheet.css").toExternalForm();
@@ -103,22 +108,24 @@ public class CustomSimulationWindow extends Application {
       try {
         fillInitialStateGrid(customSim, myTextFile.getText(), myWidth, myHeight);
       } catch (FileNotFoundException e) {
-        e.printStackTrace();
+        new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
       }
 
       XMLGenerator myGenerator = new XMLGenerator();
       try {
         myGenerator.generateXML(customSim);
       } catch (FileNotFoundException e) {
-        e.printStackTrace();
+        new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
       }
 
       SimulationWindow customSimulationWindow = new SimulationWindow();
       try {
         customSimulationWindow.start(new Stage(), myFile);
       } catch (MalformedXMLException e) {
-        e.printStackTrace();
+        new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
       }
+
+      myStage.close();
 
     });
     master.add(button,0,13);

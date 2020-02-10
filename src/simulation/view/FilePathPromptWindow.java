@@ -60,7 +60,7 @@ public class FilePathPromptWindow {
       try {
         mySimulation.saveSimulationState("data/" + textField.getText());
       } catch (FileNotFoundException e) {
-        e.printStackTrace();
+        new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
       }
     });
     master.add(button,0,2);
