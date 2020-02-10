@@ -161,7 +161,7 @@ public class SimulationWindow extends Application implements IUpdate {
       }
     });
     buttonData.putIfAbsent("Slow-Down", e -> simulation.slowDown());
-    buttonData.put("Pause", e -> simulation.slowDown());
+    buttonData.put("Pause", e -> simulation.pause());
     buttonData.putIfAbsent("Speed-Up", e -> simulation.speedUp());
     buttonData.putIfAbsent("Step", e -> {
       try {
