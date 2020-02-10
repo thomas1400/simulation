@@ -24,6 +24,8 @@ public class Simulation {
 
   private static final double MS_TO_SECONDS = 1000.0;
   private static final int INITIAL_SIM_SPEED = 1000;
+  public static final double MAX_SIM_SPEED = 1 / 4.0;
+  public static final int MIN_SIM_SPEED = 4;
 
   private String mySimulationTitle;
   private String mySimulationAuthor;
@@ -88,27 +90,37 @@ public class Simulation {
    */
   public void pause() {
     if (mySimulationRunning) {
-      timeline.pause();
+      if (timeline != null) {
+        timeline.pause();
+      }
+      mySimulationRunning = false;
     }
-    mySimulationRunning = false;
   }
 
   /**
    * Speed up the simulation by 2x
    */
   public void speedUp() {
-    mySimulationSpeed /= 2;
-    timeline.stop();
-    autoStep();
+    if (timeline != null) {
+      if (mySimulationSpeed >= MAX_SIM_SPEED * MS_TO_SECONDS) {
+        mySimulationSpeed /= 2;
+      }
+      timeline.stop();
+      autoStep();
+    }
   }
 
   /**
    * Slow down the simulation by 0.5x
    */
   public void slowDown() {
-    mySimulationSpeed *= 2;
-    timeline.stop();
-    autoStep();
+    if (timeline != null) {
+      if (mySimulationSpeed <= MIN_SIM_SPEED * MS_TO_SECONDS) {
+        mySimulationSpeed *= 2;
+      }
+      timeline.stop();
+      autoStep();
+    }
   }
 
   public void stop() {
