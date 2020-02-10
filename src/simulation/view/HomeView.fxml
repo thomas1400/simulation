@@ -21,7 +21,7 @@
     GridPane.columnIndex="0"
     GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
   </Button>
-  <Button text="Create Custom Sim" onAction="#launchSim" prefWidth="150" prefHeight="40"
+  <Button text="Create Custom Sim" onAction="#customSim" prefWidth="150" prefHeight="40"
     GridPane.columnIndex="1"
     GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
   </Button>
