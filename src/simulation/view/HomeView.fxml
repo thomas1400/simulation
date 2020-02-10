@@ -17,7 +17,7 @@
   </Label>
   <Label text="Created by: Sebastian Williams, Grant LoPresti, and Thomas Owens" GridPane.columnIndex="0" GridPane.rowIndex="1"
     GridPane.columnSpan="2" GridPane.rowSpan="1" GridPane.halignment="CENTER"><Font name="Arial" size="24"></Font></Label>
-  <Button text="Select Simulation" onAction="#launchSim" prefWidth="150" prefHeight="40" GridPane.columnIndex="0"
+  <Button text="Select Simulation" onAction="#launchSim" prefWidth="100" prefHeight="40" GridPane.columnIndex="0"
     GridPane.rowIndex="4" GridPane.columnSpan="2" GridPane.rowSpan="1" GridPane.halignment="CENTER">
   </Button>
 </GridPane>

@@ -4,7 +4,6 @@ import exceptions.MalformedXMLException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -37,13 +36,12 @@ public class SimulationWindow extends Application implements IUpdate {
   private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
   private static final int BUTTON_START_INDEX = 0;
-  private static final double PADDING = 5;
+  private static final double CELL_GAP = 0.1;
 
   private String windowTitle;
   private Stage mainWindow;
-  private Simulation simulation;
-  private GridPane mainGrid;
   private Pane gridPane;
+  private Simulation simulation;
   private GridPane buttonGroup;
   private GridPane graphGroup;
   private GridPane settingGroup;
@@ -61,11 +59,7 @@ public class SimulationWindow extends Application implements IUpdate {
     data = new XYChart.Series();
     myStage = primaryStage;
     xmlFileName = getSimulationFile();
-    if (xmlFileName != null) {
-      newSimulation();
-    } else {
-      myStage.close();
-    }
+    newSimulation();
   }
 
   private void newSimulation() throws MalformedXMLException {
@@ -87,17 +81,14 @@ public class SimulationWindow extends Application implements IUpdate {
 
     File file = fc.showOpenDialog(mainWindow);
     if (file == null) {
+      // TODO: Potentially a better way to handle this
       return null;
     }
     return file.toString();
   }
 
   private void updateGUI() throws MalformedXMLException {
-    mainGrid.getChildren().remove(gridPane);
-    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
-    mainGrid.add(gridPane, 0, 2);
-
-    // TODO: Add graph updating
+    setUpWindow(mainWindow);
   }
 
   private void setUpWindow(Stage primaryStage) throws MalformedXMLException {
@@ -111,25 +102,23 @@ public class SimulationWindow extends Application implements IUpdate {
   }
 
   private GridPane makeMasterGrid() throws MalformedXMLException {
-    mainGrid = new GridPane();
-
-    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
+    GridPane mainGrid = new GridPane();
+    buttonGroup = new GridPane();
+    gridPane = simulation.getGridPane(WINDOW_WIDTH, WINDOW_WIDTH);
+    graphGroup = new GridPane();
+    settingGroup = new GridPane();
     makeButtons();
     makeGraphs();
     makeSetting();
-
     mainGrid.setVgap(2.0);
     mainGrid.add(buttonGroup, 0, 0);
     //mainGrid.add(settingGroup,0,1);
     mainGrid.add(gridPane, 0, 2);
     //mainGrid.add(graphGroup,0,3);
-
-    mainGrid.setPadding(new Insets(PADDING));
     return mainGrid;
   }
 
   private void makeSetting(){
-    settingGroup = new GridPane();
     Label label = new Label("Enter Setting:");
     TextField textField = new TextField();
     Button confirmBtn = new Button("Confirm");
@@ -141,7 +130,6 @@ public class SimulationWindow extends Application implements IUpdate {
   }
 
   private void makeGraphs(){
-    graphGroup = new GridPane();
     simulation.getMaxSizes();
     // TODO: Get max values, so you don't have to graph all the way up to 1500
     NumberAxis xAxis = new NumberAxis(0, 1500, 1);
@@ -154,7 +142,6 @@ public class SimulationWindow extends Application implements IUpdate {
     graphGroup.autosize();
   }
   private void makeButtons() throws MalformedXMLException{
-    buttonGroup = new GridPane();
     int colIndex = BUTTON_START_INDEX;
     buttonGroup.setHgap(2);
     buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
@@ -222,7 +209,8 @@ public class SimulationWindow extends Application implements IUpdate {
   private Simulation makeSimulation(String xmlFileName) throws MalformedXMLException {
     Alert alert = new Alert(AlertType.WARNING, "", ButtonType.OK);
     try {
-      return new Simulation(xmlFileName);
+      Simulation simulation = new Simulation(xmlFileName);
+      return simulation;
     } catch (IOException e) {
       alert.setContentText("IOException - error when loading the XML file");
       alert.show();

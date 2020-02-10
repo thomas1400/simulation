@@ -145,7 +145,7 @@ public class Simulation {
     return mySimulationAuthor;
   }
 
-  public Pane getGridPane(int MAX_SIZE) {
-    return myGrid.getGridPane(MAX_SIZE);
+  public Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+    return myGrid.getGridPane(MAX_WIDTH, MAX_HEIGHT);
   }
 }

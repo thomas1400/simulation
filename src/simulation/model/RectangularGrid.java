@@ -12,7 +12,7 @@ public class RectangularGrid extends Grid {
   }
 
   @Override
-  public Pane getGridPane(int MAX_SIZE) {
+  public Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
     final double CELL_GAP = 0.25;
 
     GridPane gridGroup = new GridPane();
@@ -21,9 +21,9 @@ public class RectangularGrid extends Grid {
 
     int squareSize;
     if (myWidth > myHeight) {
-      squareSize = (int)((float) MAX_SIZE / myWidth - CELL_GAP);
+      squareSize = (int)((float) MAX_WIDTH / myWidth - CELL_GAP);
     } else {
-      squareSize = (int)((float) MAX_SIZE / myHeight - CELL_GAP);
+      squareSize = (int)((float) MAX_HEIGHT / myHeight - CELL_GAP);
     }
 
     for (int x = 0; x < myWidth; x++) {

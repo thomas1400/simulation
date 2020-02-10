@@ -6,19 +6,17 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Home extends Application {
 
-  private static final int WINDOW_WIDTH = 400;
-  private static final int WINDOW_HEIGHT = 150;
+  private static final int WINDOW_WIDTH = 512;
+  private static final int WINDOW_HEIGHT = 512;
 
   /**
    * Main method for the application - entry point
@@ -39,8 +37,6 @@ public class Home extends Application {
     System.out.println(System.getProperty("user.dir"));
     FileInputStream fis = new FileInputStream(fxmlPath);
     GridPane ap = loader.load(fis);
-    ap.setVgap(5);
-    ap.setPadding(new Insets(15, 15, 15, 15));
     Scene myHomeScene = new Scene(ap, WINDOW_WIDTH, WINDOW_HEIGHT);
     primaryStage.setScene(myHomeScene);
     primaryStage.show();
