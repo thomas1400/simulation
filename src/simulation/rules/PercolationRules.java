@@ -3,6 +3,7 @@ package simulation.rules;
 import java.util.List;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
+import simulation.model.RectangularGrid;
 import simulation.model.State;
 
 public class PercolationRules extends Rules {

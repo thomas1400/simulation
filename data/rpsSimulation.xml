@@ -10,6 +10,7 @@
     </globalVars>
     <gridWidth>80</gridWidth>
     <gridHeight>80</gridHeight>
+    <gridType>rectangular</gridType>
     <isToroidal>false</isToroidal>
     <neighborhoodType>1</neighborhoodType>
     <gridRows>

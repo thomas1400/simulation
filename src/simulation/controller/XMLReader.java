@@ -22,6 +22,7 @@ class XMLReader {
   private boolean myIsToroidal;
   private int[][] myGrid;
   private int myNeighborhoodType;
+  private String myGridType;
 
   public XMLReader(String file) throws IOException, SAXException, ParserConfigurationException {
     NodeIterator iterator = getNodeIterator(file);
@@ -48,8 +49,10 @@ class XMLReader {
 
     myGridWidth = updateGridWidth(iterator);
     myGridHeight = updateGridHeight(iterator);
+    myGridType = updateGridType(iterator);
     myIsToroidal = updateIsToroidal(iterator);
     myNeighborhoodType = updateNeighborhoodType(iterator);
+    skipBlankLine(iterator);
 
     myGrid = updateInitialStateGrid(iterator);
   }
@@ -102,6 +105,12 @@ class XMLReader {
     return gridHeight;
   }
 
+  private String updateGridType(NodeIterator iterator) {
+    String gridType = iterator.nextNode().getTextContent().trim();
+    skipBlankLine(iterator);
+    return gridType;
+  }
+
   private boolean updateIsToroidal(NodeIterator iterator) {
     boolean toroidal = Boolean.parseBoolean(iterator.nextNode().getTextContent().trim());
     skipBlankLine(iterator);
@@ -111,19 +120,18 @@ class XMLReader {
   private int updateNeighborhoodType(NodeIterator iterator) {
     int neighborhoodType = Integer.parseInt(iterator.nextNode().getTextContent().trim());
     skipBlankLine(iterator);
-    skipBlankLine(iterator);
     return neighborhoodType;
   }
 
   private int[][] updateInitialStateGrid(NodeIterator iterator) {
-    int[][] initialStateGrid = new int[myGridHeight][myGridWidth];
-    for (int i = 0; i < myGridHeight; i++) {
+    int[][] initialStateGrid = new int[myGridWidth][myGridHeight];
+    for (int y = 0; y < myGridHeight; y++) {
       //Get string of values corresponding to a row and store in an array
       String[] rowArray = iterator.nextNode().getTextContent().trim().split(" ");
       skipBlankLine(iterator);
       //place each value in the row in it's corresponding grid position
-      for (int j = 0; j < myGridWidth; j++) {
-        initialStateGrid[i][j] = Integer.parseInt(rowArray[j]);
+      for (int x = 0; x < myGridWidth; x++) {
+        initialStateGrid[x][y] = Integer.parseInt(rowArray[x]);
       }
     }
     return initialStateGrid;
@@ -178,4 +186,7 @@ class XMLReader {
     return myGrid;
   }
 
+  public String getGridType() {
+    return myGridType;
+  }
 }

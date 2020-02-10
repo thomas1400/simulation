@@ -1,10 +1,11 @@
 package simulation.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
+import simulation.model.RectangularGrid;
+import simulation.model.TriangularGrid;
 import simulation.rules.FireRules;
 import simulation.rules.GameOfLifeRules;
 import simulation.rules.PercolationRules;
@@ -18,13 +19,15 @@ class Initializer {
   private String myRulesType;
   private double[] myGlobalVars;
 
+  private String myGridType;
   private boolean myGridIsToroidal;
   private int myNeighborhoodType;
 
   private static final int[][][] NEIGHBORHOOD_SHAPES = {
-      { {1, 1, 1}, {1, 0, 1}, {1, 1, 1} },
-      { {0, 1, 0}, {1, 0, 1}, {0, 1, 0} },
-      { {1, 0, 1}, {0, 0, 0}, {1, 0, 1} }
+      {{1, 1, 1}, {1, -1, 1}, {1, 1, 1}},
+      {{0, 1, 0}, {1, -1, 1}, {0, 1, 0}},
+      {{1, 0, 1}, {0, -1, 0}, {1, 0, 1}},
+      {{0, 1, 1, 1, 0}, {1, 1, -1, 1, 1}, {1, 1, 1, 1, 1}}
   };
 
   private int[][] myInitialStateGrid;
@@ -50,8 +53,23 @@ class Initializer {
     myGridIsToroidal = xmlReader.getIsToroidal();
     myInitialStateGrid = xmlReader.getGrid();
     myNeighborhoodType = xmlReader.getNeighborhoodType();
-    
-    myGrid = new Grid(myInitialStateGrid, NEIGHBORHOOD_SHAPES[myNeighborhoodType-1], newRuleClass(), myGridIsToroidal);
+    myGridType = xmlReader.getGridType();
+
+    makeMyGrid();
+  }
+
+  private void makeMyGrid() {
+    switch (myGridType.toLowerCase()) {
+      case "rectangular":
+        myGrid = new RectangularGrid(
+            myInitialStateGrid, NEIGHBORHOOD_SHAPES[myNeighborhoodType - 1],
+            newRuleClass(), myGridIsToroidal);
+        break;
+      case "triangular":
+        myGrid = new TriangularGrid(
+            myInitialStateGrid, NEIGHBORHOOD_SHAPES[myNeighborhoodType - 1],
+            newRuleClass(), myGridIsToroidal);
+    }
   }
 
   private Rules newRuleClass() {

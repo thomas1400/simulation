@@ -17,6 +17,7 @@ public class UserInputParser {
   private static boolean myGridIsToroidal;
   private static int[][] myInitialStateGrid;
   private static int myNeighborhoodType;
+  private static String myGridType;
 
 
   public static void getUserInput() throws FileNotFoundException {
@@ -26,9 +27,10 @@ public class UserInputParser {
     askForSimulationAuthor();
     askForNumGlobalVars();
     askForGlobalVars();
-    askForSimulationGrid();
+    askForGridType();
     askForGridIsToroidal();
     askForNeighborhoodType();
+    askForSimulationGrid();
   }
 
   private static void askForFilePath() {
@@ -137,10 +139,17 @@ public class UserInputParser {
   }
 
   private static void askForGridIsToroidal() {
-    System.out.print("Is this simulation toroidal? Enter true or false: ");
+    System.out.print("Is this simulation toroidal? (true/false): ");
     Scanner input = new Scanner(System.in);
     myGridIsToroidal = Boolean.parseBoolean(input.next());
   }
+
+  private static void askForGridType() {
+    System.out.print("What type of grid will this simulation have? Enter \"Rectangular\" or \"Triangular\": ");
+    Scanner input = new Scanner(System.in);
+    myGridType = input.next();
+  }
+
 
   private static void askForInitialGridFromFile(Scanner input) throws FileNotFoundException {
     System.out.print("Please enter the name of the file to load: ");
@@ -230,7 +239,7 @@ public class UserInputParser {
   private static void askForNeighborhoodType() {
     myInitialStateGrid = new int[myGridHeight][myGridWidth];
     Scanner input = new Scanner(System.in);
-    System.out.print("Please enter the simulation's grid neighborhood type (1-3): ");
+    System.out.print("Please enter the simulation's grid neighborhood type (1-4): ");
     if (!input.hasNextInt()) {
       displayInvalidNumInput();
       askForNeighborhoodType();
@@ -281,5 +290,8 @@ public class UserInputParser {
 
   public static int getNeighborhoodType() {
     return myNeighborhoodType;
+  }
+
+  public static String getGridType() { return myGridType;
   }
 }

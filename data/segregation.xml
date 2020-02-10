@@ -9,6 +9,7 @@
     </globalVars>
     <gridWidth>10</gridWidth>
     <gridHeight>10</gridHeight>
+    <gridType>rectangular</gridType>
     <toroidalGrid>false</toroidalGrid>
     <neighborhoodType>1</neighborhoodType>
     <gridRows>

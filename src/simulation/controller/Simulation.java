@@ -2,6 +2,8 @@ package simulation.controller;
 
 
 import exceptions.MalformedXMLException;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import simulation.events.IUpdate;
 
 import javafx.animation.Animation;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
+import simulation.model.RectangularGrid;
 
 
 public class Simulation {
@@ -112,13 +115,6 @@ public class Simulation {
     }
   }
 
-  /**
-   * return 2x2 grid of cellColors
-   */
-  public Color[][] getColorGrid() {
-    return myGrid.getColorGrid();
-  }
-
   public void parseSettings(String string){
     System.out.println(string);
   }
@@ -136,11 +132,6 @@ public class Simulation {
     return 5;
   }
 
-  public void onGridClick(int x, int y) throws MalformedXMLException {
-    myGrid.incrementState(x, y);
-    alertGUI();
-  }
-
   /**
    * These getters are used to communicate with GUI the characteristics of the simulation
    * as given from the Initializer
@@ -154,4 +145,7 @@ public class Simulation {
     return mySimulationAuthor;
   }
 
+  public Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+    return myGrid.getGridPane(MAX_WIDTH, MAX_HEIGHT);
+  }
 }
