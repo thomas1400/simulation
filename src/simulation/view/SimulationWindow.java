@@ -92,7 +92,7 @@ public class SimulationWindow extends Application implements IUpdate {
     return file.toString();
   }
 
-  private void updateGUI() throws MalformedXMLException {
+  private void updateGUI() {
     mainGrid.getChildren().remove(gridPane);
     gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
     mainGrid.add(gridPane, 0, 2);
@@ -207,11 +207,13 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void loadConfig() throws MalformedXMLException {
     simulation.pause();
-    simulation = null;
     System.gc();
     xmlFileName = getSimulationFile();
-    simulation = makeSimulation(xmlFileName);
-    newSimulation();
+    if (xmlFileName != null) {
+      simulation = null;
+      simulation = makeSimulation(xmlFileName);
+      newSimulation();
+    }
   }
 
   private void loadSimulation() throws MalformedXMLException {
