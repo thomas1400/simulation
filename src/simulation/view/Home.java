@@ -15,8 +15,9 @@ import javafx.stage.Stage;
 
 public class Home extends Application {
 
-  private static final int WINDOW_WIDTH = 512;
-  private static final int WINDOW_HEIGHT = 512;
+  private static final int WINDOW_WIDTH = 400;
+  private static final int WINDOW_HEIGHT = 175;
+  private static final String WINDOW_TITLE = "Simulation - Home";
 
   /**
    * Main method for the application - entry point
@@ -38,6 +39,7 @@ public class Home extends Application {
     FileInputStream fis = new FileInputStream(fxmlPath);
     GridPane ap = loader.load(fis);
     Scene myHomeScene = new Scene(ap, WINDOW_WIDTH, WINDOW_HEIGHT);
+    primaryStage.setTitle(WINDOW_TITLE);
     primaryStage.setScene(myHomeScene);
     primaryStage.show();
   }

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Font?>
-<GridPane fx:controller="simulation.view.Home" xmlns:fx="http://javafx.com/fxml" fx:id="HomePane">
+<GridPane fx:controller="simulation.view.Home" xmlns:fx="http://javafx.com/fxml" fx:id="HomePane" style="-fx-vgap: 3px">
   <columnConstraints>
     <ColumnConstraints minWidth="100" prefWidth="100" maxWidth="Infinity" halignment="RIGHT">
     </ColumnConstraints>

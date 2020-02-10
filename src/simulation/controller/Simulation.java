@@ -123,14 +123,6 @@ public class Simulation {
     this.listener = listener;
   }
 
-  /**
-   * Method for returning important stats from the simulation
-   * TODO: Implement
-   * @return stats
-   */
-  public int getMaxSizes(){
-    return 5;
-  }
 
   /**
    * These getters are used to communicate with GUI the characteristics of the simulation

@@ -1,9 +1,9 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import java.util.HashMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -36,7 +36,6 @@ public class SimulationWindow extends Application implements IUpdate {
   private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
   private static final int BUTTON_START_INDEX = 0;
-  private static final double CELL_GAP = 0.1;
 
   private String windowTitle;
   private Stage mainWindow;
@@ -48,10 +47,10 @@ public class SimulationWindow extends Application implements IUpdate {
   private String xmlFileName;
   private Stage myStage;
   private XYChart.Series data;
+  private HashMap<String, EventHandler<ActionEvent>> buttonData;
 
   /**
    * Starts the JavaFX application and handles initial setup method calls
-   *
    * @param primaryStage the main stage which the program draws on
    */
   @Override
@@ -60,6 +59,37 @@ public class SimulationWindow extends Application implements IUpdate {
     myStage = primaryStage;
     xmlFileName = getSimulationFile();
     newSimulation();
+  }
+
+  private void setupButtons(){
+    buttonData = new HashMap<>();
+    buttonData.putIfAbsent("Home", e -> System.out.println("Home"));
+    buttonData.putIfAbsent("Reset", e -> {
+      try {
+        reset();
+      } catch (MalformedXMLException ex) {
+        errorAlert();
+      }
+    });
+    buttonData.putIfAbsent("Slow-Down", e -> simulation.slowDown());
+    buttonData.put("Pause", e -> simulation.slowDown());
+    buttonData.putIfAbsent("Speed-Up", e -> simulation.speedUp());
+    buttonData.putIfAbsent("Step", e -> {
+      try {
+        simulation.step();
+      } catch (MalformedXMLException ex) {
+        errorAlert();
+      }
+    });
+    buttonData.putIfAbsent("Play", e -> simulation.play());
+    buttonData.putIfAbsent("Config", e -> {
+      try {
+        loadConfig();
+      } catch (MalformedXMLException ex) {
+        errorAlert();
+      }
+    });
+
   }
 
   private void newSimulation() throws MalformedXMLException {
@@ -103,6 +133,14 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private GridPane makeMasterGrid() throws MalformedXMLException {
     GridPane mainGrid = new GridPane();
+    renderElements();
+    mainGrid.setVgap(2.0);
+    mainGrid.add(buttonGroup, 0, 0);
+    mainGrid.add(gridPane, 0, 2);
+    return mainGrid;
+  }
+
+  private void renderElements() throws MalformedXMLException {
     buttonGroup = new GridPane();
     gridPane = simulation.getGridPane(WINDOW_WIDTH, WINDOW_WIDTH);
     graphGroup = new GridPane();
@@ -110,12 +148,6 @@ public class SimulationWindow extends Application implements IUpdate {
     makeButtons();
     makeGraphs();
     makeSetting();
-    mainGrid.setVgap(2.0);
-    mainGrid.add(buttonGroup, 0, 0);
-    //mainGrid.add(settingGroup,0,1);
-    mainGrid.add(gridPane, 0, 2);
-    //mainGrid.add(graphGroup,0,3);
-    return mainGrid;
   }
 
   private void makeSetting(){
@@ -130,7 +162,6 @@ public class SimulationWindow extends Application implements IUpdate {
   }
 
   private void makeGraphs(){
-    simulation.getMaxSizes();
     // TODO: Get max values, so you don't have to graph all the way up to 1500
     NumberAxis xAxis = new NumberAxis(0, 1500, 1);
     xAxis.setLabel(simulation.getTitle());
@@ -141,49 +172,23 @@ public class SimulationWindow extends Application implements IUpdate {
     graphGroup.add(lineChart, 0, 0);
     graphGroup.autosize();
   }
-  private void makeButtons() throws MalformedXMLException{
+
+  private void makeButtons() {
     int colIndex = BUTTON_START_INDEX;
-    buttonGroup.setHgap(2);
-    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Reset", e -> {
-      try{
-        reset();
-      } catch (MalformedXMLException ex) {
-        errorAlert();
-      }
-    }), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Slow-Down", e -> simulation.slowDown()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Speed-Up", e -> simulation.speedUp()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Step", e -> {
-      try {
-        simulation.step();
-      } catch (MalformedXMLException ex) {
-        errorAlert();
-      }
-    }), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Config", e -> {
-      try {
-        loadConfig();
-      } catch (MalformedXMLException ex) {
-        errorAlert();
-      }
-    }), colIndex, 0);
+    for (String key : buttonData.keySet()) {
+      buttonGroup.add(makeButton(key, buttonData.get(key)), colIndex, 0);
+      colIndex++;
+    }
+
   }
-  private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
+
+  private Button makeButton(String title, EventHandler<ActionEvent> action) {
     Button btn = new Button(title);
     btn.setOnAction(action);
     btn.setId(title);
     return btn;
   }
+
   private void reset() throws MalformedXMLException {
     simulation.pause();
     simulation = null;
@@ -203,6 +208,7 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void loadSimulation() throws MalformedXMLException {
     simulation = makeSimulation(xmlFileName);
+    setupButtons();
     windowTitle = simulation.getTitle();
   }
 
@@ -230,6 +236,7 @@ public class SimulationWindow extends Application implements IUpdate {
           + e.getMessage());
     }
   }
+
   private void updateStats(int newX, int newY){
     data.getData().add(new XYChart.Data(newX, newY));
   }
