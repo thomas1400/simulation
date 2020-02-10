@@ -3,7 +3,6 @@ package simulation.controller;
 
 import exceptions.MalformedXMLException;
 import javafx.collections.ObservableList;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import simulation.events.IUpdate;
 
@@ -11,13 +10,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
-import simulation.model.RectangularGrid;
+import simulation.xmlGeneration.SimulationSettings;
+import simulation.xmlGeneration.XMLGenerator;
 
 
 public class Simulation {
@@ -151,7 +150,8 @@ public class Simulation {
   }
 
   public void saveSimulationState() {
-    //TODO: PUT STUFF HERE
+    XMLGenerator myGenerator = new XMLGenerator();
+    System.out.println(myGrid.toTxt());
   }
 
   public ObservableList<String> getGlobalVarList() {

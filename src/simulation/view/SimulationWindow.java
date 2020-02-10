@@ -234,7 +234,7 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void loadSimulation() throws MalformedXMLException {
     simulation = makeSimulation(xmlFileName);
-    windowTitle = simulation.getTitle();
+    windowTitle = simulation.getTitle()  + " by: " + simulation.getAuthor();
   }
 
   private Simulation makeSimulation(String xmlFileName) throws MalformedXMLException {

@@ -153,6 +153,17 @@ public abstract class Grid {
 
   public ObservableList<String> getGlobalVarList() {
     return myRuleSet.getGlobalVarList();
-  };
+  }
+
+  public String toTxt() {
+    String gridString = "";
+    for (int i = 0; i < myWidth; i++){
+      for(State[] sa : myStates){
+          gridString += sa[i].toInt() + " ";
+        }
+      gridString += "\n";
+    }
+    return gridString;
+  }
 
 }
