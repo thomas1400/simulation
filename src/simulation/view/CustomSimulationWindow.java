@@ -1,20 +1,24 @@
 package simulation.view;
 
-import java.util.Map;
+import exceptions.MalformedXMLException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import simulation.controller.Simulation;
+import simulation.xmlGeneration.SimulationSettings;
+import simulation.xmlGeneration.XMLGenerator;
 
 public class CustomSimulationWindow extends Application {
 
@@ -46,101 +50,135 @@ public class CustomSimulationWindow extends Application {
     master.setVgap(10);
     ObservableList<String> options;
 
-
-    master.add(new Label("Choose your custom settings!"), 0, 0);
+    Label titleLabel = new Label("Choose your custom settings!");
+    titleLabel.setFont(new Font("Arial", 16));
+    master.add(titleLabel, 0, 0);
 
     HBox hb = new HBox();
     Label label = new Label("File Path");
-    TextField textField = new TextField();
-    hb.getChildren().addAll(label, textField);
+    TextField filePath = new TextField();
+    hb.getChildren().addAll(label, filePath);
     hb.setSpacing(10);
     master.add(hb, 0,1);
 
-    hb = new HBox();
-    label = new Label("Rule Type: ");
-    options = FXCollections.observableArrayList("fireRules", "gameOfLifeRules","percolationRules"
-        , "predatorPreyRules", "rockPaperScissorsRules", "segregationRules");
-    ComboBox comboBox = new ComboBox(options);
-    hb.getChildren().addAll(label, comboBox);
-    hb.setSpacing(10);
-    master.add(hb, 0,2);
+    ComboBox ruleSelector = addDropdownInput(master, "Rule Type: ",
+        FXCollections.observableArrayList("fireRules", "gameOfLifeRules", "percolationRules"
+            , "predatorPreyRules", "rockPaperScissorsRules", "segregationRules"), 2);
 
-    hb = new HBox();
-    label = new Label("Simulation Title: ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,3);
+    TextField simulationTitle = addTextInputBox(master, "Simulation Title: ", 3);
+    TextField simulationAuthors = addTextInputBox(master, "Simulation Author(s): ", 4);
+    TextField numGlobalVars = addTextInputBox(master, "Number of Global Variables: ", 5);
+    TextField globalVars = addTextInputBox(master, "Global Vars (, ): ", 6);
+    TextField gridWidth = addTextInputBox(master, "Grid Width: ", 7);
+    TextField gridHeight = addTextInputBox(master, "Grid Height: ", 8);
+    ComboBox isToroidal = addDropdownInput(master, "Grid Is Toroidal: ",
+        FXCollections.observableArrayList("true", "false"), 9);
+    ComboBox neighborhoodType = addDropdownInput(master, "Neighborhood Type: ",
+        FXCollections.observableArrayList("1", "2"), 10);
+    ComboBox gridType = addDropdownInput(master, "Grid Type: ",
+        FXCollections.observableArrayList("rectangular", "triangular"), 11);
 
-    hb = new HBox();
-    label = new Label("Simulation Author(s): ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,4);
+    TextField myTextFile = addGridStatesFile(master);
 
-    hb = new HBox();
-    label = new Label("Number of Global Variables: ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,5);
+    Button button = new Button("Create and Run Custom Simulation!");
+    button.setOnAction(value ->  {
+      SimulationSettings customSim = new SimulationSettings();
 
-    hb = new HBox();
-    label = new Label("Global Vars (, ): ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,6);
+      String myFile = filePath.getText();
+      customSim.setFilePath(myFile);
+      customSim.setRuleSelector(ruleSelector.getValue().toString());
+      customSim.setSimulationTitle(simulationTitle.getText());
+      customSim.setSimulationAuthor(simulationAuthors.getText());
+      customSim.setNumGlobalVars(Integer.parseInt(numGlobalVars.getText()));
+      int myWidth = Integer.parseInt(gridWidth.getText());
+      customSim.setGridWidth(myWidth);
+      int myHeight = Integer.parseInt(gridHeight.getText());
+      customSim.setGridHeight(myHeight);
+      customSim.setGridIsToroidal(Boolean.parseBoolean(isToroidal.getValue().toString()));
+      customSim.setNeighborhoodType(Integer.parseInt(neighborhoodType.getValue().toString()));
+      customSim.setGridType(gridType.getValue().toString());
 
-    hb = new HBox();
-    label = new Label("Grid Width: ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,7);
+      fillGlobalVarsArray(globalVars, customSim);
 
-    hb = new HBox();
-    label = new Label("Grid Height: ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,8);
+      try {
+        fillInitialStateGrid(customSim, myTextFile.getText(), myWidth, myHeight);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
 
-    hb = new HBox();
-    label = new Label("Grid Is Toroidal: ");
-    options = FXCollections.observableArrayList("true", "false");
-    comboBox = new ComboBox(options);
-    hb.getChildren().addAll(label, comboBox);
-    hb.setSpacing(10);
-    master.add(hb, 0,9);
+      XMLGenerator myGenerator = new XMLGenerator();
+      try {
+        myGenerator.generateXML(customSim);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
 
-    hb = new HBox();
-    label = new Label("Neighborhood Type: ");
-    options = FXCollections.observableArrayList("true", "false");
-    comboBox = new ComboBox(options);
-    hb.getChildren().addAll(label, comboBox);
-    hb.setSpacing(10);
-    master.add(hb, 0,10);
+      SimulationWindow customSimulationWindow = new SimulationWindow();
+      try {
+        customSimulationWindow.start(new Stage(), myFile);
+      } catch (MalformedXMLException e) {
+        e.printStackTrace();
+      }
 
-    hb = new HBox();
-    label = new Label("Grid Type: ");
-    options = FXCollections.observableArrayList("true", "false");
-    comboBox = new ComboBox(options);
-    hb.getChildren().addAll(label, comboBox);
-    hb.setSpacing(10);
-    master.add(hb, 0,11);
-
-    hb = new HBox();
-    label = new Label("Grid States File: ");
-    textField = new TextField();
-    hb.getChildren().addAll(label, textField);
-    hb.setSpacing(10);
-    master.add(hb, 0,12);
+    });
+    master.add(button,0,13);
 
     master.setPadding(new Insets(PADDING));
 
     return master;
+  }
+
+  private TextField addTextInputBox(GridPane master, String s, int i) {
+    HBox hb;
+    Label label;
+    hb = new HBox();
+    label = new Label(s);
+    TextField gridHeight = new TextField();
+    hb.getChildren().addAll(label, gridHeight);
+    hb.setSpacing(10);
+    master.add(hb, 0, i);
+    return gridHeight;
+  }
+
+  private ComboBox addDropdownInput(GridPane master, String s, ObservableList<String> strings, int i) {
+    HBox hb;
+    Label label;
+    ObservableList<String> options;
+    hb = new HBox();
+    label = new Label(s);
+    options = strings;
+    ComboBox gridType = new ComboBox(options);
+    hb.getChildren().addAll(label, gridType);
+    hb.setSpacing(10);
+    master.add(hb, 0, i);
+    return gridType;
+  }
+
+  private TextField addGridStatesFile(GridPane master) {
+    TextField gridStatesFile = addTextInputBox(master, "Grid States File: ", 12);
+    return gridStatesFile;
+  }
+
+  private void fillGlobalVarsArray(TextField globalVars, SimulationSettings customSim) {
+    String[] varsStrArray = globalVars.getText().split(", ");
+    double[] varsDoubleArray = new double[varsStrArray.length];
+    for (int i = 0; i < varsStrArray.length; i++){
+      varsDoubleArray[i] = Integer.parseInt(varsStrArray[i]);
+    }
+    customSim.setGlobalVars(varsDoubleArray);
+  }
+
+  public void fillInitialStateGrid(SimulationSettings customSim, String myFile, int myWidth,
+      int myHeight) throws FileNotFoundException {
+    File file = new File("data/" + myFile);
+    Scanner sc = new Scanner(file);
+    int[][] myInitialStateGrid = new int[myHeight][myWidth];
+    for (int i = 0; i < myHeight; i++) {
+      for (int j = 0; j < myWidth; j++) {
+        myInitialStateGrid[i][j] = Integer.parseInt(sc.next());
+      }
+    }
+    customSim.setInitialStateGrid(myInitialStateGrid);
   }
 
 }
