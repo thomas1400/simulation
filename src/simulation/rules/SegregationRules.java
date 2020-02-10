@@ -91,4 +91,9 @@ public class SegregationRules extends Rules {
   protected void updateVariables() {
     segregation_threshold = myVariables.get("Segregation Threshold")[2];
   }
+
+  @Override
+  public String toString() {
+    return "segregationRules";
+  }
 }

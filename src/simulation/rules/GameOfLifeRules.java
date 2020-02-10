@@ -72,5 +72,8 @@ public class GameOfLifeRules extends Rules {
     NUM_TO_REVIVE = myVariables.get("Birth Threshold")[2];
   }
 
-
+  @Override
+  public String toString() {
+    return "gameOfLifeRules";
+  }
 }

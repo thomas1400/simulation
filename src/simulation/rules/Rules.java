@@ -37,4 +37,5 @@ public abstract class Rules {
   }
 
   protected abstract void updateVariables();
+
 }
