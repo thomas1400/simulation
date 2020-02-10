@@ -13,6 +13,7 @@ import simulation.rules.PredatorPreyRules;
 import simulation.rules.RockPaperScissorsRules;
 import simulation.rules.Rules;
 import simulation.rules.SegregationRules;
+import simulation.xmlGeneration.SimulationSettings;
 
 class Initializer {
 
@@ -23,6 +24,8 @@ class Initializer {
   private String myGridType;
   private boolean myGridIsToroidal;
   private int myNeighborhoodType;
+
+  private SimulationSettings mySimulationSettings;
 
   private static final int[][][] NEIGHBORHOOD_SHAPES = {
       {{1, 1, 1}, {1, -1, 1}, {1, 1, 1}},

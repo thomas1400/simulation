@@ -2,26 +2,20 @@ package simulation.controller;
 
 
 import exceptions.MalformedXMLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Pair;
 import simulation.events.IUpdate;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
-import simulation.model.RectangularGrid;
+import simulation.xmlGeneration.XMLGenerator;
 import simulation.rules.Rules;
 
 
@@ -155,6 +149,11 @@ public class Simulation {
 
   public Pane getGridPane(int MAX_SIZE) {
     return myGrid.getGridPane(MAX_SIZE);
+  }
+
+  public void saveSimulationState() {
+    XMLGenerator myGenerator = new XMLGenerator();
+    System.out.println(myGrid.toTxt());
   }
 
   public Map<String, Double[]> getSettings() {
