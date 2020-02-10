@@ -48,7 +48,7 @@ public abstract class Grid {
   }
 
   public abstract Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT);
-
+  
   public void step() {
     Collections.shuffle(myUpdateOrder);
     for (State s : myUpdateOrder) {
