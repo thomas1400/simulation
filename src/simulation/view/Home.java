@@ -83,25 +83,6 @@ public class Home extends Application {
     }
   }
 
-  @FXML
-  private Button FireSpread ;
-
-  @FXML
-  private Button GameOfLife ;
-
-  @FXML
-  private Button Percolation ;
-
-  @FXML
-  private Button PredatorPrey ;
-
-  @FXML
-  private Button RockPaperScissors ;
-
-  @FXML
-  private Button Segregation ;
-
-
   public void initialize() {
     FireSpread.setOnAction(e -> launchSim("firespread.xml"));
     GameOfLife.setOnAction(e -> launchSim("gameoflifegun.xml"));
