@@ -19,7 +19,7 @@ import simulation.controller.Simulation;
 public class CustomSimulationWindow extends Application {
 
   private static final double WINDOW_WIDTH = 300;
-  private static final double WINDOW_HEIGHT = 400;
+  private static final double WINDOW_HEIGHT = 500;
   private static final double PADDING = 5;
 
   private String myWindowTitle;
