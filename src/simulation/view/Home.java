@@ -10,15 +10,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Home extends Application {
 
-  private static final int WINDOW_WIDTH = 400;
-  private static final int WINDOW_HEIGHT = 150;
+  private static final int WINDOW_WIDTH = 450;
+  private static final int WINDOW_HEIGHT = 325;
 
   /**
    * Main method for the application - entry point
@@ -57,6 +57,46 @@ public class Home extends Application {
       new Alert(AlertType.WARNING, "Error in XML file - try another one. "
           + "Error message: " + e2.getMessage(), ButtonType.OK).show();
     }
+  }
+
+  private void launchSim(String xmlFile) {
+    SimulationWindow simulationWindow = new SimulationWindow();
+    try{
+      simulationWindow.start(new Stage(), "data/" + xmlFile);
+    } catch (MalformedXMLException e){
+      new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
+    } catch (NumberFormatException e2){
+      new Alert(AlertType.WARNING, "Error in XML file - try another one. "
+          + "Error message: " + e2.getMessage(), ButtonType.OK).show();
+    }
+  }
+
+  @FXML
+  private Button FireSpread ;
+
+  @FXML
+  private Button GameOfLife ;
+
+  @FXML
+  private Button Percolation ;
+
+  @FXML
+  private Button PredatorPrey ;
+
+  @FXML
+  private Button RockPaperScissors ;
+
+  @FXML
+  private Button Segregation ;
+
+
+  public void initialize() {
+    FireSpread.setOnAction(e -> launchSim("firespread.xml"));
+    GameOfLife.setOnAction(e -> launchSim("gameoflifegun.xml"));
+    Percolation.setOnAction(e -> launchSim("percolation.xml"));
+    PredatorPrey.setOnAction(e -> launchSim("predatorprey.xml"));
+    RockPaperScissors.setOnAction(e -> launchSim("rpsSimulation.xml"));
+    Segregation.setOnAction(e -> launchSim("segregationtest2.xml"));
   }
 
 }

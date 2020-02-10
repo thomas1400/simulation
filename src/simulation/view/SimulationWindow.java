@@ -68,6 +68,17 @@ public class SimulationWindow extends Application implements IUpdate {
     }
   }
 
+  public void start(Stage primaryStage, String xmlFile) throws MalformedXMLException {
+    data = new XYChart.Series();
+    myStage = primaryStage;
+    xmlFileName = xmlFile;
+    if (xmlFileName != null) {
+      newSimulation();
+    } else {
+      myStage.close();
+    }
+  }
+
   private void newSimulation() throws MalformedXMLException {
     loadSimulation();
     setUpWindow(myStage);
