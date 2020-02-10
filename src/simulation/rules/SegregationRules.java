@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class SegregationRules extends Rules {
+public class SegregationRules implements Rules {
 
   private static final int EMPTY = 0;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
@@ -24,6 +24,11 @@ public class SegregationRules extends Rules {
     }
     myVariables.put("Segregation Threshold", new Double[]{0.0, 8.0, v0});
     updateVariables();
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return FXCollections.observableArrayList("Segregation Threshold");
   }
 
   @Override

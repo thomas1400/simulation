@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class PredatorPreyRules extends Rules {
+public class PredatorPreyRules implements Rules {
 
   private double prey_death_probability;
   private double predator_death_probability;
@@ -94,5 +94,10 @@ public class PredatorPreyRules extends Rules {
     prey_death_probability = myVariables.get("Prey Death Probability")[2];
     predator_death_probability = myVariables.get("Predator Death Probability")[2];
     predator_birth_probability = myVariables.get("Predator Birth Probability")[2];
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return FXCollections.observableArrayList("Prey Death %", "Predator Death %", "Predator Birth %");
   }
 }

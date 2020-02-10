@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class PercolationRules extends Rules {
+public class PercolationRules implements Rules {
 
   private static final int BLOCKED = 0;
   private static final int EMPTY = 1;
@@ -70,6 +70,11 @@ public class PercolationRules extends Rules {
   @Override
   protected void updateVariables() {
     percolation_probability = myVariables.get("Percolation Probability")[2];
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return null;
   }
 
 }

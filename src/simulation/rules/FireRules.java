@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class FireRules extends Rules {
+public class FireRules implements Rules {
 
   private static final int EMPTY = 0;
   private static final int TREE = 1;
@@ -21,9 +21,6 @@ public class FireRules extends Rules {
 
   /**
    * 0 corresponds to Empty, 1 Corresponds to Alive, 2 Corresponds to Burning
-   *
-   * @param state
-   * @param neighbors
    */
   @Override
   public void calculateUpdate(State state, List<State> neighbors) {
@@ -46,10 +43,6 @@ public class FireRules extends Rules {
     return false;
   }
 
-  /**
-   * @param state
-   * @return
-   */
   @Override
   public Color getStateColor(State state) {
     if (state.equals(EMPTY)) {

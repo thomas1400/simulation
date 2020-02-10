@@ -13,9 +13,9 @@ public abstract class Rules {
 
   public abstract void calculateUpdate(State state, List<State> neighbors);
 
-  public abstract Color getStateColor(State state);
+  Color getStateColor(State state);
 
-  public abstract void incrementState(State state);
+  void incrementState(State state);
 
   public void setGrid(Grid grid) {
     myGrid = grid;
