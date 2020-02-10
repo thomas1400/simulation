@@ -3,25 +3,25 @@ package simulation.controller;
 
 import exceptions.MalformedXMLException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
-import javafx.scene.layout.Pane;
-import simulation.events.IUpdate;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import simulation.events.IUpdate;
 import simulation.model.Grid;
+import simulation.rules.Rules;
 import simulation.xmlGeneration.SimulationSettings;
 import simulation.xmlGeneration.XMLGenerator;
-import simulation.rules.Rules;
 
 
 public class Simulation {
+
   private static final double MS_TO_SECONDS = 1000.0;
   private static final int INITIAL_SIM_SPEED = 1000;
 
@@ -58,18 +58,19 @@ public class Simulation {
     autoStep();
   }
 
-  private int[] getStatsFromGrid(){
+  private int[] getStatsFromGrid() {
     return myGrid.getStats();
   }
 
   private void autoStep() {
-    timeline = new Timeline(new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> {
-      try {
-        step();
-      } catch (MalformedXMLException e) {
-        e.printStackTrace();
-      }
-    }));
+    timeline = new Timeline(
+        new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> {
+          try {
+            step();
+          } catch (MalformedXMLException e) {
+            listener.errorAlert();
+          }
+        }));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -121,7 +122,7 @@ public class Simulation {
     }
   }
 
-  public void parseSettings(String string){
+  public void parseSettings(String string) {
     System.out.println(string);
   }
 
@@ -130,17 +131,18 @@ public class Simulation {
   }
 
   /**
-   * Method for returning important stats from the simulation
-   * TODO: Implement
+   * Method for returning important stats from the simulation TODO: Implement
+   *
    * @return stats
    */
-  public int getMaxSizes(){
+  public int getMaxSizes() {
     return 5;
   }
 
   /**
-   * These getters are used to communicate with GUI the characteristics of the simulation
-   * as given from the Initializer
+   * These getters are used to communicate with GUI the characteristics of the simulation as given
+   * from the Initializer
+   *
    * @return Values of each specific initialized element
    */
   public String getTitle() {
@@ -172,5 +174,17 @@ public class Simulation {
 
   public void setSetting(String name, double value) {
     myRules.setSetting(name, value);
+  }
+
+  public double getArea() {
+    return myGrid.getArea();
+  }
+
+  public Map<Integer, Integer> getCellCounts() {
+    return myGrid.getCellCounts();
+  }
+
+  public List<String> getCellTypes() {
+    return myRules.getCellTypes();
   }
 }

@@ -1,69 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
-<GridPane fx:controller="simulation.view.Home" xmlns:fx="http://javafx.com/fxml" fx:id="HomePane" hgap="10" vgap="10">
-  <columnConstraints>
-    <ColumnConstraints minWidth="200" prefWidth="200" maxWidth="Infinity" halignment="CENTER">
-    </ColumnConstraints>
-    <ColumnConstraints minWidth="200" prefWidth="200" maxWidth="Infinity" halignment="CENTER">
-    </ColumnConstraints>
-  </columnConstraints>
-  <Label text="Welcome!" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"
-    GridPane.rowSpan="1" GridPane.halignment="CENTER">
-    <font><Font name="Arial" size="24"></Font></font>
-  </Label>
-  <Label text="Created by: Sebastian Williams, Grant LoPresti, and Thomas Owens" GridPane.columnIndex="0" GridPane.rowIndex="1"
-    GridPane.columnSpan="2" GridPane.rowSpan="1" GridPane.halignment="CENTER"><Font name="Arial" size="24"></Font></Label>
-  <Button text="Simulation from File" onAction="#launchSim" prefWidth="150" prefHeight="40"
-    GridPane.columnIndex="0"
-    GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
+<GridPane xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10"
+  fx:controller="simulation.view.Home" fx:id="HomePane">
+  <Button GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="4"
+    GridPane.rowSpan="1"
+    onAction="#launchSim" prefHeight="40" prefWidth="150" text="Simulation from File">
   </Button>
   <Button text="Create Custom Sim" onAction="#customSim" prefWidth="150" prefHeight="40"
     GridPane.columnIndex="1"
     GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
   </Button>
-  <Label text="" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"
-    GridPane.rowSpan="1" GridPane.halignment="CENTER">
-    <font><Font size="6"></Font></font>
+  <Button GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.halignment="CENTER"
+    GridPane.rowIndex="8"
+    GridPane.rowSpan="1" prefHeight="30" prefWidth="100"
+    text="FireSpread" fx:id="FireSpread">
+  </Button>
+  <Button GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="8"
+    GridPane.rowSpan="1"
+    prefHeight="30" prefWidth="100" text="Game of Life" fx:id="GameOfLife">
+  </Button>
+  <Button GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="9"
+    GridPane.rowSpan="1"
+    prefHeight="30" prefWidth="100" text="Percolation" fx:id="Percolation">
+  </Button>
+  <Button GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="CENTER"
+    GridPane.rowIndex="9"
+    GridPane.rowSpan="1" prefHeight="30" prefWidth="100"
+    text="Predator Prey" fx:id="PredatorPrey">
+  </Button>
+  <Button GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="10"
+    GridPane.rowSpan="1"
+    prefHeight="30" prefWidth="100" text="RPS"
+    fx:id="RockPaperScissors">
+  </Button>
+  <Button GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="10"
+    GridPane.rowSpan="1"
+    prefHeight="30" prefWidth="100" text="Segregation"
+    fx:id="Segregation">
+  </Button>
+  <Label GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+    GridPane.rowSpan="1" text="Welcome!">
+    <font>
+      <Font name="Arial" size="24"></Font>
+    </font>
   </Label>
-  <Label text="Preset Simulations:" GridPane.columnIndex="0" GridPane.rowIndex="6"
-    GridPane.columnSpan="2"
-    GridPane.rowSpan="1" GridPane.halignment="CENTER">
-    <font><Font name="Arial" size="18"></Font></font>
+  <Label GridPane.columnIndex="0"
+    GridPane.columnSpan="2" GridPane.halignment="CENTER"
+    GridPane.rowIndex="1" GridPane.rowSpan="1" text="Created by: Sebastian Williams, Grant LoPresti, and Thomas Owens">
+    <Font name="Arial" size="24"></Font>
   </Label>
-  <Label text="" GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2"
-    GridPane.rowSpan="1" GridPane.halignment="CENTER">
-    <font><Font size="2"></Font></font>
+  <Label GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5"
+    GridPane.rowSpan="1" text="">
+    <font>
+      <Font size="6"></Font>
+    </font>
   </Label>
-  <Button fx:id="FireSpread" text="FireSpread" prefWidth="100"
-    prefHeight="30"
-    GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="1"
-    GridPane.rowSpan="1" GridPane.halignment="CENTER">
-  </Button>
-  <Button fx:id="GameOfLife" text="Game of Life" prefWidth="100" prefHeight="30"
-    GridPane.columnIndex="1"
-    GridPane.rowIndex="8" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
-  </Button>
-  <Button fx:id="Percolation" text="Percolation" prefWidth="100" prefHeight="30"
-    GridPane.columnIndex="0"
-    GridPane.rowIndex="9" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
-  </Button>
-  <Button fx:id="PredatorPrey" text="Predator Prey" prefWidth="100"
-    prefHeight="30"
-    GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.columnSpan="1"
-    GridPane.rowSpan="1" GridPane.halignment="CENTER">
-  </Button>
-  <Button fx:id="RockPaperScissors" text="RPS" prefWidth="100" prefHeight="30"
-    GridPane.columnIndex="0"
-    GridPane.rowIndex="10" GridPane.columnSpan="1" GridPane.rowSpan="1"
-    GridPane.halignment="CENTER">
-  </Button>
-  <Button fx:id="Segregation" text="Segregation" prefWidth="100" prefHeight="30"
-    GridPane.columnIndex="1"
-    GridPane.rowIndex="10" GridPane.columnSpan="1" GridPane.rowSpan="1"
-    GridPane.halignment="CENTER">
-  </Button>
+  <Label GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"
+    GridPane.rowIndex="6"
+    GridPane.rowSpan="1" text="Preset Simulations:">
+    <font>
+      <Font name="Arial" size="18"></Font>
+    </font>
+  </Label>
+  <Label GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7"
+    GridPane.rowSpan="1" text="">
+    <font>
+      <Font size="2"></Font>
+    </font>
+  </Label>
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" maxWidth="Infinity" minWidth="200" prefWidth="200">
+    </ColumnConstraints>
+    <ColumnConstraints halignment="CENTER" maxWidth="Infinity" minWidth="200" prefWidth="200">
+    </ColumnConstraints>
+  </columnConstraints>
 </GridPane>

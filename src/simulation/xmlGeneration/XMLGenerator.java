@@ -1,8 +1,7 @@
 package simulation.xmlGeneration;
 
-import java.io.FileNotFoundException;
-
 import java.io.File;
+import java.io.FileNotFoundException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,23 +32,23 @@ public class XMLGenerator {
       createXMLDocument(document, settings);
       System.out.println("Done creating XML File");
     } catch (ParserConfigurationException | TransformerException pce) {
-      pce.printStackTrace();
+      System.exit(-1);
     }
   }
 
-  private  Document getDocument() throws ParserConfigurationException {
+  private Document getDocument() throws ParserConfigurationException {
     DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
     return documentBuilder.newDocument();
   }
 
-  private  Element createSimulationRoot(Document document) {
+  private Element createSimulationRoot(Document document) {
     Element root = document.createElement("simulation");
     document.appendChild(root);
     return root;
   }
 
-  private  void addElementsToRoot(Document document, Element root, SimulationSettings settings) {
+  private void addElementsToRoot(Document document, Element root, SimulationSettings settings) {
 
     addElement(document, root, "rule", settings.getRuleSelector());
     addElement(document, root, "simulationTitle", settings.getSimulationTitle());
@@ -68,14 +67,14 @@ public class XMLGenerator {
 
   }
 
-  private  void addElement(Document document, Element root, String rule,
+  private void addElement(Document document, Element root, String rule,
       String myRuleSelector) {
     Element ruleClass = document.createElement(rule);
     ruleClass.appendChild(document.createTextNode(myRuleSelector));
     root.appendChild(ruleClass);
   }
 
-  private  void addGlobalVarElements(Document document, Element root, SimulationSettings settings) {
+  private void addGlobalVarElements(Document document, Element root, SimulationSettings settings) {
     //global vars
     Element globalVars = document.createElement("globalVars");
     root.appendChild(globalVars);
@@ -90,7 +89,7 @@ public class XMLGenerator {
     }
   }
 
-  private  void addGridElements(Document document, Element root, SimulationSettings settings) {
+  private void addGridElements(Document document, Element root, SimulationSettings settings) {
     //grid rows
     Element gridRows = document.createElement("gridRows");
     root.appendChild(gridRows);
@@ -108,12 +107,13 @@ public class XMLGenerator {
     }
   }
 
-  private  void createXMLDocument(Document document, SimulationSettings settings) throws TransformerException {
+  private void createXMLDocument(Document document, SimulationSettings settings)
+      throws TransformerException {
     Transformer transformer = setDocumentProperties();
     translateDOMtoXML(document, transformer, settings);
   }
 
-  private  Transformer setDocumentProperties() throws TransformerConfigurationException {
+  private Transformer setDocumentProperties() throws TransformerConfigurationException {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -121,7 +121,7 @@ public class XMLGenerator {
     return transformer;
   }
 
-  private  void translateDOMtoXML(Document document, Transformer transformer,
+  private void translateDOMtoXML(Document document, Transformer transformer,
       SimulationSettings settings)
       throws TransformerException {
     DOMSource domSource = new DOMSource(document);

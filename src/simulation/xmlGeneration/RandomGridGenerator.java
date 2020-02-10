@@ -34,7 +34,7 @@ public class RandomGridGenerator {
       }
       writer.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      System.exit(-1);
     }
   }
 

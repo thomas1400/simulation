@@ -2,13 +2,16 @@ package simulation.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import simulation.rules.Rules;
 import simulation.xmlGeneration.SimulationSettings;
 
 public abstract class Grid {
+
   protected static final int NEIGHBORHOOD_CENTER = -1;
 
   protected State[][] myStates;
@@ -88,7 +91,7 @@ public abstract class Grid {
           if (inGridBounds(x + xOffset, y + yOffset)) {
             neighborStates.add(myStates[x + xOffset][y + yOffset]);
           } else if (isToroidal) {
-            int[] tc = toroidizeCoordinates(x+xOffset, y+yOffset);
+            int[] tc = toroidizeCoordinates(x + xOffset, y + yOffset);
             neighborStates.add(myStates[tc[0]][tc[1]]);
           }
         }
@@ -108,15 +111,15 @@ public abstract class Grid {
 
   protected int normalize(int c, int bound) {
     if (c < 0 || c >= bound) {
-      c = (c+bound) % bound;
+      c = (c + bound) % bound;
     }
     return c;
   }
 
   public int[] getStats() {
     int[] statArray = new int[100];
-    for(State[] sa : myStates){
-      for(State s : sa){
+    for (State[] sa : myStates) {
+      for (State s : sa) {
         statArray[s.toInt()]++;
       }
     }
@@ -151,12 +154,27 @@ public abstract class Grid {
     return true;
   }
 
+  public double getArea() {
+    return myWidth * myHeight;
+  }
+
+  public Map<Integer, Integer> getCellCounts() {
+    HashMap<Integer, Integer> counts = new HashMap<>();
+    for (State[] sa : myStates) {
+      for (State s : sa) {
+        counts.putIfAbsent(s.toInt(), 0);
+        counts.put(s.toInt(), counts.get(s.toInt()) + 1);
+      }
+    }
+    return counts;
+  }
+
   public int[][] toIntArray() {
     int[][] myIntArray = new int[myWidth][myHeight];
-    for (int i = 0; i < myWidth; i++){
-      for(int j = 0; j < myHeight; j++){
-          myIntArray[i][j] = myStates[i][j].toInt();
-        }
+    for (int i = 0; i < myWidth; i++) {
+      for (int j = 0; j < myHeight; j++) {
+        myIntArray[i][j] = myStates[i][j].toInt();
+      }
     }
     return myIntArray;
   }

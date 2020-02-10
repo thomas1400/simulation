@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -68,7 +70,7 @@ public class SegregationRules extends Rules {
     if (state.equals(EMPTY)) {
       return Color.WHITE;
     } else {
-      return groupColors[state.toInt()-1];
+      return groupColors[state.toInt() - 1];
     }
   }
 
@@ -83,13 +85,19 @@ public class SegregationRules extends Rules {
   }
 
   public void incrementState(State state) {
-    state.setUpdate((state.toInt() + 1) % (MY_MAX_GROUPS+1));
+    state.setUpdate((state.toInt() + 1) % (MY_MAX_GROUPS + 1));
     state.update();
   }
 
   @Override
   protected void updateVariables() {
     segregation_threshold = myVariables.get("Segregation Threshold")[2];
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(
+        Arrays.asList("Empty", "Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"));
   }
 
   @Override

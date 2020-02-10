@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -31,7 +33,8 @@ public class RockPaperScissorsRules extends Rules {
 
   /**
    * State 0 = rock, 1 = paper, 2 = scissors
-   * @param state the current numerical state of the cell
+   *
+   * @param state     the current numerical state of the cell
    * @param neighbors a list of all neighbors
    */
   @Override
@@ -39,7 +42,7 @@ public class RockPaperScissorsRules extends Rules {
     int enemy = mortalEnemy(state);
     int numberOfEnemies = sumNeighborsOfType(enemy, neighbors);
 
-    if (numberOfEnemies >= thresholdValue + (int)(Math.random() * randomThresholdAdjustment)){
+    if (numberOfEnemies >= thresholdValue + (int) (Math.random() * randomThresholdAdjustment)) {
       state.setUpdate(enemy);
     } else {
       state.setUpdate(state.toInt());
@@ -51,11 +54,11 @@ public class RockPaperScissorsRules extends Rules {
     return enemies[state.toInt()];
   }
 
-  private int sumNeighborsOfType(int type, List<State> neighbors){
+  private int sumNeighborsOfType(int type, List<State> neighbors) {
     int sum = 0;
-    for (State neighbor : neighbors){
+    for (State neighbor : neighbors) {
       if (neighbor.equals(type)) {
-        sum ++;
+        sum++;
       }
     }
     return sum;
@@ -75,25 +78,29 @@ public class RockPaperScissorsRules extends Rules {
   }
 
   public void setGlobalVariables(double[] variables) {
-    thresholdValue = (int)variables[0];
-    randomThresholdAdjustment = (int)variables[1];
+    thresholdValue = (int) variables[0];
+    randomThresholdAdjustment = (int) variables[1];
   }
 
   public void incrementState(State state) {
-    state.setUpdate((state.toInt() + 1) % (SCISSORS+1));
+    state.setUpdate((state.toInt() + 1) % (SCISSORS + 1));
     state.update();
   }
 
   @Override
   protected void updateVariables() {
     thresholdValue = (int) myVariables.get("Loss Threshold")[2].doubleValue();
-    randomThresholdAdjustment = (int) myVariables.get("Random Threshold Adjustment")[2].doubleValue();
+    randomThresholdAdjustment = (int) myVariables.get("Random Threshold Adjustment")[2]
+        .doubleValue();
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(Arrays.asList("Rock", "Paper", "Scissors"));
   }
 
   @Override
   public String toString() {
     return "rockPaperScissorsRules";
   }
-
-
 }

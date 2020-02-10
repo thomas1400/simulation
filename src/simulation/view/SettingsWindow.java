@@ -1,18 +1,14 @@
 package simulation.view;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import simulation.controller.Simulation;
 
 public class SettingsWindow extends Application {
@@ -23,6 +19,7 @@ public class SettingsWindow extends Application {
 
   private Simulation mySimulation;
   private String myWindowTitle;
+  private Stage myStage;
 
   public SettingsWindow(String simulationName, Simulation simulation) {
     myWindowTitle = simulationName + " Settings";
@@ -31,14 +28,15 @@ public class SettingsWindow extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    primaryStage.setTitle(myWindowTitle);
+    myStage = primaryStage;
+    myStage.setTitle(myWindowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     String style = getClass().getResource("/resources/stylesheet.css").toExternalForm();
     gridScene.getStylesheets().add(style);
 
-    primaryStage.setScene(gridScene);
-    primaryStage.show();
+    myStage.setScene(gridScene);
+    myStage.show();
   }
 
   private GridPane makeMasterGrid() {
@@ -69,5 +67,10 @@ public class SettingsWindow extends Application {
     spinner.valueProperty().addListener(e -> mySimulation.setSetting(name, spinner.getValue()));
 
     return spinner;
+  }
+
+  @Override
+  public void stop() {
+    myStage.close();
   }
 }

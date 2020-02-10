@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -56,6 +58,11 @@ public class FireRules extends Rules {
 
   public void updateVariables() {
     fireSpreadProbability = myVariables.get("Fire Spread Probability")[2];
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(Arrays.asList("Empty", "Tree", "Ablaze"));
   }
 
   public void incrementState(State state) {
