@@ -3,10 +3,10 @@ package simulation.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import simulation.rules.Rules;
+import simulation.xmlGeneration.SimulationSettings;
 
 public abstract class Grid {
   protected static final int NEIGHBORHOOD_CENTER = -1;
@@ -150,16 +150,21 @@ public abstract class Grid {
     }
     return true;
   }
-  
-  public String toTxt() {
-    String gridString = "";
+
+  public int[][] toIntArray() {
+    int[][] myIntArray = new int[myWidth][myHeight];
     for (int i = 0; i < myWidth; i++){
-      for(State[] sa : myStates){
-          gridString += sa[i].toInt() + " ";
+      for(int j = 0; j < myHeight; j++){
+          myIntArray[i][j] = myStates[i][j].toInt();
         }
-      gridString += "\n";
     }
-    return gridString;
+    return myIntArray;
+  }
+
+  public void updateSettings(SimulationSettings settings) {
+    settings.setGridWidth(myWidth);
+    settings.setGridHeight(myHeight);
+    settings.setGridIsToroidal(isToroidal);
   }
 
 }

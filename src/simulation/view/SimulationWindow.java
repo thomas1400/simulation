@@ -1,6 +1,7 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -192,7 +193,22 @@ public class SimulationWindow extends Application implements IUpdate {
       }
     });
     buttonData.putIfAbsent("Settings", e -> openSettings());
+    buttonData.putIfAbsent("Save", e -> {
+      try {
+        simulation.saveSimulationState("data/testing123.xml");
+        //simulation.saveSimulationState(promptUserForFilePath());
+      } catch (FileNotFoundException ex) {
+        errorAlert();
+      }
+    });
   }
+
+  /*
+  private String promptUserForFilePath() {
+    FilePathPromptWindow sw = new FilePathPromptWindow("File Path Chooser");
+    sw.start(new Stage());
+  }
+   */
 
   private void makeButtons() {
     setupButtons();

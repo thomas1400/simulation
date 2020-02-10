@@ -95,4 +95,9 @@ public class PredatorPreyRules extends Rules {
     predator_death_probability = myVariables.get("Predator Death Probability")[2];
     predator_birth_probability = myVariables.get("Predator Birth Probability")[2];
   }
+
+  @Override
+  public String toString() {
+    return "predatorPreyRules";
+  }
 }

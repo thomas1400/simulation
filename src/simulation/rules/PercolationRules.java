@@ -72,4 +72,8 @@ public class PercolationRules extends Rules {
     percolation_probability = myVariables.get("Percolation Probability")[2];
   }
 
+  @Override
+  public String toString() {
+    return "percolationRules";
+  }
 }

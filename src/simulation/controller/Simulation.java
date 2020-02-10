@@ -2,6 +2,7 @@ package simulation.controller;
 
 
 import exceptions.MalformedXMLException;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import javafx.scene.layout.Pane;
 import simulation.events.IUpdate;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
+import simulation.xmlGeneration.SimulationSettings;
 import simulation.xmlGeneration.XMLGenerator;
 import simulation.rules.Rules;
 
@@ -27,6 +29,7 @@ public class Simulation {
   private String mySimulationAuthor;
   private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
+  private SimulationSettings mySimulationSettings;
 
   private Grid myGrid;
 
@@ -40,6 +43,7 @@ public class Simulation {
 
     Initializer myInitializer = new Initializer(xmlFileName);
 
+    mySimulationSettings = myInitializer.getSimulationSettings();
     mySimulationTitle = myInitializer.getSimulationTitle();
     mySimulationAuthor = myInitializer.getSimulationAuthor();
     myGrid = myInitializer.getGrid();
@@ -151,9 +155,15 @@ public class Simulation {
     return myGrid.getGridPane(MAX_SIZE);
   }
 
-  public void saveSimulationState() {
+  public void saveSimulationState(String filePath) throws FileNotFoundException {
     XMLGenerator myGenerator = new XMLGenerator();
-    System.out.println(myGrid.toTxt());
+    mySimulationSettings.setFilePath(filePath);
+    mySimulationSettings.setRuleSelector(myRules.toString());
+    mySimulationSettings.setSimulationTitle(mySimulationTitle);
+    mySimulationSettings.setSimulationAuthor(mySimulationAuthor);
+    mySimulationSettings.setInitialStateGrid(myGrid.toIntArray());
+    myGrid.updateSettings(mySimulationSettings);
+    myGenerator.generateXML(mySimulationSettings);
   }
 
   public Map<String, Double[]> getSettings() {

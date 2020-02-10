@@ -64,8 +64,8 @@ public class SimulationSettings {
     return myGridType;
   }
 
-  public  void setFilePath(String xmlFilePath) {
-    xmlFilePath = xmlFilePath;
+  public  void setFilePath(String filePath) {
+    xmlFilePath = filePath;
   }
 
   public  void setRuleSelector(String ruleSelector) {
