@@ -3,7 +3,6 @@ package simulation.view;
 import exceptions.MalformedXMLException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -157,8 +156,8 @@ public class SimulationWindow extends Application implements IUpdate {
     buttonGroup = new GridPane();
     int colIndex = BUTTON_START_INDEX;
     buttonGroup.setHgap(2);
-    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
-    colIndex ++;
+//    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
+//    colIndex ++;
     buttonGroup.add(makeButton("Reset", e -> {
       try{
         reset();
@@ -183,14 +182,17 @@ public class SimulationWindow extends Application implements IUpdate {
     colIndex ++;
     buttonGroup.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
     colIndex ++;
-    buttonGroup.add(makeButton("Config", e -> {
+    buttonGroup.add(makeButton("Load File", e -> {
       try {
-        loadConfig();
+        loadNewFile();
       } catch (MalformedXMLException ex) {
         errorAlert();
       }
     }), colIndex, 0);
+    colIndex ++;
+    buttonGroup.add(makeButton("Settings", e -> openSettings()), colIndex, 0);
   }
+
   private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
     Button btn = new Button(title);
     btn.setOnAction(action);
@@ -203,9 +205,11 @@ public class SimulationWindow extends Application implements IUpdate {
     System.gc();
     simulation = makeSimulation(xmlFileName);
     newSimulation();
+
+    // TODO: fix bug with resetting and settings window not changing variable anymore
   }
 
-  private void loadConfig() throws MalformedXMLException {
+  private void loadNewFile() throws MalformedXMLException {
     simulation.pause();
     System.gc();
     xmlFileName = getSimulationFile();
@@ -248,12 +252,18 @@ public class SimulationWindow extends Application implements IUpdate {
     data.getData().add(new XYChart.Data(newX, newY));
   }
 
+  private void openSettings() {
+    SettingsWindow sw = new SettingsWindow(windowTitle, simulation);
+    sw.start(new Stage());
+  }
+
   private void errorAlert(){
     Alert alert = new Alert(AlertType.WARNING, "", ButtonType.OK);
     alert.setContentText("Exception caused by bad XML file - close the window and reload the"
         + "simulation");
     alert.show();
   }
+
   /**
    * From IUpdate: method called when the simulation alerts the GUI when the simulation steps
    */

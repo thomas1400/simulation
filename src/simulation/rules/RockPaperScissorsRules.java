@@ -1,24 +1,32 @@
 package simulation.rules;
 
 import java.util.List;
+import java.util.TreeMap;
 import javafx.scene.paint.Color;
-import simulation.model.Grid;
-import simulation.model.RectangularGrid;
 import simulation.model.State;
 
 public class RockPaperScissorsRules extends Rules {
 
-  private static final int NUM_TYPES = 3;
   private static final int ROCK = 0;
   private static final int PAPER = 1;
   private static final int SCISSORS = 2;
 
-  private int thresholdValue;
-  private int randomThresholdAdjustment;
-  private Grid myGrid;
+  private int thresholdValue = 3;
+  private int randomThresholdAdjustment = 2;
 
   public RockPaperScissorsRules(double[] variables) {
-    setGlobalVariables(variables);
+    myVariables = new TreeMap<>();
+    double v0, v1;
+    if (variables.length == 2) {
+      v0 = variables[0];
+      v1 = variables[1];
+    } else {
+      v0 = thresholdValue;
+      v1 = randomThresholdAdjustment;
+    }
+    myVariables.put("Random Threshold Adjustment", new Double[]{0.0, 4.0, v1});
+    myVariables.put("Loss Threshold", new Double[]{0.0, 8.0, v0});
+    updateVariables();
   }
 
   /**
@@ -68,6 +76,7 @@ public class RockPaperScissorsRules extends Rules {
 
   public void setGlobalVariables(double[] variables) {
     thresholdValue = (int)variables[0];
+    randomThresholdAdjustment = (int)variables[1];
   }
 
   public void incrementState(State state) {
@@ -75,8 +84,9 @@ public class RockPaperScissorsRules extends Rules {
     state.update();
   }
 
-
-  public void setGrid(Grid grid) {
-    myGrid = grid;
+  @Override
+  protected void updateVariables() {
+    thresholdValue = (int) myVariables.get("Loss Threshold")[2].doubleValue();
+    randomThresholdAdjustment = (int) myVariables.get("Random Threshold Adjustment")[2].doubleValue();
   }
 }

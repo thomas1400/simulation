@@ -1,9 +1,8 @@
 package simulation.rules;
 
 import java.util.List;
+import java.util.TreeMap;
 import javafx.scene.paint.Color;
-import simulation.model.Grid;
-import simulation.model.RectangularGrid;
 import simulation.model.State;
 
 public class PredatorPreyRules extends Rules {
@@ -11,17 +10,29 @@ public class PredatorPreyRules extends Rules {
   private double prey_death_probability;
   private double predator_death_probability;
   private double predator_birth_probability;
+  private static final int NUM_EXPECTED_VARIABLES = 3;
 
   private static final Color[] stateColors = {Color.WHITE, Color.GREEN, Color.ORANGE};
-  private static final int NUM_EXPECTED_VARIABLES = 3;
   private static final int EMPTY = 0;
   private static final int PREY = 1;
   private static final int PREDATOR = 2;
 
-  private Grid myGrid;
-
   public PredatorPreyRules(double[] variables) {
-    setGlobalVariables(variables);
+    myVariables = new TreeMap<>();
+    double v0, v1, v2;
+    if (variables.length == NUM_EXPECTED_VARIABLES) {
+      v0 = variables[0];
+      v1 = variables[1];
+      v2 = variables[2];
+    } else {
+      v0 = prey_death_probability;
+      v1 = predator_death_probability;
+      v2 = predator_birth_probability;
+    }
+    myVariables.put("Predator Birth Probability", new Double[]{0.0, 1.0, v2});
+    myVariables.put("Predator Death Probability", new Double[]{0.0, 1.0, v1});
+    myVariables.put("Prey Death Probability", new Double[]{0.0, 1.0, v0});
+    updateVariables();
   }
 
 
@@ -73,24 +84,15 @@ public class PredatorPreyRules extends Rules {
     return stateColors[state.toInt()];
   }
 
-  public void setGlobalVariables(double[] variables) {
-    if (variables.length != NUM_EXPECTED_VARIABLES) {
-      throw new IllegalArgumentException(
-          "Unexpected number of variables for PredatorPreyRules. Expected 3 but got "
-              + variables.length
-      );
-    }
-    prey_death_probability = variables[0];
-    predator_death_probability = variables[1];
-    predator_birth_probability = variables[2];
-  }
-
   public void incrementState(State state) {
     state.setUpdate((state.toInt() + 1) % (PREDATOR+1));
     state.update();
   }
 
-  public void setGrid(Grid grid) {
-    myGrid = grid;
+  @Override
+  protected void updateVariables() {
+    prey_death_probability = myVariables.get("Prey Death Probability")[2];
+    predator_death_probability = myVariables.get("Predator Death Probability")[2];
+    predator_birth_probability = myVariables.get("Predator Birth Probability")[2];
   }
 }

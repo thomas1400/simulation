@@ -1,9 +1,8 @@
 package simulation.rules;
 
 import java.util.List;
+import java.util.TreeMap;
 import javafx.scene.paint.Color;
-import simulation.model.Grid;
-import simulation.model.RectangularGrid;
 import simulation.model.State;
 
 public class SegregationRules extends Rules {
@@ -13,16 +12,18 @@ public class SegregationRules extends Rules {
       Color.PURPLE, Color.ORANGE};
   private static final int MY_MAX_GROUPS = groupColors.length;
 
-  private double segregation_threshold;
-
-  private Grid myGrid;
+  private double segregation_threshold = 3;
 
   public SegregationRules(double[] variables) {
-    setGlobalVariables(variables);
-  }
-
-  public void setGrid(Grid grid) {
-    myGrid = grid;
+    myVariables = new TreeMap<>();
+    double v0;
+    if (variables.length == 1) {
+      v0 = variables[0];
+    } else {
+      v0 = segregation_threshold;
+    }
+    myVariables.put("Segregation Threshold", new Double[]{0.0, 8.0, v0});
+    updateVariables();
   }
 
   @Override
@@ -84,5 +85,10 @@ public class SegregationRules extends Rules {
   public void incrementState(State state) {
     state.setUpdate((state.toInt() + 1) % (MY_MAX_GROUPS+1));
     state.update();
+  }
+
+  @Override
+  protected void updateVariables() {
+    segregation_threshold = myVariables.get("Segregation Threshold")[2];
   }
 }
