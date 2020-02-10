@@ -26,6 +26,10 @@ public class SettingsWindow extends Application {
     mySimulation = simulation;
   }
 
+  /**
+   * Starts this JavaFX application and opens a settings window
+   * @param primaryStage
+   */
   @Override
   public void start(Stage primaryStage) {
     myStage = primaryStage;
@@ -69,6 +73,9 @@ public class SettingsWindow extends Application {
     return spinner;
   }
 
+  /**
+   * Closes this settings window
+   */
   @Override
   public void stop() {
     myStage.close();

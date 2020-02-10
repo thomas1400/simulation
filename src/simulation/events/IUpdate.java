@@ -7,7 +7,7 @@ import exceptions.MalformedXMLException;
  */
 public interface IUpdate {
 
-  void simulationUpdate(int newX, int newY) throws MalformedXMLException;
+  void simulationUpdate();
 
   void errorAlert();
 }

@@ -58,10 +58,6 @@ public class Simulation {
     autoStep();
   }
 
-  private int[] getStatsFromGrid() {
-    return myGrid.getStats();
-  }
-
   private void autoStep() {
     timeline = new Timeline(
         new KeyFrame(Duration.seconds(mySimulationSpeed / MS_TO_SECONDS), ev -> {
@@ -83,9 +79,8 @@ public class Simulation {
     alertGUI();
   }
 
-  private void alertGUI() throws MalformedXMLException {
-    int[] temp = getStatsFromGrid();
-    listener.simulationUpdate(temp[0], temp[1]);
+  private void alertGUI() {
+    listener.simulationUpdate();
   }
 
   /**

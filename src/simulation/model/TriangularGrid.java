@@ -14,6 +14,11 @@ public class TriangularGrid extends Grid {
     super(initialStates, neighborhoodShape, ruleset, toroidal);
   }
 
+
+  /**
+   * @param MAX_SIZE the maximum size of the grid
+   * @return a Pane with Triangular cells of colors
+   */
   @Override
   public Pane getGridPane(int MAX_SIZE) {
     Pane gridPane = new Pane();

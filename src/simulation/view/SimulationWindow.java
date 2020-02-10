@@ -260,10 +260,6 @@ public class SimulationWindow extends Application implements IUpdate {
     }
   }
 
-  private void updateStats(int newX, int newY) {
-    data.getData().add(new XYChart.Data(newX, newY));
-  }
-
   private void openSettings() {
     settingsWindow = new SettingsWindow(windowTitle, simulation);
     settingsWindow.start(new Stage());
@@ -286,8 +282,7 @@ public class SimulationWindow extends Application implements IUpdate {
    * From IUpdate: method called when the simulation alerts the GUI when the simulation steps
    */
   @Override
-  public void simulationUpdate(int newX, int newY) throws MalformedXMLException {
-    updateStats(newX, newY);
+  public void simulationUpdate() {
     updateGUI();
   }
 
