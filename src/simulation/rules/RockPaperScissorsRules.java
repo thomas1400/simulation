@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class RockPaperScissorsRules implements Rules {
+public class RockPaperScissorsRules extends Rules {
 
   private static final int ROCK = 0;
   private static final int PAPER = 1;
@@ -88,10 +88,5 @@ public class RockPaperScissorsRules implements Rules {
   protected void updateVariables() {
     thresholdValue = (int) myVariables.get("Loss Threshold")[2].doubleValue();
     randomThresholdAdjustment = (int) myVariables.get("Random Threshold Adjustment")[2].doubleValue();
-  }
-
-  @Override
-  public ObservableList<String> getGlobalVarList() {
-    return FXCollections.observableArrayList("Threshold Value");
   }
 }

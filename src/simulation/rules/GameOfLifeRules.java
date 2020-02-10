@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class GameOfLifeRules implements Rules {
+public class GameOfLifeRules extends Rules {
 
   private static final int DEAD = 0;
   private static final int ALIVE = 1;

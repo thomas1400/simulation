@@ -150,9 +150,4 @@ public abstract class Grid {
     }
     return true;
   }
-
-  public ObservableList<String> getGlobalVarList() {
-    return myRuleSet.getGlobalVarList();
-  };
-
 }

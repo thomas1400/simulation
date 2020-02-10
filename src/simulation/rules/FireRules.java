@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
-public class FireRules implements Rules {
+public class FireRules extends Rules {
 
   private static final int EMPTY = 0;
   private static final int TREE = 1;
