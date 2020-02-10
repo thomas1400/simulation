@@ -47,7 +47,7 @@ public abstract class Grid {
     isToroidal = toroidal;
   }
 
-  public abstract Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT);
+  public abstract Pane getGridPane(int MAX_SIZE);
   
   public void step() {
     Collections.shuffle(myUpdateOrder);

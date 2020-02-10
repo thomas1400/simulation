@@ -14,11 +14,11 @@ public class TriangularGrid extends Grid {
   }
 
   @Override
-  public Pane getGridPane(int MAX_WIDTH, int MAX_HEIGHT) {
+  public Pane getGridPane(int MAX_SIZE) {
     Pane gridPane = new Pane();
 
-    double tWidth = (float) MAX_WIDTH / (myWidth / 2.0 + 0.5);
-    double tHeight = (float) MAX_HEIGHT / myHeight;
+    double tWidth = (float) MAX_SIZE / (myWidth / 2.0 + 0.5);
+    double tHeight = (float) MAX_SIZE / myHeight;
 
     double rowY = 0.0;
     for (int y = 0; y < myHeight; y++) {

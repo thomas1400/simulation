@@ -31,8 +31,7 @@ public class PercolationRules extends Rules {
   }
 
   private boolean shouldPercolate(List<State> neighborStates) {
-    // Only check directly adjacent squares, not diagonals (indices 0, 2, 4, 8)
-    for (int i = 0; i < neighborStates.size(); i += 2) {
+    for (int i = 0; i < neighborStates.size(); i++) {
       if (neighborStates.get(i).equals(FILLED)) {
         return true;
       }
