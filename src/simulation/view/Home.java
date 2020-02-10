@@ -59,18 +59,6 @@ public class Home extends Application {
     }
   }
 
-  private void launchSim(String xmlFile) {
-    SimulationWindow simulationWindow = new SimulationWindow();
-    try{
-      simulationWindow.start(new Stage(), "data/" + xmlFile);
-    } catch (MalformedXMLException e){
-      new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
-    } catch (NumberFormatException e2){
-      new Alert(AlertType.WARNING, "Error in XML file - try another one. "
-          + "Error message: " + e2.getMessage(), ButtonType.OK).show();
-    }
-  }
-
   @FXML
   private Button FireSpread ;
 
@@ -96,7 +84,19 @@ public class Home extends Application {
     Percolation.setOnAction(e -> launchSim("percolation.xml"));
     PredatorPrey.setOnAction(e -> launchSim("predatorprey.xml"));
     RockPaperScissors.setOnAction(e -> launchSim("rpsSimulation.xml"));
-    Segregation.setOnAction(e -> launchSim("segregationtest2.xml"));
+    Segregation.setOnAction(e -> launchSim("segregationtest.xml"));
+  }
+
+  private void launchSim(String xmlFile) {
+    SimulationWindow simulationWindow = new SimulationWindow();
+    try{
+      simulationWindow.start(new Stage(), "data/" + xmlFile);
+    } catch (MalformedXMLException e){
+      new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
+    } catch (NumberFormatException e2){
+      new Alert(AlertType.WARNING, "Error in XML file - try another one. "
+          + "Error message: " + e2.getMessage(), ButtonType.OK).show();
+    }
   }
 
 }

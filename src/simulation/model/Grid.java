@@ -3,6 +3,7 @@ package simulation.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import simulation.rules.Rules;
@@ -149,4 +150,9 @@ public abstract class Grid {
     }
     return true;
   }
+
+  public ObservableList<String> getGlobalVarList() {
+    return myRuleSet.getGlobalVarList();
+  };
+
 }

@@ -1,12 +1,13 @@
 package simulation.rules;
 
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
-import simulation.model.RectangularGrid;
 import simulation.model.State;
 
-public class RockPaperScissorsRules extends Rules {
+public class RockPaperScissorsRules implements Rules {
 
   private static final int NUM_TYPES = 3;
   private static final int ROCK = 0;
@@ -75,8 +76,12 @@ public class RockPaperScissorsRules extends Rules {
     state.update();
   }
 
-
   public void setGrid(Grid grid) {
     myGrid = grid;
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return FXCollections.observableArrayList("Threshold Value");
   }
 }

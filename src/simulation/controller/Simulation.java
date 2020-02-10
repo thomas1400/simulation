@@ -2,6 +2,7 @@ package simulation.controller;
 
 
 import exceptions.MalformedXMLException;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import simulation.events.IUpdate;
@@ -147,5 +148,13 @@ public class Simulation {
 
   public Pane getGridPane(int MAX_SIZE) {
     return myGrid.getGridPane(MAX_SIZE);
+  }
+
+  public void saveSimulationState() {
+    //TODO: PUT STUFF HERE
+  }
+
+  public ObservableList<String> getGlobalVarList() {
+    return myGrid.getGlobalVarList();
   }
 }

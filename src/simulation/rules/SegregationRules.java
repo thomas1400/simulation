@@ -1,12 +1,14 @@
 package simulation.rules;
 
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
 import simulation.model.RectangularGrid;
 import simulation.model.State;
 
-public class SegregationRules extends Rules {
+public class SegregationRules implements Rules {
 
   private static final int EMPTY = 0;
   private static Color[] groupColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
@@ -23,6 +25,11 @@ public class SegregationRules extends Rules {
 
   public void setGrid(Grid grid) {
     myGrid = grid;
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return FXCollections.observableArrayList("Segregation Threshold");
   }
 
   @Override

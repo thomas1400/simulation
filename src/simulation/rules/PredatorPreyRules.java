@@ -1,12 +1,14 @@
 package simulation.rules;
 
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
 import simulation.model.RectangularGrid;
 import simulation.model.State;
 
-public class PredatorPreyRules extends Rules {
+public class PredatorPreyRules implements Rules {
 
   private double prey_death_probability;
   private double predator_death_probability;
@@ -92,5 +94,10 @@ public class PredatorPreyRules extends Rules {
 
   public void setGrid(Grid grid) {
     myGrid = grid;
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return FXCollections.observableArrayList("Prey Death %", "Predator Death %", "Predator Birth %");
   }
 }
