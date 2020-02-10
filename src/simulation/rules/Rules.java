@@ -1,20 +1,39 @@
 package simulation.rules;
 
 import java.util.List;
-import javafx.collections.ObservableList;
+import java.util.Map;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
 import simulation.model.State;
 
-public interface Rules {
-  
-  void calculateUpdate(State state, List<State> neighbors);
+public abstract class Rules {
 
-  Color getStateColor(State state);
+  protected Map<String, Double[]> myVariables;
+  protected Grid myGrid;
 
-  void incrementState(State state);
+  public abstract void calculateUpdate(State state, List<State> neighbors);
 
-  void setGrid(Grid grid);
+  public abstract Color getStateColor(State state);
 
-  ObservableList<String> getGlobalVarList();
+  public abstract void incrementState(State state);
+
+  public void setGrid(Grid grid) {
+    myGrid = grid;
+  }
+
+  public Map<String, Double[]> getSettings() {
+    return myVariables;
+  }
+
+  public void setSetting(String name, double setting) {
+    if (myVariables.containsKey(name)) {
+      Double[] bounds = myVariables.get(name);
+      if (bounds[0] <= setting && setting <= bounds[1]) {
+        myVariables.get(name)[2] = setting;
+      }
+    }
+    updateVariables();
+  }
+
+  protected abstract void updateVariables();
 }

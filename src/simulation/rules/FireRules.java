@@ -1,23 +1,22 @@
 package simulation.rules;
 
 import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.TreeMap;
 import javafx.scene.paint.Color;
-import simulation.model.Grid;
 import simulation.model.State;
 
-public class FireRules implements Rules {
+public class FireRules extends Rules {
 
   private static final int EMPTY = 0;
   private static final int TREE = 1;
   private static final int ABLAZE = 2;
 
-  private double fireSpreadProbability;
-  private Grid myGrid;
+  private Double fireSpreadProbability;
 
   public FireRules(double[] variables) {
-    setGlobalVariables(variables);
+    myVariables = new TreeMap<>();
+    fireSpreadProbability = variables[0];
+    myVariables.put("Fire Spread Probability", new Double[]{0.0, 1.0, fireSpreadProbability});
   }
 
   /**
@@ -55,21 +54,13 @@ public class FireRules implements Rules {
     }
   }
 
-  public void setGlobalVariables(double[] variables) {
-    fireSpreadProbability = variables[0];
+  public void updateVariables() {
+    fireSpreadProbability = myVariables.get("Fire Spread Probability")[2];
   }
 
   public void incrementState(State state) {
-    state.setUpdate((state.toInt() + 1) % (ABLAZE+1));
+    state.setUpdate((state.toInt() + 1) % (ABLAZE + 1));
     state.update();
   }
 
-  public void setGrid(Grid grid) {
-    myGrid = grid;
-  }
-
-  @Override
-  public ObservableList<String> getGlobalVarList() {
-    return FXCollections.observableArrayList("Fire Spread Probability");
-  }
 }

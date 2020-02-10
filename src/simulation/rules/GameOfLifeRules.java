@@ -1,25 +1,36 @@
 package simulation.rules;
 
 import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.TreeMap;
 import javafx.scene.paint.Color;
-import simulation.model.Grid;
-import simulation.model.RectangularGrid;
 import simulation.model.State;
 
-public class GameOfLifeRules implements Rules {
+public class GameOfLifeRules extends Rules {
 
   private static final int DEAD = 0;
   private static final int ALIVE = 1;
-  private static final int MY_MAX_STATE = 1;
 
-  private static final int MIN_TO_DIE = 1;
-  private static final int MAX_TO_DIE = 4;
-  private static final int NUM_TO_REVIVE = 3;
-  private Grid myGrid;
+  private double MIN_TO_DIE = 1;
+  private double MAX_TO_DIE = 4;
+  private double NUM_TO_REVIVE = 3;
 
-  public GameOfLifeRules(double[] variables) { }
+  public GameOfLifeRules(double[] variables) {
+    myVariables = new TreeMap<>();
+    double v0, v1, v2;
+    if (variables.length == 3) {
+      v0 = variables[0];
+      v1 = variables[1];
+      v2 = variables[2];
+    } else {
+      v0 = MIN_TO_DIE;
+      v1 = MAX_TO_DIE;
+      v2 = NUM_TO_REVIVE;
+    }
+    myVariables.put("Starvation Threshold", new Double[]{0.0, 8.0, v0});
+    myVariables.put("Overpopulation Threshold", new Double[]{1.0, 8.0, v1});
+    myVariables.put("Birth Threshold", new Double[]{1.0, 8.0, v2});
+    updateVariables();
+  }
 
   /**
    * @param state
@@ -53,13 +64,11 @@ public class GameOfLifeRules implements Rules {
     state.update();
   }
 
-
-  public void setGrid(Grid grid) {
-    myGrid = grid;
-  }
-
   @Override
-  public ObservableList<String> getGlobalVarList() {
-    return null;
+  protected void updateVariables() {
+    MIN_TO_DIE = myVariables.get("Starvation Threshold")[2];
+    MAX_TO_DIE = myVariables.get("Overpopulation Threshold")[2];
+    NUM_TO_REVIVE = myVariables.get("Birth Threshold")[2];
   }
+
 }

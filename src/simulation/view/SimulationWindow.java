@@ -1,6 +1,10 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,6 +56,7 @@ public class SimulationWindow extends Application implements IUpdate {
   private String xmlFileName;
   private Stage myStage;
   private XYChart.Series data;
+  private Map<String, EventHandler<ActionEvent>> buttonData;
 
   /**
    * Starts the JavaFX application and handles initial setup method calls
@@ -124,35 +129,25 @@ public class SimulationWindow extends Application implements IUpdate {
   }
 
   private GridPane makeMasterGrid() throws MalformedXMLException {
-    mainGrid = new GridPane();
-
-    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
-    makeButtons();
-    makeGraphs();
-    makeSetting();
-
+    renderElements();
     mainGrid.setVgap(2.0);
     mainGrid.add(buttonGroup, 0, 0);
     mainGrid.add(gridPane, 0, 1);
-    mainGrid.add(settingGroup,0,2);
     //mainGrid.add(graphGroup,0,3);
 
     mainGrid.setPadding(new Insets(PADDING));
+
     return mainGrid;
   }
 
-  private void makeSetting(){
-    settingGroup = new GridPane();
-    Label label = new Label("Select Setting:");
-    ObservableList<String> options = simulation.getGlobalVarList();
-    final ComboBox comboBox = new ComboBox(options);
-    TextField textField = new TextField();
-    Button confirmBtn = new Button("Confirm");
-    confirmBtn.setOnAction(e -> simulation.parseSettings(textField.getText()));
-    HBox hb = new HBox();
-    hb.getChildren().addAll(label, comboBox, textField, confirmBtn);
-    hb.setSpacing(10);
-    settingGroup.add(hb, 0,0);
+  private void renderElements() throws MalformedXMLException {
+    buttonGroup = new GridPane();
+    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
+    graphGroup = new GridPane();
+    mainGrid = new GridPane();
+
+    makeButtons();
+    makeGraphs();
   }
 
   private void makeGraphs(){
@@ -168,60 +163,105 @@ public class SimulationWindow extends Application implements IUpdate {
     graphGroup.add(lineChart, 0, 0);
     graphGroup.autosize();
   }
-  private void makeButtons() throws MalformedXMLException{
-    buttonGroup = new GridPane();
-    int colIndex = BUTTON_START_INDEX;
-    buttonGroup.setHgap(2);
-    buttonGroup.add(makeButton("Save", e -> simulation.saveSimulationState()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Reset", e -> {
-      try{
+
+  private void setupButtons() {
+    buttonData = new LinkedHashMap<>();
+    buttonData.putIfAbsent("Reset", e -> {
+      try {
         reset();
       } catch (MalformedXMLException ex) {
         errorAlert();
       }
-    }), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Slow-Down", e -> simulation.slowDown()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Speed-Up", e -> simulation.speedUp()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Step", e -> {
+    });
+    buttonData.putIfAbsent("Slow-Down", e -> simulation.slowDown());
+    buttonData.put("Pause", e -> simulation.slowDown());
+    buttonData.putIfAbsent("Speed-Up", e -> simulation.speedUp());
+    buttonData.putIfAbsent("Step", e -> {
       try {
         simulation.step();
       } catch (MalformedXMLException ex) {
         errorAlert();
       }
-    }), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
-    colIndex ++;
-    buttonGroup.add(makeButton("Config", e -> {
+    });
+    buttonData.putIfAbsent("Play", e -> simulation.play());
+    buttonData.putIfAbsent("Load File", e -> {
       try {
-        loadConfig();
+        loadNewFile();
       } catch (MalformedXMLException ex) {
         errorAlert();
       }
-    }), colIndex, 0);
+    });
+    buttonData.putIfAbsent("Settings", e -> openSettings());
   }
 
-  private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
+  private void makeButtons() {
+    setupButtons();
+    int colIndex = BUTTON_START_INDEX;
+    for (String key : buttonData.keySet()) {
+      buttonGroup.add(makeButton(key, buttonData.get(key)), colIndex, 0);
+      colIndex++;
+    }
+  }
+
+//  private void makeButtons() throws MalformedXMLException{
+//    buttonGroup = new GridPane();
+//    int colIndex = BUTTON_START_INDEX;
+//    buttonGroup.setHgap(2);
+////    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
+////    colIndex ++;
+//    buttonGroup.add(makeButton("Reset", e -> {
+//      try{
+//        reset();
+//      } catch (MalformedXMLException ex) {
+//        errorAlert();
+//      }
+//    }), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Slow-Down", e -> simulation.slowDown()), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Speed-Up", e -> simulation.speedUp()), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Step", e -> {
+//      try {
+//        simulation.step();
+//      } catch (MalformedXMLException ex) {
+//        errorAlert();
+//      }
+//    }), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Load File", e -> {
+//      try {
+//        loadNewFile();
+//      } catch (MalformedXMLException ex) {
+//        errorAlert();
+//      }
+//    }), colIndex, 0);
+//    colIndex ++;
+//    buttonGroup.add(makeButton("Settings", e -> openSettings()), colIndex, 0);
+//  }
+
+  private Button makeButton(String title, EventHandler<ActionEvent> action) {
     Button btn = new Button(title);
     btn.setOnAction(action);
     btn.setId(title);
     return btn;
   }
+
   private void reset() throws MalformedXMLException {
     simulation.pause();
     simulation = null;
     System.gc();
     simulation = makeSimulation(xmlFileName);
     newSimulation();
+
+    // TODO: fix bug with resetting and settings window not changing variable anymore
   }
 
-  private void loadConfig() throws MalformedXMLException {
+  private void loadNewFile() throws MalformedXMLException {
     simulation.pause();
     System.gc();
     xmlFileName = getSimulationFile();
@@ -264,12 +304,18 @@ public class SimulationWindow extends Application implements IUpdate {
     data.getData().add(new XYChart.Data(newX, newY));
   }
 
+  private void openSettings() {
+    SettingsWindow sw = new SettingsWindow(windowTitle, simulation);
+    sw.start(new Stage());
+  }
+
   private void errorAlert(){
     Alert alert = new Alert(AlertType.WARNING, "", ButtonType.OK);
     alert.setContentText("Exception caused by bad XML file - close the window and reload the"
         + "simulation");
     alert.show();
   }
+
   /**
    * From IUpdate: method called when the simulation alerts the GUI when the simulation steps
    */

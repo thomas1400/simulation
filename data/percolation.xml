@@ -5,7 +5,7 @@
     <simulationAuthor>Grant, Thomas, &amp; Sebastian</simulationAuthor>
     <numGlobalVars>1</numGlobalVars>
     <globalVars>
-        <var0>0.0</var0>
+        <var0>1.0</var0>
     </globalVars>
     <gridWidth>10</gridWidth>
     <gridHeight>10</gridHeight>

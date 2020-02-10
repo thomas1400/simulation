@@ -18,6 +18,7 @@ import simulation.xmlGeneration.SimulationSettings;
 class Initializer {
 
   private String myRulesType;
+  private Rules myRulesClass;
   private double[] myGlobalVars;
 
   private String myGridType;
@@ -76,7 +77,6 @@ class Initializer {
   }
 
   private Rules newRuleClass() {
-    Rules myRulesClass = null;
     switch (myRulesType) {
       case "fireRules":
         myRulesClass = new FireRules(myGlobalVars);
@@ -113,5 +113,9 @@ class Initializer {
 
   public String getSimulationAuthor() {
     return mySimulationAuthor;
+  }
+
+  public Rules getRules() {
+    return myRulesClass;
   }
 }
