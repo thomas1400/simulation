@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -70,6 +72,11 @@ public class PercolationRules extends Rules {
   @Override
   protected void updateVariables() {
     percolation_probability = myVariables.get("Percolation Probability")[2];
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(Arrays.asList("Blocked", "Empty", "Filled"));
   }
 
 }

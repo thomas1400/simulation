@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -88,5 +90,10 @@ public class RockPaperScissorsRules extends Rules {
   protected void updateVariables() {
     thresholdValue = (int) myVariables.get("Loss Threshold")[2].doubleValue();
     randomThresholdAdjustment = (int) myVariables.get("Random Threshold Adjustment")[2].doubleValue();
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(Arrays.asList("Rock", "Paper", "Scissors"));
   }
 }

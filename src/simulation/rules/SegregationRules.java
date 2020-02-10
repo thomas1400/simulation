@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -90,5 +92,10 @@ public class SegregationRules extends Rules {
   @Override
   protected void updateVariables() {
     segregation_threshold = myVariables.get("Segregation Threshold")[2];
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(Arrays.asList("Empty", "Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"));
   }
 }

@@ -36,4 +36,6 @@ public abstract class Rules {
   }
 
   protected abstract void updateVariables();
+
+  public abstract List<String> getCellTypes();
 }

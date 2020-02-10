@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import simulation.controller.Simulation;
 import simulation.events.IUpdate;
 import java.io.File;
@@ -40,7 +41,7 @@ import org.xml.sax.SAXException;
  */
 public class SimulationWindow extends Application implements IUpdate {
 
-  private static final int WINDOW_HEIGHT = 625 + 25;
+  private static final int WINDOW_HEIGHT = 512 + 35;
   private static final int WINDOW_WIDTH = 512;
   private static final int BUTTON_START_INDEX = 0;
   private static final double PADDING = 5;
@@ -51,12 +52,12 @@ public class SimulationWindow extends Application implements IUpdate {
   private GridPane mainGrid;
   private Pane gridPane;
   private GridPane buttonGroup;
-  private GridPane graphGroup;
-  private GridPane settingGroup;
   private String xmlFileName;
   private Stage myStage;
   private XYChart.Series data;
   private Map<String, EventHandler<ActionEvent>> buttonData;
+  private SettingsWindow settingsWindow;
+  private GraphWindow graphWindow;
 
   /**
    * Starts the JavaFX application and handles initial setup method calls
@@ -115,10 +116,12 @@ public class SimulationWindow extends Application implements IUpdate {
     gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
     mainGrid.add(gridPane, 0, 2);
 
-    // TODO: Add graph updating
+    if (graphWindow != null) {
+      graphWindow.updateGraph();
+    }
   }
 
-  private void setUpWindow(Stage primaryStage) throws MalformedXMLException {
+  private void setUpWindow(Stage primaryStage) {
     mainWindow = primaryStage;
     primaryStage.setOnCloseRequest(event -> simulation.stop());
     mainWindow.setTitle(windowTitle);
@@ -128,40 +131,23 @@ public class SimulationWindow extends Application implements IUpdate {
     mainWindow.setScene(gridScene);
   }
 
-  private GridPane makeMasterGrid() throws MalformedXMLException {
+  private GridPane makeMasterGrid() {
     renderElements();
     mainGrid.setVgap(2.0);
     mainGrid.add(buttonGroup, 0, 0);
     mainGrid.add(gridPane, 0, 1);
-    //mainGrid.add(graphGroup,0,3);
 
     mainGrid.setPadding(new Insets(PADDING));
 
     return mainGrid;
   }
 
-  private void renderElements() throws MalformedXMLException {
+  private void renderElements() {
     buttonGroup = new GridPane();
     gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
-    graphGroup = new GridPane();
     mainGrid = new GridPane();
 
     makeButtons();
-    makeGraphs();
-  }
-
-  private void makeGraphs(){
-    graphGroup = new GridPane();
-    simulation.getMaxSizes();
-    // TODO: Get max values, so you don't have to graph all the way up to 1500
-    NumberAxis xAxis = new NumberAxis(0, 1500, 1);
-    xAxis.setLabel(simulation.getTitle());
-    NumberAxis yAxis = new NumberAxis(0, 1500, 1);
-    yAxis.setLabel(simulation.getTitle());
-    LineChart lineChart = new LineChart(xAxis, yAxis);
-    lineChart.getData().add(data);
-    graphGroup.add(lineChart, 0, 0);
-    graphGroup.autosize();
   }
 
   private void setupButtons() {
@@ -184,6 +170,8 @@ public class SimulationWindow extends Application implements IUpdate {
       }
     });
     buttonData.putIfAbsent("Play", e -> simulation.play());
+    buttonData.putIfAbsent("Settings", e -> openSettings());
+    buttonData.putIfAbsent("Data", e -> openGraph());
     buttonData.putIfAbsent("Load File", e -> {
       try {
         loadNewFile();
@@ -191,58 +179,17 @@ public class SimulationWindow extends Application implements IUpdate {
         errorAlert();
       }
     });
-    buttonData.putIfAbsent("Settings", e -> openSettings());
   }
 
   private void makeButtons() {
     setupButtons();
+    buttonGroup.setHgap(2.0);
     int colIndex = BUTTON_START_INDEX;
     for (String key : buttonData.keySet()) {
       buttonGroup.add(makeButton(key, buttonData.get(key)), colIndex, 0);
       colIndex++;
     }
   }
-
-//  private void makeButtons() throws MalformedXMLException{
-//    buttonGroup = new GridPane();
-//    int colIndex = BUTTON_START_INDEX;
-//    buttonGroup.setHgap(2);
-////    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
-////    colIndex ++;
-//    buttonGroup.add(makeButton("Reset", e -> {
-//      try{
-//        reset();
-//      } catch (MalformedXMLException ex) {
-//        errorAlert();
-//      }
-//    }), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Slow-Down", e -> simulation.slowDown()), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Pause", e -> simulation.pause()), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Speed-Up", e -> simulation.speedUp()), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Step", e -> {
-//      try {
-//        simulation.step();
-//      } catch (MalformedXMLException ex) {
-//        errorAlert();
-//      }
-//    }), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Play", e -> simulation.play()), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Load File", e -> {
-//      try {
-//        loadNewFile();
-//      } catch (MalformedXMLException ex) {
-//        errorAlert();
-//      }
-//    }), colIndex, 0);
-//    colIndex ++;
-//    buttonGroup.add(makeButton("Settings", e -> openSettings()), colIndex, 0);
-//  }
 
   private Button makeButton(String title, EventHandler<ActionEvent> action) {
     Button btn = new Button(title);
@@ -254,21 +201,24 @@ public class SimulationWindow extends Application implements IUpdate {
   private void reset() throws MalformedXMLException {
     simulation.pause();
     simulation = null;
+    if (settingsWindow != null) {
+      settingsWindow.stop();
+      settingsWindow = null;
+    }
+    if (graphWindow != null) {
+      graphWindow.stop();
+      graphWindow = null;
+    }
     System.gc();
     simulation = makeSimulation(xmlFileName);
     newSimulation();
-
-    // TODO: fix bug with resetting and settings window not changing variable anymore
   }
 
   private void loadNewFile() throws MalformedXMLException {
     simulation.pause();
-    System.gc();
     xmlFileName = getSimulationFile();
     if (xmlFileName != null) {
-      simulation = null;
-      simulation = makeSimulation(xmlFileName);
-      newSimulation();
+      reset();
     }
   }
 
@@ -305,8 +255,13 @@ public class SimulationWindow extends Application implements IUpdate {
   }
 
   private void openSettings() {
-    SettingsWindow sw = new SettingsWindow(windowTitle, simulation);
-    sw.start(new Stage());
+    settingsWindow = new SettingsWindow(windowTitle, simulation);
+    settingsWindow.start(new Stage());
+  }
+
+  private void openGraph() {
+    graphWindow = new GraphWindow(windowTitle, simulation);
+    graphWindow.start(new Stage());
   }
 
   private void errorAlert(){

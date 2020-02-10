@@ -164,4 +164,16 @@ public class Simulation {
   public void setSetting(String name, double value) {
     myRules.setSetting(name, value);
   }
+
+  public double getArea() {
+    return myGrid.getArea();
+  }
+
+  public Map<Integer, Integer> getCellCounts() {
+    return myGrid.getCellCounts();
+  }
+
+  public List<String> getCellTypes() {
+    return myRules.getCellTypes();
+  }
 }

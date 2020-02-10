@@ -1,5 +1,7 @@
 package simulation.rules;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import javafx.scene.paint.Color;
@@ -94,5 +96,10 @@ public class PredatorPreyRules extends Rules {
     prey_death_probability = myVariables.get("Prey Death Probability")[2];
     predator_death_probability = myVariables.get("Predator Death Probability")[2];
     predator_birth_probability = myVariables.get("Predator Birth Probability")[2];
+  }
+
+  @Override
+  public List<String> getCellTypes() {
+    return new ArrayList<>(Arrays.asList("Empty", "Prey", "Predator"));
   }
 }

@@ -2,7 +2,9 @@ package simulation.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -149,5 +151,20 @@ public abstract class Grid {
       }
     }
     return true;
+  }
+
+  public double getArea() {
+    return myWidth * myHeight;
+  }
+
+  public Map<Integer, Integer> getCellCounts() {
+    HashMap<Integer, Integer> counts = new HashMap<>();
+    for (State[] sa : myStates) {
+      for (State s : sa) {
+        counts.putIfAbsent(s.toInt(), 0);
+        counts.put(s.toInt(), counts.get(s.toInt()) + 1);
+      }
+    }
+    return counts;
   }
 }
