@@ -124,7 +124,7 @@ public class UserInputParser {
     }
     mySettings.setGlobalVars(myGlobalVars);
   }
-    
+
   private static void askForSimulationGrid() throws FileNotFoundException {
     System.out.print("Would you like to load a grid configuration text document? (y/n): ");
     Scanner input = new Scanner(System.in);
@@ -143,7 +143,8 @@ public class UserInputParser {
   }
 
   private static void askForGridType() {
-    System.out.print("What type of grid will this simulation have? Enter \"Rectangular\" or \"Triangular\": ");
+    System.out.print(
+        "What type of grid will this simulation have? Enter \"Rectangular\" or \"Triangular\": ");
     Scanner input = new Scanner(System.in);
     mySettings.setGridType(input.next());
   }

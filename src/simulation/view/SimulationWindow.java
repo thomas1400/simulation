@@ -1,44 +1,33 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
+import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
-import simulation.controller.Simulation;
-import simulation.events.IUpdate;
-import java.io.File;
-import java.io.IOException;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import simulation.controller.Simulation;
+import simulation.events.IUpdate;
 
 /**
- * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project, including
- * updating the main window and listening to the simulation simulation.controller
+ * The 'simulation.view' for the Simulation project. Handles all visual aspects of the project,
+ * including updating the main window and listening to the simulation simulation.controller
  */
 public class SimulationWindow extends Application implements IUpdate {
 
@@ -102,7 +91,8 @@ public class SimulationWindow extends Application implements IUpdate {
     File workingDirectory = new File(dataPath);
     fc.setInitialDirectory(workingDirectory);
 
-    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)",
+        "*.xml");
     fc.getExtensionFilters().add(extFilter);
 
     File file = fc.showOpenDialog(mainWindow);
@@ -114,7 +104,7 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void updateGUI() {
     mainGrid.getChildren().remove(gridPane);
-    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
+    gridPane = simulation.getGridPane((int) (WINDOW_WIDTH - 2 * PADDING));
     mainGrid.add(gridPane, 0, 2);
 
     if (graphWindow != null) {
@@ -145,7 +135,7 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void renderElements() {
     buttonGroup = new GridPane();
-    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
+    gridPane = simulation.getGridPane((int) (WINDOW_WIDTH - 2 * PADDING));
     mainGrid = new GridPane();
 
     makeButtons();
@@ -241,7 +231,7 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void loadSimulation() throws MalformedXMLException {
     simulation = makeSimulation(xmlFileName);
-    windowTitle = simulation.getTitle()  + " by: " + simulation.getAuthor();
+    windowTitle = simulation.getTitle() + " by: " + simulation.getAuthor();
   }
 
   private Simulation makeSimulation(String xmlFileName) throws MalformedXMLException {
@@ -252,22 +242,25 @@ public class SimulationWindow extends Application implements IUpdate {
       alert.setContentText("IOException - error when loading the XML file");
       alert.show();
       throw new MalformedXMLException("IO Exception caused by calling the Simulation constructor: "
-      + e.getMessage());
+          + e.getMessage());
     } catch (SAXException e) {
       alert.setContentText("SAX Exception - the attempted XML file is malformed. Please fix it"
           + " or try a new file.");
       alert.show();
       throw new MalformedXMLException("SAX Exception caused by calling the Simulation constructor: "
-      + e.getMessage());
-    } catch (ParserConfigurationException e) {
-      alert.setContentText("ParserConfigurationException - the attempted XML file is malformed. Please fix it"
-          + " or try a new file.");
-      alert.show();
-      throw new MalformedXMLException("ParserConfigurationException caused by calling the Simulation constructor: "
           + e.getMessage());
+    } catch (ParserConfigurationException e) {
+      alert.setContentText(
+          "ParserConfigurationException - the attempted XML file is malformed. Please fix it"
+              + " or try a new file.");
+      alert.show();
+      throw new MalformedXMLException(
+          "ParserConfigurationException caused by calling the Simulation constructor: "
+              + e.getMessage());
     }
   }
-  private void updateStats(int newX, int newY){
+
+  private void updateStats(int newX, int newY) {
     data.getData().add(new XYChart.Data(newX, newY));
   }
 
@@ -281,7 +274,8 @@ public class SimulationWindow extends Application implements IUpdate {
     graphWindow.start(new Stage());
   }
 
-  private void errorAlert(){
+  @Override
+  public void errorAlert() {
     Alert alert = new Alert(AlertType.WARNING, "", ButtonType.OK);
     alert.setContentText("Exception caused by bad XML file - close the window and reload the"
         + "simulation");

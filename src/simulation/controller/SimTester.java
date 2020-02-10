@@ -1,9 +1,8 @@
 package simulation.controller;
 
-import org.xml.sax.SAXException;
-import javafx.scene.paint.Color;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class SimTester {
 

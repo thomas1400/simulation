@@ -7,7 +7,8 @@ import simulation.rules.Rules;
 
 public class RectangularGrid extends Grid {
 
-  public RectangularGrid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleSet, boolean toroidal) {
+  public RectangularGrid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleSet,
+      boolean toroidal) {
     super(initialStates, neighborhoodShape, ruleSet, toroidal);
   }
 
@@ -21,9 +22,9 @@ public class RectangularGrid extends Grid {
 
     int squareSize;
     if (myWidth > myHeight) {
-      squareSize = (int)((float) MAX_SIZE / myWidth - CELL_GAP);
+      squareSize = (int) ((float) MAX_SIZE / myWidth - CELL_GAP);
     } else {
-      squareSize = (int)((float) MAX_SIZE / myHeight - CELL_GAP);
+      squareSize = (int) ((float) MAX_SIZE / myHeight - CELL_GAP);
     }
 
     for (int x = 0; x < myWidth; x++) {

@@ -9,7 +9,8 @@ import simulation.rules.Rules;
 
 public class TriangularGrid extends Grid {
 
-  public TriangularGrid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleset, boolean toroidal) {
+  public TriangularGrid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleset,
+      boolean toroidal) {
     super(initialStates, neighborhoodShape, ruleset, toroidal);
   }
 
@@ -31,13 +32,14 @@ public class TriangularGrid extends Grid {
 
       trianglePoints.add(new Double[]{0.0, 0.0});
       trianglePoints.add(new Double[]{0.0, rowY});
-      trianglePoints.add(new Double[]{tWidth / 2.0, tHeight*nextDirection + rowY});
+      trianglePoints.add(new Double[]{tWidth / 2.0, tHeight * nextDirection + rowY});
       nextDirection *= -1;
 
       for (int x = 0; x < myWidth; x++) {
         trianglePoints.removeFirst();
         Double[] lastPoint = trianglePoints.getLast();
-        trianglePoints.addLast(new Double[]{lastPoint[0] + tWidth/2.0, lastPoint[1] + tHeight * nextDirection});
+        trianglePoints.addLast(
+            new Double[]{lastPoint[0] + tWidth / 2.0, lastPoint[1] + tHeight * nextDirection});
         nextDirection *= -1;
 
         Polygon triangle = new Polygon();
@@ -48,7 +50,8 @@ public class TriangularGrid extends Grid {
 
         final int finalX = x;
         final int finalY = y;
-        triangle.setOnMouseClicked(e -> triangle.setFill(this.dynamicallyIncrement(finalX, finalY)));
+        triangle
+            .setOnMouseClicked(e -> triangle.setFill(this.dynamicallyIncrement(finalX, finalY)));
 
         gridPane.getChildren().add(triangle);
       }
@@ -84,10 +87,10 @@ public class TriangularGrid extends Grid {
         xOffset = nx - centerX;
         yOffset = ny - centerY;
         if (myNeighborhoodShape[ny][nx] == 1) {
-          if (inGridBounds(x + flip*xOffset, y + flip*yOffset)) {
-            neighborStates.add(myStates[x + flip*xOffset][y + flip*yOffset]);
+          if (inGridBounds(x + flip * xOffset, y + flip * yOffset)) {
+            neighborStates.add(myStates[x + flip * xOffset][y + flip * yOffset]);
           } else if (isToroidal) {
-            int[] tc = toroidizeCoordinates(x+flip*xOffset, y+flip*yOffset);
+            int[] tc = toroidizeCoordinates(x + flip * xOffset, y + flip * yOffset);
             neighborStates.add(myStates[tc[0]][tc[1]]);
           }
         }

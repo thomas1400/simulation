@@ -11,6 +11,7 @@ import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.SAXException;
 
 class XMLReader {
+
   //File Attributes
   private String myRule;
   private String mySimulationTitle;
@@ -142,8 +143,9 @@ class XMLReader {
   }
 
   /**
-   * These getters are used to communicate with Simulation the characteristics of the simulation
-   * as read from the XML file
+   * These getters are used to communicate with Simulation the characteristics of the simulation as
+   * read from the XML file
+   *
    * @return Values of each specific element of the XML File
    */
   public String getRule() {

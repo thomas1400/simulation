@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
-import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
@@ -63,7 +62,7 @@ public class GameOfLifeRules extends Rules {
   }
 
   public void incrementState(State state) {
-    state.setUpdate((state.toInt() + 1) % (ALIVE+1));
+    state.setUpdate((state.toInt() + 1) % (ALIVE + 1));
     state.update();
   }
 

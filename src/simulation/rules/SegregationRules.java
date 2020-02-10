@@ -70,7 +70,7 @@ public class SegregationRules extends Rules {
     if (state.equals(EMPTY)) {
       return Color.WHITE;
     } else {
-      return groupColors[state.toInt()-1];
+      return groupColors[state.toInt() - 1];
     }
   }
 
@@ -85,7 +85,7 @@ public class SegregationRules extends Rules {
   }
 
   public void incrementState(State state) {
-    state.setUpdate((state.toInt() + 1) % (MY_MAX_GROUPS+1));
+    state.setUpdate((state.toInt() + 1) % (MY_MAX_GROUPS + 1));
     state.update();
   }
 
