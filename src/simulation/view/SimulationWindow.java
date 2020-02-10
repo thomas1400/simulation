@@ -140,7 +140,7 @@ public class SimulationWindow extends Application implements IUpdate {
     return mainGrid;
   }
 
-  private void renderElements() throws MalformedXMLException {
+  private void renderElements() {
     buttonGroup = new GridPane();
     gridPane = simulation.getGridPane(WINDOW_WIDTH, WINDOW_WIDTH);
     graphGroup = new GridPane();
