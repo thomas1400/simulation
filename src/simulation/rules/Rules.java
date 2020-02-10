@@ -37,6 +37,4 @@ public abstract class Rules {
   }
 
   protected abstract void updateVariables();
-
-  public abstract ObservableList<String> getGlobalVarList();
 }

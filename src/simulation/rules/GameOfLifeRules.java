@@ -2,6 +2,7 @@ package simulation.rules;
 
 import java.util.List;
 import java.util.TreeMap;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
@@ -70,5 +71,6 @@ public class GameOfLifeRules extends Rules {
     MAX_TO_DIE = myVariables.get("Overpopulation Threshold")[2];
     NUM_TO_REVIVE = myVariables.get("Birth Threshold")[2];
   }
+
 
 }

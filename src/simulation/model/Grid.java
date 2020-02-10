@@ -151,10 +151,6 @@ public abstract class Grid {
     return true;
   }
 
-  public ObservableList<String> getGlobalVarList() {
-    return myRuleSet.getGlobalVarList();
-  }
-
   public String toTxt() {
     String gridString = "";
     for (int i = 0; i < myWidth; i++){
