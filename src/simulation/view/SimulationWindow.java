@@ -1,9 +1,10 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -11,6 +12,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -131,8 +133,8 @@ public class SimulationWindow extends Application implements IUpdate {
 
     mainGrid.setVgap(2.0);
     mainGrid.add(buttonGroup, 0, 0);
-    //mainGrid.add(settingGroup,0,1);
-    mainGrid.add(gridPane, 0, 2);
+    mainGrid.add(gridPane, 0, 1);
+    mainGrid.add(settingGroup,0,2);
     //mainGrid.add(graphGroup,0,3);
 
     mainGrid.setPadding(new Insets(PADDING));
@@ -141,12 +143,14 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void makeSetting(){
     settingGroup = new GridPane();
-    Label label = new Label("Enter Setting:");
+    Label label = new Label("Select Setting:");
+    ObservableList<String> options = simulation.getGlobalVarList();
+    final ComboBox comboBox = new ComboBox(options);
     TextField textField = new TextField();
     Button confirmBtn = new Button("Confirm");
     confirmBtn.setOnAction(e -> simulation.parseSettings(textField.getText()));
     HBox hb = new HBox();
-    hb.getChildren().addAll(label, textField, confirmBtn);
+    hb.getChildren().addAll(label, comboBox, textField, confirmBtn);
     hb.setSpacing(10);
     settingGroup.add(hb, 0,0);
   }
@@ -168,7 +172,7 @@ public class SimulationWindow extends Application implements IUpdate {
     buttonGroup = new GridPane();
     int colIndex = BUTTON_START_INDEX;
     buttonGroup.setHgap(2);
-    buttonGroup.add(makeButton("Home", e -> System.out.println("Home")), colIndex, 0);
+    buttonGroup.add(makeButton("Save", e -> simulation.saveSimulationState()), colIndex, 0);
     colIndex ++;
     buttonGroup.add(makeButton("Reset", e -> {
       try{
@@ -202,6 +206,7 @@ public class SimulationWindow extends Application implements IUpdate {
       }
     }), colIndex, 0);
   }
+
   private Button makeButton(String title, EventHandler<ActionEvent> action) throws MalformedXMLException{
     Button btn = new Button(title);
     btn.setOnAction(action);

@@ -1,12 +1,14 @@
 package simulation.rules;
 
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
 import simulation.model.RectangularGrid;
 import simulation.model.State;
 
-public class GameOfLifeRules extends Rules {
+public class GameOfLifeRules implements Rules {
 
   private static final int DEAD = 0;
   private static final int ALIVE = 1;
@@ -54,5 +56,10 @@ public class GameOfLifeRules extends Rules {
 
   public void setGrid(Grid grid) {
     myGrid = grid;
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return null;
   }
 }

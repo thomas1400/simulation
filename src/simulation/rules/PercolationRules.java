@@ -1,12 +1,13 @@
 package simulation.rules;
 
 import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
 import simulation.model.RectangularGrid;
 import simulation.model.State;
 
-public class PercolationRules extends Rules {
+public class PercolationRules implements Rules {
 
   private static final int BLOCKED = 0;
   private static final int EMPTY = 1;
@@ -61,6 +62,11 @@ public class PercolationRules extends Rules {
 
   public void setGrid(Grid grid) {
     myGrid = grid;
+  }
+
+  @Override
+  public ObservableList<String> getGlobalVarList() {
+    return null;
   }
 
 }
