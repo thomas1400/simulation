@@ -36,6 +36,7 @@ public class SimulationWindow extends Application implements IUpdate {
   private static final int WINDOW_HEIGHT = 625 + 25;
   private static final int WINDOW_WIDTH = 512;
   private static final int BUTTON_START_INDEX = 0;
+  private static final int PADDING = 5;
 
   private String windowTitle;
   private Stage mainWindow;
@@ -117,8 +118,12 @@ public class SimulationWindow extends Application implements IUpdate {
     return file.toString();
   }
 
-  private void updateGUI() throws MalformedXMLException {
-    setUpWindow(mainWindow);
+  private void updateGUI() {
+    mainGrid.getChildren().remove(gridPane);
+    gridPane = simulation.getGridPane((int)(WINDOW_WIDTH - 2*PADDING));
+    mainGrid.add(gridPane, 0, 2);
+
+    // TODO: Add graph updating
   }
 
   private void setUpWindow(Stage primaryStage) throws MalformedXMLException {
@@ -199,11 +204,13 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void loadConfig() throws MalformedXMLException {
     simulation.pause();
-    simulation = null;
     System.gc();
     xmlFileName = getSimulationFile();
-    simulation = makeSimulation(xmlFileName);
-    newSimulation();
+    if (xmlFileName != null) {
+      simulation = null;
+      simulation = makeSimulation(xmlFileName);
+      newSimulation();
+    }
   }
 
   private void loadSimulation() throws MalformedXMLException {
