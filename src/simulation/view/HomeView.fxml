@@ -11,9 +11,9 @@
     GridPane.rowSpan="1"
     onAction="#launchSim" prefHeight="40" prefWidth="150" text="Simulation from File">
   </Button>
-  <Button GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="4"
-    GridPane.rowSpan="1"
-    onAction="#launchSim" prefHeight="40" prefWidth="150" text="Create Custom Sim">
+  <Button text="Create Custom Sim" onAction="#customSim" prefWidth="150" prefHeight="40"
+    GridPane.columnIndex="1"
+    GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" GridPane.halignment="CENTER">
   </Button>
   <Button GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.halignment="CENTER"
     GridPane.rowIndex="8"

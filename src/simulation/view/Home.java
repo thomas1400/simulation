@@ -72,6 +72,17 @@ public class Home extends Application {
     }
   }
 
+  @FXML
+  private void customSim() {
+    CustomSimulationWindow simulationWindow = new CustomSimulationWindow("Pick your Settings!");
+    try{
+      simulationWindow.start(new Stage());
+    } catch (NumberFormatException e2){
+      new Alert(AlertType.WARNING, "Error in XML file - try another one. "
+          + "Error message: " + e2.getMessage(), ButtonType.OK).show();
+    }
+  }
+
   public void initialize() {
     FireSpread.setOnAction(e -> launchSim("firespread.xml"));
     GameOfLife.setOnAction(e -> launchSim("gameoflifegun.xml"));
