@@ -2,6 +2,9 @@ package simulation.view;
 
 import exceptions.MalformedXMLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,7 +56,7 @@ public class SimulationWindow extends Application implements IUpdate {
   private String xmlFileName;
   private Stage myStage;
   private XYChart.Series data;
-  private HashMap<String, EventHandler<ActionEvent>> buttonData;
+  private Map<String, EventHandler<ActionEvent>> buttonData;
 
   /**
    * Starts the JavaFX application and handles initial setup method calls
@@ -162,7 +165,7 @@ public class SimulationWindow extends Application implements IUpdate {
   }
 
   private void setupButtons() {
-    buttonData = new HashMap<>();
+    buttonData = new LinkedHashMap<>();
     buttonData.putIfAbsent("Reset", e -> {
       try {
         reset();
