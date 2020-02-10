@@ -171,22 +171,13 @@ public class SimulationWindow extends Application implements IUpdate {
       }
     });
 
-    buttonData.putIfAbsent("Save", e -> {
-      try {
-        simulation.saveSimulationState("data/testing123.xml");
-        //simulation.saveSimulationState(promptUserForFilePath());
-      } catch (FileNotFoundException ex) {
-        errorAlert();
-      }
-    });
+    buttonData.putIfAbsent("Save", e -> {promptUserForFilePath();});
   }
 
-  /*
-  private String promptUserForFilePath() {
+  private void promptUserForFilePath() {
     FilePathPromptWindow sw = new FilePathPromptWindow("File Path Chooser");
-    sw.start(new Stage());
+    sw.start(new Stage(), simulation);
   }
-   */
 
   private void makeButtons() {
     setupButtons();

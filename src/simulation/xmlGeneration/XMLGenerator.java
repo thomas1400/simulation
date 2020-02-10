@@ -100,7 +100,7 @@ public class XMLGenerator {
       Element row = document.createElement("row" + i);
       StringBuilder rowString = new StringBuilder();
       for (int j = 0; j < settings.getGridWidth(); j++) {
-        rowString.append(initialStateGrid[i][j]).append(" ");
+        rowString.append(initialStateGrid[j][i]).append(" ");
       }
       row.appendChild(document.createTextNode(rowString.toString()));
       gridRows.appendChild(row);

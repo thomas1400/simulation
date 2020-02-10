@@ -1,8 +1,14 @@
 package simulation.view;
 
+import exceptions.MalformedXMLException;
+import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -10,21 +16,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import simulation.controller.Simulation;
 
-public class FilePathPromptWindow extends Application {
+public class FilePathPromptWindow {
 
-  private static final double WINDOW_WIDTH = 150;
-  private static final double WINDOW_HEIGHT = 50;
+  private static final double WINDOW_WIDTH = 250;
+  private static final double WINDOW_HEIGHT = 125;
   private static final double PADDING = 5;
 
   private String myWindowTitle;
+  private Simulation mySimulation;
 
   public FilePathPromptWindow(String simulationName) {
     myWindowTitle = simulationName + " Settings";
   }
 
-  @Override
-  public void start(Stage primaryStage) {
+  public void start(Stage primaryStage, Simulation simulation) {
+    mySimulation = simulation;
     primaryStage.setTitle(myWindowTitle);
     Scene gridScene = new Scene(makeMasterGrid(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -46,6 +54,16 @@ public class FilePathPromptWindow extends Application {
     hb.getChildren().addAll(label, textField);
     hb.setSpacing(10);
     master.add(hb, 0,1);
+
+    Button button = new Button("Choose this File");
+    button.setOnAction(value ->  {
+      try {
+        mySimulation.saveSimulationState("data/" + textField.getText());
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+    });
+    master.add(button,0,2);
 
     master.setPadding(new Insets(PADDING));
 
