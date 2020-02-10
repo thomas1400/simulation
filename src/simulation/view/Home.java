@@ -19,6 +19,18 @@ public class Home extends Application {
 
   private static final int WINDOW_WIDTH = 450;
   private static final int WINDOW_HEIGHT = 325;
+  @FXML
+  private Button FireSpread;
+  @FXML
+  private Button GameOfLife;
+  @FXML
+  private Button Percolation;
+  @FXML
+  private Button PredatorPrey;
+  @FXML
+  private Button RockPaperScissors;
+  @FXML
+  private Button Segregation;
 
   /**
    * Main method for the application - entry point
@@ -29,6 +41,7 @@ public class Home extends Application {
 
   /**
    * Entry point for application
+   *
    * @param primaryStage the main stage for the Home view
    * @throws IOException caused by FileInputStream for loading the FXML
    */
@@ -49,34 +62,15 @@ public class Home extends Application {
   @FXML
   private void launchSim() {
     SimulationWindow simulationWindow = new SimulationWindow();
-    try{
+    try {
       simulationWindow.start(new Stage());
-    } catch (MalformedXMLException e){
+    } catch (MalformedXMLException e) {
       new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
-    } catch (NumberFormatException e2){
+    } catch (NumberFormatException e2) {
       new Alert(AlertType.WARNING, "Error in XML file - try another one. "
           + "Error message: " + e2.getMessage(), ButtonType.OK).show();
     }
   }
-
-  @FXML
-  private Button FireSpread ;
-
-  @FXML
-  private Button GameOfLife ;
-
-  @FXML
-  private Button Percolation ;
-
-  @FXML
-  private Button PredatorPrey ;
-
-  @FXML
-  private Button RockPaperScissors ;
-
-  @FXML
-  private Button Segregation ;
-
 
   public void initialize() {
     FireSpread.setOnAction(e -> launchSim("firespread.xml"));
@@ -89,11 +83,11 @@ public class Home extends Application {
 
   private void launchSim(String xmlFile) {
     SimulationWindow simulationWindow = new SimulationWindow();
-    try{
+    try {
       simulationWindow.start(new Stage(), "data/" + xmlFile);
-    } catch (MalformedXMLException e){
+    } catch (MalformedXMLException e) {
       new Alert(AlertType.WARNING, "Malformed XML file - try another one", ButtonType.OK).show();
-    } catch (NumberFormatException e2){
+    } catch (NumberFormatException e2) {
       new Alert(AlertType.WARNING, "Error in XML file - try another one. "
           + "Error message: " + e2.getMessage(), ButtonType.OK).show();
     }

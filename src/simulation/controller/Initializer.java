@@ -17,23 +17,19 @@ import simulation.xmlGeneration.SimulationSettings;
 
 public class Initializer {
 
-  private String myRulesType;
-  private Rules myRulesClass;
-  private double[] myGlobalVars;
-
-  private String myGridType;
-  private boolean myGridIsToroidal;
-  private int myNeighborhoodType;
-
-  private SimulationSettings mySimulationSettings;
-
   private static final int[][][] NEIGHBORHOOD_SHAPES = {
       {{1, 1, 1}, {1, -1, 1}, {1, 1, 1}},
       {{0, 1, 0}, {1, -1, 1}, {0, 1, 0}},
       {{1, 0, 1}, {0, -1, 0}, {1, 0, 1}},
       {{0, 1, 1, 1, 0}, {1, 1, -1, 1, 1}, {1, 1, 1, 1, 1}}
   };
-
+  private String myRulesType;
+  private Rules myRulesClass;
+  private double[] myGlobalVars;
+  private String myGridType;
+  private boolean myGridIsToroidal;
+  private int myNeighborhoodType;
+  private SimulationSettings mySimulationSettings;
   private int[][] myInitialStateGrid;
   private Grid myGrid;
 

@@ -27,7 +27,7 @@ public class PercolationRules extends Rules {
   }
 
   /**
-   * @param state   is the cell's current state
+   * @param state          is the cell's current state
    * @param neighborStates is the cell's neighbor's states as an array
    */
   @Override
@@ -36,7 +36,9 @@ public class PercolationRules extends Rules {
     if (state.equals(BLOCKED)) {
       state.setUpdate(BLOCKED);
     } else {
-      state.setUpdate((state.equals(FILLED) || (doesPercolate && Math.random() < percolation_probability)) ? FILLED : EMPTY);
+      state.setUpdate(
+          (state.equals(FILLED) || (doesPercolate && Math.random() < percolation_probability))
+              ? FILLED : EMPTY);
     }
   }
 
@@ -51,6 +53,7 @@ public class PercolationRules extends Rules {
 
   /**
    * Colors will be "Blue" for filled with water,"White" for empty, and "Black" for blocked
+   *
    * @param state
    */
   @Override
@@ -65,7 +68,7 @@ public class PercolationRules extends Rules {
   }
 
   public void incrementState(State state) {
-    state.setUpdate((state.toInt() + 1) % (FILLED+1));
+    state.setUpdate((state.toInt() + 1) % (FILLED + 1));
     state.update();
   }
 

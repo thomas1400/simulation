@@ -1,18 +1,14 @@
 package simulation.view;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import simulation.controller.Simulation;
 
 public class SettingsWindow extends Application {
