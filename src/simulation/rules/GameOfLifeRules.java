@@ -2,6 +2,7 @@ package simulation.rules;
 
 import java.util.List;
 import java.util.TreeMap;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
@@ -71,4 +72,8 @@ public class GameOfLifeRules extends Rules {
     NUM_TO_REVIVE = myVariables.get("Birth Threshold")[2];
   }
 
+  @Override
+  public String toString() {
+    return "gameOfLifeRules";
+  }
 }

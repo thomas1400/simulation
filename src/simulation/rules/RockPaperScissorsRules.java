@@ -89,4 +89,11 @@ public class RockPaperScissorsRules extends Rules {
     thresholdValue = (int) myVariables.get("Loss Threshold")[2].doubleValue();
     randomThresholdAdjustment = (int) myVariables.get("Random Threshold Adjustment")[2].doubleValue();
   }
+
+  @Override
+  public String toString() {
+    return "rockPaperScissorsRules";
+  }
+
+
 }
