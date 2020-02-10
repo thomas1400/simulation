@@ -12,6 +12,10 @@ public class RectangularGrid extends Grid {
     super(initialStates, neighborhoodShape, ruleSet, toroidal);
   }
 
+  /**
+   * @param MAX_SIZE the maximum size of the grid
+   * @return a GridPane with cell colors
+   */
   @Override
   public Pane getGridPane(int MAX_SIZE) {
     final double CELL_GAP = 0.25;

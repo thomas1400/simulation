@@ -51,8 +51,16 @@ public abstract class Grid {
     isToroidal = toroidal;
   }
 
+  /**
+   * Returns a graphical representation of this Grid.
+   * @param MAX_SIZE the maximum size of the grid
+   * @return a new Pane
+   */
   public abstract Pane getGridPane(int MAX_SIZE);
 
+  /**
+   * Updates the simulation by one step.
+   */
   public void step() {
     Collections.shuffle(myUpdateOrder);
     for (State s : myUpdateOrder) {
@@ -116,16 +124,10 @@ public abstract class Grid {
     return c;
   }
 
-  public int[] getStats() {
-    int[] statArray = new int[100];
-    for (State[] sa : myStates) {
-      for (State s : sa) {
-        statArray[s.toInt()]++;
-      }
-    }
-    return statArray;
-  }
-
+  /**
+   * Returns a List of all grid cells that are 'empty', state == 0
+   * @return a List of States with state == 0
+   */
   public List<State> getEmptyStates() {
     ArrayList<State> emptyStates = new ArrayList<>();
     for (State[] sa : myStates) {
@@ -138,11 +140,21 @@ public abstract class Grid {
     return emptyStates;
   }
 
+  /**
+   * Increments a cell's state and update its graphical representation
+   * @param x the cell's x coordinate
+   * @param y the cell's y coordinate
+   * @return the new Color of the cell
+   */
   public Color dynamicallyIncrement(int x, int y) {
     myRuleSet.incrementState(myStates[x][y]);
     return myRuleSet.getStateColor(myStates[x][y]);
   }
 
+  /**
+   * Checks if this simulation has reached stasis, i.e., is unchanging
+   * @return true if no cells updated last step
+   */
   public boolean isStatic() {
     for (State[] sa : myStates) {
       for (State s : sa) {
@@ -154,10 +166,18 @@ public abstract class Grid {
     return true;
   }
 
+  /**
+   * Returns the area of this grid
+   * @return area
+   */
   public double getArea() {
     return myWidth * myHeight;
   }
 
+  /**
+   * Gets counts of each cell type present in this grid
+   * @return a Map of cell type to count
+   */
   public Map<Integer, Integer> getCellCounts() {
     HashMap<Integer, Integer> counts = new HashMap<>();
     for (State[] sa : myStates) {
@@ -169,6 +189,10 @@ public abstract class Grid {
     return counts;
   }
 
+  /**
+   * Convert this Grid to an int array for textual representation
+   * @return an array of ints
+   */
   public int[][] toIntArray() {
     int[][] myIntArray = new int[myWidth][myHeight];
     for (int i = 0; i < myWidth; i++) {
@@ -179,6 +203,10 @@ public abstract class Grid {
     return myIntArray;
   }
 
+  /**
+   * Updates simulation settings
+   * @param settings new settings
+   */
   public void updateSettings(SimulationSettings settings) {
     settings.setGridWidth(myWidth);
     settings.setGridHeight(myHeight);

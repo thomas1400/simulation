@@ -78,6 +78,9 @@ public class Home extends Application {
     simulationWindow.start(new Stage());
   }
 
+  /**
+   * Sets actions for buttons for default simulations
+   */
   public void initialize() {
     FireSpread.setOnAction(e -> launchSim("firespread.xml"));
     GameOfLife.setOnAction(e -> launchSim("gameoflifegun.xml"));

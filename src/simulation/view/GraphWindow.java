@@ -34,6 +34,10 @@ public class GraphWindow extends Application {
     mySimulation = simulation;
   }
 
+  /**
+   * Starts this JavaFX application and opens a graph window
+   * @param primaryStage
+   */
   @Override
   public void start(Stage primaryStage) {
     myStage = primaryStage;
@@ -81,6 +85,9 @@ public class GraphWindow extends Application {
     step = 0;
   }
 
+  /**
+   * Updates the graph with new data from the simulation
+   */
   public void updateGraph() {
     Map<Integer, Integer> cellCounts = mySimulation.getCellCounts();
     ArrayList<Integer> keys = new ArrayList<>(cellCounts.keySet());
@@ -91,6 +98,9 @@ public class GraphWindow extends Application {
     step += 1;
   }
 
+  /**
+   * Closes the graph window
+   */
   @Override
   public void stop() {
     myStage.close();
