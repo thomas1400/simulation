@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import simulation.rules.Rules;
+import simulation.xmlGeneration.SimulationSettings;
 
 public abstract class Grid {
   protected static final int NEIGHBORHOOD_CENTER = -1;
@@ -167,4 +167,21 @@ public abstract class Grid {
     }
     return counts;
   }
+
+  public int[][] toIntArray() {
+    int[][] myIntArray = new int[myWidth][myHeight];
+    for (int i = 0; i < myWidth; i++){
+      for(int j = 0; j < myHeight; j++){
+          myIntArray[i][j] = myStates[i][j].toInt();
+        }
+    }
+    return myIntArray;
+  }
+
+  public void updateSettings(SimulationSettings settings) {
+    settings.setGridWidth(myWidth);
+    settings.setGridHeight(myHeight);
+    settings.setGridIsToroidal(isToroidal);
+  }
+
 }

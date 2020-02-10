@@ -96,6 +96,12 @@ public class SegregationRules extends Rules {
 
   @Override
   public List<String> getCellTypes() {
-    return new ArrayList<>(Arrays.asList("Empty", "Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"));
+    return new ArrayList<>(
+        Arrays.asList("Empty", "Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"));
+  }
+
+  @Override
+  public String toString() {
+    return "segregationRules";
   }
 }

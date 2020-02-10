@@ -1,6 +1,7 @@
 package simulation.view;
 
 import exceptions.MalformedXMLException;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,8 +42,8 @@ import org.xml.sax.SAXException;
  */
 public class SimulationWindow extends Application implements IUpdate {
 
-  private static final int WINDOW_HEIGHT = 512 + 35;
-  private static final int WINDOW_WIDTH = 512;
+  private static final int WINDOW_HEIGHT = 555 + 35;
+  private static final int WINDOW_WIDTH = 555;
   private static final int BUTTON_START_INDEX = 0;
   private static final double PADDING = 5;
 
@@ -179,7 +180,23 @@ public class SimulationWindow extends Application implements IUpdate {
         errorAlert();
       }
     });
+
+    buttonData.putIfAbsent("Save", e -> {
+      try {
+        simulation.saveSimulationState("data/testing123.xml");
+        //simulation.saveSimulationState(promptUserForFilePath());
+      } catch (FileNotFoundException ex) {
+        errorAlert();
+      }
+    });
   }
+
+  /*
+  private String promptUserForFilePath() {
+    FilePathPromptWindow sw = new FilePathPromptWindow("File Path Chooser");
+    sw.start(new Stage());
+  }
+   */
 
   private void makeButtons() {
     setupButtons();
@@ -224,7 +241,7 @@ public class SimulationWindow extends Application implements IUpdate {
 
   private void loadSimulation() throws MalformedXMLException {
     simulation = makeSimulation(xmlFileName);
-    windowTitle = simulation.getTitle();
+    windowTitle = simulation.getTitle()  + " by: " + simulation.getAuthor();
   }
 
   private Simulation makeSimulation(String xmlFileName) throws MalformedXMLException {

@@ -102,4 +102,9 @@ public class PredatorPreyRules extends Rules {
   public List<String> getCellTypes() {
     return new ArrayList<>(Arrays.asList("Empty", "Prey", "Predator"));
   }
+
+  @Override
+  public String toString() {
+    return "predatorPreyRules";
+  }
 }

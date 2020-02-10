@@ -70,4 +70,8 @@ public class FireRules extends Rules {
     state.update();
   }
 
+  @Override
+  public String toString() {
+    return "fireRules";
+  }
 }

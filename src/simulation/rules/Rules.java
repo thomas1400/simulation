@@ -2,6 +2,7 @@ package simulation.rules;
 
 import java.util.List;
 import java.util.Map;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.Grid;
 import simulation.model.State;
@@ -38,4 +39,5 @@ public abstract class Rules {
   protected abstract void updateVariables();
 
   public abstract List<String> getCellTypes();
+
 }

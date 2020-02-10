@@ -96,4 +96,9 @@ public class RockPaperScissorsRules extends Rules {
   public List<String> getCellTypes() {
     return new ArrayList<>(Arrays.asList("Rock", "Paper", "Scissors"));
   }
+
+  @Override
+  public String toString() {
+    return "rockPaperScissorsRules";
+  }
 }

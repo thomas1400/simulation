@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import simulation.model.State;
 
@@ -78,4 +79,8 @@ public class GameOfLifeRules extends Rules {
     return new ArrayList<>(Arrays.asList("Dead", "Alive"));
   }
 
+  @Override
+  public String toString() {
+    return "gameOfLifeRules";
+  }
 }

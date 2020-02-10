@@ -79,4 +79,8 @@ public class PercolationRules extends Rules {
     return new ArrayList<>(Arrays.asList("Blocked", "Empty", "Filled"));
   }
 
+  @Override
+  public String toString() {
+    return "percolationRules";
+  }
 }

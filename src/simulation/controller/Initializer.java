@@ -13,8 +13,9 @@ import simulation.rules.PredatorPreyRules;
 import simulation.rules.RockPaperScissorsRules;
 import simulation.rules.Rules;
 import simulation.rules.SegregationRules;
+import simulation.xmlGeneration.SimulationSettings;
 
-class Initializer {
+public class Initializer {
 
   private String myRulesType;
   private Rules myRulesClass;
@@ -23,6 +24,8 @@ class Initializer {
   private String myGridType;
   private boolean myGridIsToroidal;
   private int myNeighborhoodType;
+
+  private SimulationSettings mySimulationSettings;
 
   private static final int[][][] NEIGHBORHOOD_SHAPES = {
       {{1, 1, 1}, {1, -1, 1}, {1, 1, 1}},
@@ -40,6 +43,12 @@ class Initializer {
   public Initializer(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
     loadConfigFile(xmlFileName);
+    mySimulationSettings = new SimulationSettings();
+
+    mySimulationSettings.setNumGlobalVars(myGlobalVars.length);
+    mySimulationSettings.setGlobalVars(myGlobalVars);
+    mySimulationSettings.setNeighborhoodType(myNeighborhoodType);
+    mySimulationSettings.setGridType(myGridType);
   }
 
   private void loadConfigFile(String file)
@@ -114,5 +123,9 @@ class Initializer {
 
   public Rules getRules() {
     return myRulesClass;
+  }
+
+  public SimulationSettings getSimulationSettings() {
+    return mySimulationSettings;
   }
 }

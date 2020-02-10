@@ -5,22 +5,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class UserInputParser {
-  
-  private static String xmlFilePath;
-  private static String myRuleSelector;
-  private static String mySimulationTitle;
-  private static String mySimulationAuthor;
-  private static int myNumGlobalVars;
-  private static double[] myGlobalVars;
+
   private static int myGridWidth;
   private static int myGridHeight;
-  private static boolean myGridIsToroidal;
-  private static int[][] myInitialStateGrid;
-  private static int myNeighborhoodType;
-  private static String myGridType;
+  private static int myNumGlobalVars;
 
+  private static SimulationSettings mySettings;
 
-  public static void getUserInput() throws FileNotFoundException {
+  public static SimulationSettings getUserInput() throws FileNotFoundException {
+    mySettings = new SimulationSettings();
+
     askForFilePath();
     askForRuleSelector();
     askForSimulationTitle();
@@ -31,12 +25,14 @@ public class UserInputParser {
     askForGridIsToroidal();
     askForNeighborhoodType();
     askForSimulationGrid();
+
+    return mySettings;
   }
 
   private static void askForFilePath() {
     System.out.print("Please enter the name of the file to be created: ");
     Scanner input = new Scanner(System.in);
-    xmlFilePath = "data/" + input.next();
+    mySettings.setFilePath("data/" + input.next());
   }
 
   private static void askForRuleSelector() {
@@ -50,17 +46,17 @@ public class UserInputParser {
     } else {
       int selection = input.nextInt();
       if (selection == 0) {
-        myRuleSelector = "fireRules";
+        mySettings.setRuleSelector("fireRules");
       } else if (selection == 1) {
-        myRuleSelector = "gameOfLifeRules";
+        mySettings.setRuleSelector("gameOfLifeRules");
       } else if (selection == 2) {
-        myRuleSelector = "percolationRules";
+        mySettings.setRuleSelector("percolationRules");
       } else if (selection == 3) {
-        myRuleSelector = "predatorPreyRules";
+        mySettings.setRuleSelector("predatorPreyRules");
       } else if (selection == 4) {
-        myRuleSelector = "segregationRules";
+        mySettings.setRuleSelector("segregationRules");
       } else if (selection == 5) {
-        myRuleSelector = "rockPaperScissorsRules";
+        mySettings.setRuleSelector("rockPaperScissorsRules");
       } else {
         System.out.println("Invalid Input, Try Again");
         System.out.println();
@@ -83,13 +79,13 @@ public class UserInputParser {
   private static void askForSimulationTitle() {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter a simulation title: ");
-    mySimulationTitle = input.nextLine();
+    mySettings.setSimulationTitle(input.nextLine());
   }
 
   private static void askForSimulationAuthor() {
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter the simulation authors: ");
-    mySimulationAuthor = input.nextLine();
+    mySettings.setSimulationAuthor(input.nextLine());
   }
 
   private static void askForNumGlobalVars() {
@@ -100,8 +96,9 @@ public class UserInputParser {
       askForNumGlobalVars();
     } else {
       int inputHolder = input.nextInt();
-      if (inputHolder > 0 && inputHolder < 25) {
+      if (inputHolder > 0) {
         myNumGlobalVars = inputHolder;
+        mySettings.setNumGlobalVars(myNumGlobalVars);
       } else {
         System.out.println("That's not a valid number of variables. Try Again.\n");
         askForNumGlobalVars();
@@ -114,7 +111,7 @@ public class UserInputParser {
   }
 
   private static void askForGlobalVars() {
-    myGlobalVars = new double[myNumGlobalVars];
+    double[] myGlobalVars = new double[myNumGlobalVars];
     for (int i = 0; i < myNumGlobalVars; i++) {
       System.out.print("Please enter global variable " + (i + 1) + ": ");
       Scanner input = new Scanner(System.in);
@@ -125,6 +122,7 @@ public class UserInputParser {
         myGlobalVars[i] = input.nextDouble();
       }
     }
+    mySettings.setGlobalVars(myGlobalVars);
   }
     
   private static void askForSimulationGrid() throws FileNotFoundException {
@@ -141,13 +139,13 @@ public class UserInputParser {
   private static void askForGridIsToroidal() {
     System.out.print("Is this simulation toroidal? (true/false): ");
     Scanner input = new Scanner(System.in);
-    myGridIsToroidal = Boolean.parseBoolean(input.next());
+    mySettings.setGridIsToroidal(Boolean.parseBoolean(input.next()));
   }
 
   private static void askForGridType() {
     System.out.print("What type of grid will this simulation have? Enter \"Rectangular\" or \"Triangular\": ");
     Scanner input = new Scanner(System.in);
-    myGridType = input.next();
+    mySettings.setGridType(input.next());
   }
 
 
@@ -170,6 +168,7 @@ public class UserInputParser {
       sc.next();
     }
     myGridWidth = fileWidth / myGridHeight;
+    mySettings.setGridWidth(myGridWidth);
   }
 
   private static void askForGridHeightFromFile(File file) throws FileNotFoundException {
@@ -180,16 +179,18 @@ public class UserInputParser {
       sc.nextLine();
     }
     myGridHeight = fileHeight;
+    mySettings.setGridHeight(myGridHeight);
   }
 
   private static void askForGridStatesFromFile(File file) throws FileNotFoundException {
     Scanner sc = new Scanner(file);
-    myInitialStateGrid = new int[myGridHeight][myGridWidth];
+    int[][] myInitialStateGrid = new int[myGridHeight][myGridWidth];
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
         myInitialStateGrid[i][j] = Integer.parseInt(sc.next());
       }
     }
+    mySettings.setInitialStateGrid(myInitialStateGrid);
   }
 
   private static void askForInitialGridFromUser() {
@@ -206,6 +207,7 @@ public class UserInputParser {
       askForGridWidth();
     } else {
       myGridWidth = input.nextInt();
+      mySettings.setGridWidth(myGridWidth);
     }
   }
 
@@ -217,11 +219,12 @@ public class UserInputParser {
       askForGridHeight();
     } else {
       myGridHeight = input.nextInt();
+      mySettings.setGridHeight(myGridHeight);
     }
   }
 
   private static void askForInitialStateGrid() {
-    myInitialStateGrid = new int[myGridHeight][myGridWidth];
+    int[][] myInitialStateGrid = new int[myGridHeight][myGridWidth];
     Scanner input = new Scanner(System.in);
     for (int i = 0; i < myGridHeight; i++) {
       for (int j = 0; j < myGridWidth; j++) {
@@ -234,64 +237,18 @@ public class UserInputParser {
         }
       }
     }
+    mySettings.setInitialStateGrid(myInitialStateGrid);
   }
 
   private static void askForNeighborhoodType() {
-    myInitialStateGrid = new int[myGridHeight][myGridWidth];
     Scanner input = new Scanner(System.in);
     System.out.print("Please enter the simulation's grid neighborhood type (1-4): ");
     if (!input.hasNextInt()) {
       displayInvalidNumInput();
       askForNeighborhoodType();
     } else {
-      myNeighborhoodType = input.nextInt();
+      mySettings.setNeighborhoodType(input.nextInt());
     }
   }
 
-  public static String getXmlFilePath() {
-    return xmlFilePath;
-  }
-
-  public static String getRuleSelector() {
-    return myRuleSelector;
-  }
-
-  public static String getSimulationTitle() {
-    return mySimulationTitle;
-  }
-
-  public static String getSimulationAuthor() {
-    return mySimulationAuthor;
-  }
-
-  public static int getNumGlobalVars() {
-    return myNumGlobalVars;
-  }
-
-  public static double[] getGlobalVars() {
-    return myGlobalVars;
-  }
-
-  public static int getGridWidth() {
-    return myGridWidth;
-  }
-
-  public static int getGridHeight() {
-    return myGridHeight;
-  }
-
-  public static boolean getGridIsToroidal() {
-    return myGridIsToroidal;
-  }
-
-  public static int[][] getInitialStateGrid() {
-    return myInitialStateGrid;
-  }
-
-  public static int getNeighborhoodType() {
-    return myNeighborhoodType;
-  }
-
-  public static String getGridType() { return myGridType;
-  }
 }

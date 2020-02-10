@@ -2,26 +2,23 @@ package simulation.controller;
 
 
 import exceptions.MalformedXMLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Pair;
 import simulation.events.IUpdate;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import simulation.model.Grid;
-import simulation.model.RectangularGrid;
+import simulation.xmlGeneration.SimulationSettings;
+import simulation.xmlGeneration.XMLGenerator;
 import simulation.rules.Rules;
 
 
@@ -33,6 +30,7 @@ public class Simulation {
   private String mySimulationAuthor;
   private int mySimulationSpeed = INITIAL_SIM_SPEED;
   private boolean mySimulationRunning;
+  private SimulationSettings mySimulationSettings;
 
   private Grid myGrid;
 
@@ -46,6 +44,7 @@ public class Simulation {
 
     Initializer myInitializer = new Initializer(xmlFileName);
 
+    mySimulationSettings = myInitializer.getSimulationSettings();
     mySimulationTitle = myInitializer.getSimulationTitle();
     mySimulationAuthor = myInitializer.getSimulationAuthor();
     myGrid = myInitializer.getGrid();
@@ -155,6 +154,17 @@ public class Simulation {
 
   public Pane getGridPane(int MAX_SIZE) {
     return myGrid.getGridPane(MAX_SIZE);
+  }
+
+  public void saveSimulationState(String filePath) throws FileNotFoundException {
+    XMLGenerator myGenerator = new XMLGenerator();
+    mySimulationSettings.setFilePath(filePath);
+    mySimulationSettings.setRuleSelector(myRules.toString());
+    mySimulationSettings.setSimulationTitle(mySimulationTitle);
+    mySimulationSettings.setSimulationAuthor(mySimulationAuthor);
+    mySimulationSettings.setInitialStateGrid(myGrid.toIntArray());
+    myGrid.updateSettings(mySimulationSettings);
+    myGenerator.generateXML(mySimulationSettings);
   }
 
   public Map<String, Double[]> getSettings() {
