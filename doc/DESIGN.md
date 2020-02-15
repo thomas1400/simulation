@@ -1,9 +1,9 @@
 # Simulation Design Final
-### Names
+### Grant LoPresti, Sebastian Williams, Thomas Owens
 
 ## Team Roles and Responsibilities
 
- * Grant LoPresti
+ * Grant
     - Focused on controller and xmlGeneration packages with some work in the view package
     - Simulation API that communicates with Grid and GUI
     - XML generation, parsing, and custom creation
