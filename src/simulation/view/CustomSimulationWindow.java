@@ -36,6 +36,10 @@ public class CustomSimulationWindow extends Application {
     myWindowTitle = simulationName + " Settings";
   }
 
+  /**
+   * Starts custom sim window
+   * @param primaryStage new window
+   */
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle(myWindowTitle);
@@ -162,8 +166,7 @@ public class CustomSimulationWindow extends Application {
   }
 
   private TextField addGridStatesFile(GridPane master) {
-    TextField gridStatesFile = addTextInputBox(master, "Grid States File: ", 12);
-    return gridStatesFile;
+    return addTextInputBox(master, "Grid States File: ", 12);
   }
 
   private void fillGlobalVarsArray(TextField globalVars, SimulationSettings customSim) {
@@ -175,6 +178,14 @@ public class CustomSimulationWindow extends Application {
     customSim.setGlobalVars(varsDoubleArray);
   }
 
+  /**
+   * fills an initial stae grid
+   * @param customSim sim settings
+   * @param myFile sim file
+   * @param myWidth sim width
+   * @param myHeight sim size
+   * @throws FileNotFoundException if missing file
+   */
   public void fillInitialStateGrid(SimulationSettings customSim, String myFile, int myWidth,
       int myHeight) throws FileNotFoundException {
     File file = new File("data/" + myFile);
