@@ -16,6 +16,10 @@ public class GameOfLifeRules extends Rules {
   private double MAX_TO_DIE = 4;
   private double NUM_TO_REVIVE = 3;
 
+  /**
+   * Constructs a game of life class
+   * @param variables initial parameters/settings
+   */
   public GameOfLifeRules(double[] variables) {
     myVariables = new TreeMap<>();
     double v0, v1, v2;
@@ -35,8 +39,8 @@ public class GameOfLifeRules extends Rules {
   }
 
   /**
-   * @param state
-   * @param neighborStates
+   * @param state cell state
+   * @param neighborStates list of neighbors states
    */
   @Override
   public void calculateUpdate(State state, List<State> neighborStates) {
@@ -56,11 +60,20 @@ public class GameOfLifeRules extends Rules {
     return sum;
   }
 
+  /**
+   * return's state color
+   * @param state current state
+   * @return Color state color
+   */
   @Override
   public Color getStateColor(State state) {
     return (state.equals(ALIVE)) ? Color.BLACK : Color.WHITE;
   }
 
+  /**
+   * increments the state
+   * @param state cell State
+   */
   public void incrementState(State state) {
     state.setUpdate((state.toInt() + 1) % (ALIVE + 1));
     state.update();
@@ -73,11 +86,19 @@ public class GameOfLifeRules extends Rules {
     NUM_TO_REVIVE = myVariables.get("Birth Threshold")[2];
   }
 
+  /**
+   * returns possible cell types
+   * @return cell types
+   */
   @Override
   public List<String> getCellTypes() {
     return new ArrayList<>(Arrays.asList("Dead", "Alive"));
   }
 
+  /**
+   * name of simulation rules
+   * @return sim rules
+   */
   @Override
   public String toString() {
     return "gameOfLifeRules";
