@@ -25,6 +25,13 @@ class XMLReader {
   private int myNeighborhoodType;
   private String myGridType;
 
+  /**
+   * Creates a new XMLReader from a file name
+   * @param file the file to parse
+   * @throws IOException on malformed XML
+   * @throws SAXException on malformed XML
+   * @throws ParserConfigurationException on malformed XML
+   */
   public XMLReader(String file) throws IOException, SAXException, ParserConfigurationException {
     NodeIterator iterator = getNodeIterator(file);
     readFile(iterator);

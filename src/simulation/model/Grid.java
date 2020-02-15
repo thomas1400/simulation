@@ -10,24 +10,63 @@ import javafx.scene.paint.Color;
 import simulation.rules.Rules;
 import simulation.xmlGeneration.SimulationSettings;
 
+/**
+ * This class embodies my understanding of and appreciation for inheritance
+ * hierarchies and abstraction as a tool for enabling extension.
+ *
+ * Grid is an abstract class that represents the grid of a simulation. It contains
+ * nearly all of the functionality of a grid, encoded as a 2D array. In order to
+ * extend this project and add a new grid type, like hexagonal tiles, all that's
+ * required is to create a new class and extend Grid, then implement the single
+ * method getGridPane(). This makes adding new features of this kind extremely easy.
+ *
+ * Grid also hides its implementation from every other class. It only ever passes
+ * back some statistics about the states in the grid (for graphing) and the
+ * graphical representation of the grid itself, which will not affect the grid
+ * in any way. It cannot be changed except through appropriate method calls.
+ */
 public abstract class Grid {
 
   protected static final int NEIGHBORHOOD_CENTER = -1;
 
   protected State[][] myStates;
-  protected List<State> myUpdateOrder;
+  private List<State> myUpdateOrder;
   protected int myHeight;
   protected int myWidth;
-
-  protected Rules myRuleSet;
-
   protected boolean isToroidal;
   protected int[][] myNeighborhoodShape;
 
+  protected Rules myRuleSet;
+
+  /**
+   * Creates a new grid
+   * @param initialStates the initial states of the grid
+   * @param neighborhoodShape the shape of the cells' neighborhood
+   * @param ruleSet the Rules of this simulation
+   * @param toroidal true if the grid is toroidal, false otherwise
+   */
   public Grid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleSet, boolean toroidal) {
     myWidth = initialStates.length;
     myHeight = initialStates[0].length;
 
+    initializeStates(initialStates);
+    initializeNeighborhood(neighborhoodShape);
+
+    myRuleSet = ruleSet;
+    myRuleSet.setGrid(this);
+
+    isToroidal = toroidal;
+  }
+
+  private void initializeNeighborhood(int[][] neighborhoodShape) {
+    myNeighborhoodShape = new int[neighborhoodShape.length][neighborhoodShape[0].length];
+    for (int x = 0; x < neighborhoodShape.length; x++) {
+      System.arraycopy(neighborhoodShape[x], 0, myNeighborhoodShape[x], 0,
+          neighborhoodShape[x].length);
+    }
+  }
+
+  private void initializeStates(int[][] initialStates) {
     myStates = new State[myWidth][myHeight];
     myUpdateOrder = new ArrayList<>();
     for (int x = 0; x < myWidth; x++) {
@@ -37,23 +76,11 @@ public abstract class Grid {
         myUpdateOrder.add(newState);
       }
     }
-
-    myNeighborhoodShape = new int[neighborhoodShape.length][neighborhoodShape[0].length];
-    for (int x = 0; x < neighborhoodShape.length; x++) {
-      for (int y = 0; y < neighborhoodShape[x].length; y++) {
-        myNeighborhoodShape[x][y] = neighborhoodShape[x][y];
-      }
-    }
-
-    myRuleSet = ruleSet;
-    myRuleSet.setGrid(this);
-
-    isToroidal = toroidal;
   }
 
   /**
    * Returns a graphical representation of this Grid.
-   * @param MAX_SIZE the maximum size of the grid
+   * @param MAX_SIZE the maximum width/height of the grid
    * @return a new Pane
    */
   public abstract Pane getGridPane(int MAX_SIZE);
@@ -64,8 +91,7 @@ public abstract class Grid {
   public void step() {
     Collections.shuffle(myUpdateOrder);
     for (State s : myUpdateOrder) {
-      int[] location = s.getLocation();
-      List<State> neighborStates = getNeighborStates(location);
+      List<State> neighborStates = getNeighborStates(s);
       myRuleSet.calculateUpdate(s, neighborStates);
     }
     for (State s : myUpdateOrder) {
@@ -73,40 +99,48 @@ public abstract class Grid {
     }
   }
 
-  protected List<State> getNeighborStates(int[] location) {
-    ArrayList<State> neighborStates = new ArrayList<>();
+  protected List<State> getNeighborStates(State state) {
+    List<State> neighborStates = new ArrayList<>();
 
-    int x = location[0], y = location[1];
+    int x = state.getX(), y = state.getY();
 
-    int centerX = myNeighborhoodShape.length / 2;
-    int centerY = myNeighborhoodShape[0].length / 2;
-    for (int i = 0; i < myNeighborhoodShape.length; i++) {
-      for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
-        if (myNeighborhoodShape[i][j] == NEIGHBORHOOD_CENTER) {
-          centerX = i;
-          centerY = j;
-          break;
-        }
-      }
-    }
+    int[] center = findNeighborhoodCenter();
 
     int xOffset, yOffset;
     for (int i = 0; i < myNeighborhoodShape.length; i++) {
       for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
-        xOffset = i - centerX;
-        yOffset = j - centerY;
+        xOffset = i - center[0];
+        yOffset = j - center[1];
         if (myNeighborhoodShape[i][j] == 1) {
-          if (inGridBounds(x + xOffset, y + yOffset)) {
-            neighborStates.add(myStates[x + xOffset][y + yOffset]);
-          } else if (isToroidal) {
-            int[] tc = toroidizeCoordinates(x + xOffset, y + yOffset);
-            neighborStates.add(myStates[tc[0]][tc[1]]);
-          }
+          addNewNeighbor(neighborStates, x + xOffset, y + yOffset);
         }
       }
     }
 
     return neighborStates;
+  }
+
+  private void addNewNeighbor(List<State> neighborStates, int x, int y) {
+    if (inGridBounds(x, y)) {
+      neighborStates.add(myStates[x][y]);
+    } else if (isToroidal) {
+      int[] tc = toroidizeCoordinates(x, y);
+      neighborStates.add(myStates[tc[0]][tc[1]]);
+    }
+  }
+
+  protected int[] findNeighborhoodCenter() {
+    int[] center = {myNeighborhoodShape.length / 2, myNeighborhoodShape[0].length / 2};
+    for (int i = 0; i < myNeighborhoodShape.length; i++) {
+      for (int j = 0; j < myNeighborhoodShape[0].length; j++) {
+        if (myNeighborhoodShape[i][j] == NEIGHBORHOOD_CENTER) {
+          center[0] = j;
+          center[1] = i;
+          break;
+        }
+      }
+    }
+    return center;
   }
 
   protected boolean inGridBounds(int x, int y) {

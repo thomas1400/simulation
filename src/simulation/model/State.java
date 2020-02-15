@@ -56,7 +56,7 @@ public class State {
   }
 
   /**
-   * Compare two states
+   * Compares two states
    * @param o another Object
    * @return true if State states are equal
    */
@@ -65,14 +65,42 @@ public class State {
     return (o instanceof State && ((State) o).myState == myState);
   }
 
+  /**
+   * Checks if this state is empty
+   * @return true if state is 0
+   */
   public boolean isEmpty() {
     return (myState == 0 && myUpdate == 0);
   }
 
+  /**
+   * Gets this state's location in the grid
+   * @return int[]{x coordinate, y coordinate}
+   */
   public int[] getLocation() {
     return myLocation;
   }
 
+  /**
+   * Gets this state's x coordinate in the grid
+   * @return x
+   */
+  public int getX() {
+    return myLocation[0];
+  }
+
+  /**
+   * Gets this state's y coordinate in the grid
+   * @return y
+   */
+  public int getY() {
+    return myLocation[1];
+  }
+
+  /**
+   * Checks if this state is static (if it updated last cycle)
+   * @return true if this state did not change last update
+   */
   public boolean isStatic() {
     return isStatic;
   }

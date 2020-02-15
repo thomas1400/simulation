@@ -40,6 +40,13 @@ public class Simulation {
   private Rules myRules;
 
 
+  /**
+   * Creates a new Simulation from a file
+   * @param xmlFileName the XML file path
+   * @throws IOException on malformed XML
+   * @throws SAXException on malformed XML
+   * @throws ParserConfigurationException on malformed XML
+   */
   public Simulation(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
 
@@ -123,25 +130,34 @@ public class Simulation {
     }
   }
 
+  /**
+   * Stops the simulation if it's running
+   */
   public void stop() {
     if (timeline != null) {
       timeline.stop();
     }
   }
 
+  @Deprecated
   public void parseSettings(String string) {
     System.out.println(string);
   }
 
+  /**
+   * Adds an update listener to this Simulation
+   * @param listener implements IUpdate
+   */
   public void setListener(IUpdate listener) {
     this.listener = listener;
   }
 
   /**
-   * Method for returning important stats from the simulation TODO: Implement
+   * Method for returning important stats from the simulation
    *
    * @return stats
    */
+  @Deprecated
   public int getMaxSizes() {
     return 5;
   }
@@ -156,14 +172,31 @@ public class Simulation {
     return mySimulationTitle;
   }
 
+  /**
+   * These getters are used to communicate with GUI the characteristics of the simulation as given
+   * from the Initializer
+   *
+   * @return Values of each specific initialized element
+   */
   public String getAuthor() {
     return mySimulationAuthor;
   }
 
+  /**
+   * These getters are used to communicate with GUI the characteristics of the simulation as given
+   * from the Initializer
+   *
+   * @return Values of each specific initialized element
+   */
   public Pane getGridPane(int MAX_SIZE) {
     return myGrid.getGridPane(MAX_SIZE);
   }
 
+  /**
+   * Saves this Simulation's state as an XML file with the given filepath
+   * @param filePath the file path for the XML to save
+   * @throws FileNotFoundException on invalid file path
+   */
   public void saveSimulationState(String filePath) throws FileNotFoundException {
     XMLGenerator myGenerator = new XMLGenerator();
     mySimulationSettings.setFilePath(filePath);
@@ -175,22 +208,44 @@ public class Simulation {
     myGenerator.generateXML(mySimulationSettings);
   }
 
+  /**
+   * These getters are used to communicate with GUI the characteristics of the simulation as given
+   * from the Initializer
+   *
+   * @return Values of each specific initialized element
+   */
   public Map<String, Double[]> getSettings() {
     return myRules.getSettings();
   }
 
+  /**
+   * These setters are used to communicate with GUI the characteristics of the simulation as given
+   * from the Initializer
+   */
   public void setSetting(String name, double value) {
     myRules.setSetting(name, value);
   }
 
+  /**
+   * Gets the area of the grid
+   * @return the number of cells
+   */
   public double getArea() {
     return myGrid.getArea();
   }
 
+  /**
+   * Gets counts of each cell type in this grid
+   * @return a map of state number to count
+   */
   public Map<Integer, Integer> getCellCounts() {
     return myGrid.getCellCounts();
   }
 
+  /**
+   * Gets a list of the cell type names in this simulation's rules
+   * @return a list of String cell types
+   */
   public List<String> getCellTypes() {
     return myRules.getCellTypes();
   }

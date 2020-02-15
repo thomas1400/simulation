@@ -8,12 +8,14 @@ import java.io.IOException;
 public class RandomGridGenerator {
 
   private static void generateGridFile(String filepath) {
-    double g1 = 0.33;
-    double g2 = 0.33;
-    double empty = 0.34;
+    double g1 = 0.22;
+    double g2 = 0.22;
+    double g3 = 0.22;
+    double g4 = 0.22;
+    double empty = 0.08;
 
-    int width = 80;
-    int height = 80;
+    int width = 100;
+    int height = 100;
 
     try {
       File newGrid = new File(filepath);
@@ -26,6 +28,10 @@ public class RandomGridGenerator {
             writer.append("1 ");
           } else if (z < g1 + g2) {
             writer.append("2 ");
+          } else if (z < g1 + g2 + g3) {
+            writer.append("3 ");
+          } else if (z < g1 + g2 + g3 + g4) {
+            writer.append("4 ");
           } else {
             writer.append("0 ");
           }

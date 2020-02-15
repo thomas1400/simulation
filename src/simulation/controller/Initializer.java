@@ -36,6 +36,13 @@ public class Initializer {
   private String mySimulationTitle;
   private String mySimulationAuthor;
 
+  /**
+   * Creates a new Initializer
+   * @param xmlFileName the file to read from
+   * @throws IOException on Malformed XML
+   * @throws SAXException on Malformed XML
+   * @throws ParserConfigurationException on Malformed XML
+   */
   public Initializer(String xmlFileName)
       throws IOException, SAXException, ParserConfigurationException {
     loadConfigFile(xmlFileName);
@@ -105,22 +112,42 @@ public class Initializer {
     return myRulesClass;
   }
 
+  /**
+   * Gets the grid for this Initializer
+   * @return the Grid read from an XML
+   */
   public Grid getGrid() {
     return myGrid;
   }
 
+  /**
+   * Gets the simulation title for this Initializer
+   * @return the title read from an XML
+   */
   public String getSimulationTitle() {
     return mySimulationTitle;
   }
 
+  /**
+   * Gets the simulation author for this Initializer
+   * @return the author read from an XML
+   */
   public String getSimulationAuthor() {
     return mySimulationAuthor;
   }
 
+  /**
+   * Gets the rules for this Initializer's simulation
+   * @return the Rules corresponding to the type read from an XML
+   */
   public Rules getRules() {
     return myRulesClass;
   }
 
+  /**
+   * Gets a SimulationSettings object for this instance's simulation
+   * @return a new SimulationSettings object with all settings
+   */
   public SimulationSettings getSimulationSettings() {
     return mySimulationSettings;
   }
