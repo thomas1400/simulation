@@ -53,6 +53,8 @@ Features implemented:
 ### Notes/Assumptions
 
 Assumptions or Simplifications:
+* We made strong assumptions about the format of XML files, which limits the addition of new features by making it difficult to parse new additions. We could change this by simply making our XMLReader a bit more intelligent in its parsing, using tags to identify values.
+* We made certain assumptions about the kind of simulations that we run, assuming at first that cell state would only depend on those around them, but later modifying our assumption to assume that the future state of a cell will only depend on the current state of all of the other cells in the grid, and no other information.
 
 Interesting data files:
 - rpsSimulation.xml
@@ -65,7 +67,3 @@ Interesting data files:
 Known Bugs:
 - XML Generation doesn't have dynamic error checking and simply tells you you've done something
  wrong if the custom simulation doesnt compile.
-
-
-### Impressions
-
