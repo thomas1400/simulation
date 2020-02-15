@@ -1,6 +1,8 @@
 Simulation Rules Type Selector
 Simulation Title
+Simulation Author
 ---
+numGlobalVars
 Global Var 1
 Global Var 2
 .
@@ -10,6 +12,10 @@ Global Var n
 ---
 gridHeight
 gridWidth
+gridType
+isToroidal
+neighborhoodType
+---
 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0
