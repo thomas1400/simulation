@@ -1,3 +1,6 @@
+
+
+
 package simulation.model;
 
 import java.util.ArrayList;
@@ -68,19 +71,29 @@ public class TriangularGrid extends Grid {
   }
 
   @Override
-  protected List<State> getNeighborStates(State state) {
+  protected List<State> getNeighborStates(int[] location) {
     ArrayList<State> neighborStates = new ArrayList<>();
 
-    int x = state.getX(), y = state.getY();
+    int x = location[0], y = location[1];
 
-    int[] center = findNeighborhoodCenter();
+    int centerX = myNeighborhoodShape[0].length / 2;
+    int centerY = myNeighborhoodShape.length / 2;
+    for (int ny = 0; ny < myNeighborhoodShape.length; ny++) {
+      for (int nx = 0; nx < myNeighborhoodShape[ny].length; nx++) {
+        if (myNeighborhoodShape[ny][nx] == NEIGHBORHOOD_CENTER) {
+          centerX = nx;
+          centerY = ny;
+          break;
+        }
+      }
+    }
 
-    int flip = ((x + y) % 2 == 0) ? -1 : 1;
+    int flip = ((location[0] + location[1]) % 2 == 0) ? -1 : 1;
     int xOffset, yOffset;
     for (int ny = 0; ny < myNeighborhoodShape.length; ny++) {
       for (int nx = 0; nx < myNeighborhoodShape[ny].length; nx++) {
-        xOffset = nx - center[0];
-        yOffset = ny - center[1];
+        xOffset = nx - centerX;
+        yOffset = ny - centerY;
         if (myNeighborhoodShape[ny][nx] == 1) {
           if (inGridBounds(x + flip * xOffset, y + flip * yOffset)) {
             neighborStates.add(myStates[x + flip * xOffset][y + flip * yOffset]);

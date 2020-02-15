@@ -81,21 +81,6 @@ public class State {
     return myLocation;
   }
 
-  /**
-   * Gets this state's x coordinate in the grid
-   * @return x
-   */
-  public int getX() {
-    return myLocation[0];
-  }
-
-  /**
-   * Gets this state's y coordinate in the grid
-   * @return y
-   */
-  public int getY() {
-    return myLocation[1];
-  }
 
   /**
    * Checks if this state is static (if it updated last cycle)

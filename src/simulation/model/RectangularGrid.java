@@ -5,11 +5,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import simulation.rules.Rules;
 
-/**
- * RectangularGrid is an example of an implementation of Grid.
- *
- * See Grid for comments on the design of this class.
- */
 public class RectangularGrid extends Grid {
 
   public RectangularGrid(int[][] initialStates, int[][] neighborhoodShape, Rules ruleSet,
