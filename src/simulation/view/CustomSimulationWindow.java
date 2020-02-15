@@ -170,7 +170,7 @@ public class CustomSimulationWindow extends Application {
     String[] varsStrArray = globalVars.getText().split(", ");
     double[] varsDoubleArray = new double[varsStrArray.length];
     for (int i = 0; i < varsStrArray.length; i++){
-      varsDoubleArray[i] = Integer.parseInt(varsStrArray[i]);
+      varsDoubleArray[i] = Double.parseDouble(varsStrArray[i]);
     }
     customSim.setGlobalVars(varsDoubleArray);
   }
@@ -182,7 +182,7 @@ public class CustomSimulationWindow extends Application {
     int[][] myInitialStateGrid = new int[myHeight][myWidth];
     for (int i = 0; i < myHeight; i++) {
       for (int j = 0; j < myWidth; j++) {
-        myInitialStateGrid[i][j] = Integer.parseInt(sc.next());
+        myInitialStateGrid[j][i] = Integer.parseInt(sc.next());
       }
     }
     customSim.setInitialStateGrid(myInitialStateGrid);
