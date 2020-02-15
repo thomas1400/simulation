@@ -23,7 +23,7 @@
   rules if tree that creates that type of rules of a certain string is found in the XML.
  - Adding a new simulation is as simple as following the "Custom XML" prompts from the Home
   window to specify all of the specifics of your custom XML that then loads a simulation.
- - Adding a new GridType is as simple as _**TODO**_
+ - Adding a new GridType is as simple as _**TODO**_ 
 
 ## High-level Design
 - The Home class is the entry way into the simulation, it can load as many independent
